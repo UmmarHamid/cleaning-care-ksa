@@ -26,7 +26,9 @@ You are building the official B2B corporate and wholesale catalog website for **
 * Use **TypeScript** with strict interfaces imported from `src/data/catalog.ts` and `src/data/company.ts`. Never hardcode company phone numbers, VAT numbers, or product lists inside JSX components—always import from `src/data/`.
 * Keep components modular, accessible (semantic `<header>`, `<main>`, `<section>`, `<nav>`, `<footer>`, proper `aria-label` on icon buttons), and lightweight (avoid heavy animation libraries; use clean CSS transitions).
 * Format WhatsApp URLs using a shared helper `buildWhatsAppQuoteUrl(productName?: string, spec?: string)` in `src/lib/whatsapp.ts`.
-
+* keep component max lines not more than 500
+* create reusable components if usage is more than once
+* for colors and constants use /create reusable  tokens avoid using adhoc values
 ## 4. Reference Docs
 * Full ticket roadmap & prompts: `docs/plan.md`
 * Data schemas, client details & product lists: `docs/tech-specs.md`
