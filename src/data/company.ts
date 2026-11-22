@@ -1,3 +1,8 @@
+/**
+ * Verified Business Entity Data & Types for Cleaning Care Trading Co. (Riyadh, KSA)
+ * Reference: docs/tech-spec.md, docs/plan.md & GEMINI.md
+ */
+
 export interface StatItem {
   metric: string;
   label: string;
@@ -16,6 +21,7 @@ export interface IndustryItem {
   title: string;
   image: string;
   alt: string;
+  description?: string;
 }
 
 export interface StrengthItem {
@@ -28,7 +34,53 @@ export interface HighlightItem {
   subtitle: string;
 }
 
-export const COMPANY_DATA = {
+export interface FacilityItem {
+  num: string;
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  theme: "red" | "white";
+  features?: string[];
+}
+
+export interface CompanyData {
+  name: string;
+  legalName: string;
+  arabicName: string;
+  tagline: string;
+  headline: string;
+  shortDescription: string;
+  location: string;
+  city: string;
+  country: string;
+  serviceArea: string;
+  vatNumber: string;
+  phone: string;
+  phoneRaw: string;
+  phoneTel: string;
+  emailSales: string;
+  emailInfo: string;
+  emailLegacy: string;
+  googleMapsUrl: string;
+  googleMapsEmbedUrl: string;
+  stats: StatItem[];
+  about: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    image: string;
+    imageAlt: string;
+  };
+  strengths: StrengthItem[];
+  industries: IndustryItem[];
+  infrastructureFeatures: string[];
+  facilities: FacilityItem[];
+  clients: ClientItem[];
+  highlightsStrip: HighlightItem[];
+}
+
+export const COMPANY_DATA: CompanyData = {
   name: "Cleaning Care Trading Co.",
   legalName: "Cleaning Care Trading Co.",
   arabicName: "شركة عناية التنظيف للتجارة",
@@ -39,6 +91,7 @@ export const COMPANY_DATA = {
   location: "Riyadh, Kingdom of Saudi Arabia",
   city: "Riyadh",
   country: "Kingdom of Saudi Arabia",
+  serviceArea: "Kingdom of Saudi Arabia (KSA)",
   vatNumber: "314071638700003",
   phone: "+966 56 282 1089",
   phoneRaw: "966562821089",
@@ -75,7 +128,7 @@ export const COMPANY_DATA = {
       subtext: "Across KSA",
       isText: true,
     },
-  ] as StatItem[],
+  ],
 
   about: {
     eyebrow: "ABOUT CLEANING CARE TRADING CO.",
@@ -111,46 +164,58 @@ export const COMPANY_DATA = {
       title: "Trusted by Leading Clients",
       description: "Supplying major companies and long-term partners.",
     },
-  ] as StrengthItem[],
+  ],
 
   industries: [
     {
       id: "contractors",
       title: "Cleaning Companies\n& Contractors",
-      image: "/assets/images (2).jpg",
-      alt: "Commercial janitorial cleaning operation with cleaning trolley and worker",
+      image: "/images/cat-cleaning-materials.webp",
+      alt: "Commercial janitorial cleaning chemicals and supplies",
+      description:
+        "Bulk chemicals, janitorial trolleys, and floor care machines for commercial cleaning contractors.",
     },
     {
       id: "offices",
       title: "Corporate Offices",
-      image: "/assets/industry-2.webp",
-      alt: "Modern professional corporate office interior",
+      image: "/images/cat-hygiene-disposables.webp",
+      alt: "Corporate restroom hygiene dispensers, hand soaps and paper disposables",
+      description:
+        "Restroom hygiene dispensers, hand soaps, sanitizers, and waste sorting systems.",
     },
     {
       id: "horeca",
       title: "Hotels & Restaurants\n(HORECA)",
-      image: "/assets/industry-3.webp",
-      alt: "Premium hotel and restaurant dining interior",
+      image: "/images/cat-equipment-safety.webp",
+      alt: "Commercial floor care equipment and safety supplies for hospitality",
+      description:
+        "Kitchen degreasers, food-grade tableware, cling film, and sanitary disposables.",
     },
     {
       id: "healthcare",
       title: "Hospitals & Clinics",
-      image: "/assets/industry-4.webp",
-      alt: "Clean modern hospital corridor and clinical environment",
+      image: "/images/warehouse-exterior.webp",
+      alt: "Healthcare facility logistics and medical supply distribution",
+      description:
+        "Hospital-grade disinfectants, color-coded medical waste bins, and certified PPE gloves.",
     },
     {
       id: "education",
       title: "Schools & Universities",
-      image: "/assets/industry-5.webp",
-      alt: "Modern educational institution and university building",
+      image: "/images/warehouse-interior.webp",
+      alt: "Educational institutional bulk cleaning supply warehousing",
+      description:
+        "High-traffic floor cleaning compounds, hand washing supplies, and indoor pedal bins.",
     },
     {
       id: "facility-mgmt",
       title: "Facility Management &\nMaintenance Companies",
-      image: "/assets/industry-6.webp",
-      alt: "Professional facility management and maintenance operations",
+      image: "/images/cat-plastic-drums.webp",
+      alt: "Heavy-duty industrial plastic drums and waste containers",
+      description:
+        "Heavy-duty outdoor waste containers (120G–1100G), pallets, and crowd safety barricades.",
     },
-  ] as IndustryItem[],
+  ],
 
   infrastructureFeatures: [
     "Large storage capacity for bulk inventory",
@@ -168,7 +233,12 @@ export const COMPANY_DATA = {
         "Strategically located warehouses with bulk storage, organized racking and efficient distribution across Riyadh.",
       image: "/assets/warehouse-exterior.webp",
       imageAlt: "Cleaning Care fully equipped warehouse facility exterior",
-      theme: "red" as const,
+      theme: "red",
+      features: [
+        "Bulk palletized liquid and chemical storage zones",
+        "High-density racking systems for rapid picking",
+        "Dedicated loading docks for fast KSA fleet dispatch",
+      ],
     },
     {
       num: "2",
@@ -177,20 +247,45 @@ export const COMPANY_DATA = {
         "Well-stocked retail outlets serving walk-in customers, contractors and small businesses with a wide range of cleaning and hygiene supplies.",
       image: "/assets/retail-store.webp",
       imageAlt: "Cleaning Care retail store in Riyadh",
-      theme: "white" as const,
+      theme: "white",
+      features: [
+        "Immediate pickup for contractors and facility managers",
+        "Sample testing for commercial cleaning formulations",
+        "Direct trade counter support for small business accounts",
+      ],
     },
   ],
 
   clients: [
     { name: "AL BAWANI", arabic: "البواني", colorClass: "client-green" },
     { name: "alfanar", arabic: "الفنار", colorClass: "client-blue" },
-    { name: "Hashem Contracting", arabic: "& Trading Corp.", colorClass: "" },
-    { name: "Mohammed Al-Deyabi Group", arabic: "مجموعة الذيابي", colorClass: "client-gold" },
-    { name: "FGC", arabic: "First Gulf Company", colorClass: "client-blue" },
-    { name: "STEPCO", arabic: "", colorClass: "client-blue" },
-    { name: "ABRAAJ", arabic: "", colorClass: "client-blue" },
-    { name: "Ali Al-Naama Factory Co.", arabic: "شركة مصنع علي النعمة", colorClass: "" },
-  ] as ClientItem[],
+    {
+      name: "Hashem Contracting",
+      arabic: "شركة هاشم للمقاولات والتجارة المساهمة",
+      colorClass: "",
+    },
+    {
+      name: "Mohammed Al-Deyabi Group",
+      arabic: "مجموعة الذيابي",
+      colorClass: "client-gold",
+    },
+    {
+      name: "FGC",
+      arabic: "First Gulf Company · الشركة الخليجية الأولى",
+      colorClass: "client-blue",
+    },
+    {
+      name: "STEPCO",
+      arabic: "شركة التوريدات والخدمات الفنية",
+      colorClass: "client-blue",
+    },
+    { name: "ABRAAJ", arabic: "أبراج", colorClass: "client-blue" },
+    {
+      name: "Ali Al-Naama Factory Co.",
+      arabic: "شركة مصنع علي النعمة",
+      colorClass: "",
+    },
+  ],
 
   highlightsStrip: [
     { title: "3 Warehouses", subtitle: "in Riyadh" },
@@ -198,5 +293,5 @@ export const COMPANY_DATA = {
     { title: "Wide Range", subtitle: "of Products" },
     { title: "Fast & Reliable", subtitle: "KSA Delivery" },
     { title: "Trusted", subtitle: "by Leading Companies" },
-  ] as HighlightItem[],
+  ],
 };

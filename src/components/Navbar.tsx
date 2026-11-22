@@ -43,11 +43,11 @@ export function Navbar() {
       <div className="container nav-wrap">
         <Link
           href="#home"
-          className="brand"
+          className="brand min-h-[44px] flex items-center"
           aria-label="Cleaning Care Trading Co. home"
           onClick={closeMenu}
         >
-          <BrandLogo variant="light" />
+          <BrandLogo variant="light" size="header" />
         </Link>
 
         <button

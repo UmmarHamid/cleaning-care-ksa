@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { BrandLogo } from "./BrandLogo";
 import { COMPANY_DATA } from "@/data/company";
+import { CATEGORIES } from "@/data/catalog";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -12,8 +13,12 @@ export function Footer() {
         <div className="footer-grid">
           {/* Col 1: Brand & Description */}
           <div className="footer-col footer-col-brand">
-            <Link className="brand brand-light" href="#home">
-              <BrandLogo variant="dark" />
+            <Link
+              className="brand brand-light min-h-[44px] flex items-center"
+              href="/#home"
+              aria-label="Cleaning Care Trading Co. home"
+            >
+              <BrandLogo variant="dark" size="footer" />
             </Link>
             <p className="footer-arabic-name" lang="ar" dir="rtl">
               {COMPANY_DATA.arabicName}
@@ -32,30 +37,14 @@ export function Footer() {
               <span className="footer-title-bar" aria-hidden="true" />
             </h3>
             <ul className="footer-links-list">
-              <li>
-                <Link href="#products">
-                  <span className="footer-chevron" aria-hidden="true">›</span>
-                  <span>Cleaning Materials</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="#products">
-                  <span className="footer-chevron" aria-hidden="true">›</span>
-                  <span>Hygiene &amp; Disposables</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="#products">
-                  <span className="footer-chevron" aria-hidden="true">›</span>
-                  <span>Plastic Drums &amp; Containers</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="#products">
-                  <span className="footer-chevron" aria-hidden="true">›</span>
-                  <span>Cleaning Equipment &amp; Safety</span>
-                </Link>
-              </li>
+              {CATEGORIES.map((cat) => (
+                <li key={cat.id}>
+                  <Link href="/products">
+                    <span className="footer-chevron" aria-hidden="true">›</span>
+                    <span>{cat.title}</span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -67,31 +56,31 @@ export function Footer() {
             </h3>
             <ul className="footer-links-list">
               <li>
-                <Link href="#home">
+                <Link href="/">
                   <span className="footer-chevron" aria-hidden="true">›</span>
                   <span>Home</span>
                 </Link>
               </li>
               <li>
-                <Link href="#about">
+                <Link href="/#about">
                   <span className="footer-chevron" aria-hidden="true">›</span>
                   <span>About Us</span>
                 </Link>
               </li>
               <li>
-                <Link href="#products">
+                <Link href="/products">
                   <span className="footer-chevron" aria-hidden="true">›</span>
                   <span>Products</span>
                 </Link>
               </li>
               <li>
-                <Link href="#infrastructure">
+                <Link href="/#infrastructure">
                   <span className="footer-chevron" aria-hidden="true">›</span>
                   <span>Infrastructure</span>
                 </Link>
               </li>
               <li>
-                <Link href="#contact">
+                <Link href="/#contact">
                   <span className="footer-chevron" aria-hidden="true">›</span>
                   <span>Contact Us</span>
                 </Link>
@@ -126,6 +115,15 @@ export function Footer() {
                     className="footer-val-link"
                   >
                     {COMPANY_DATA.phone}
+                  </a>
+                  <a
+                    href={`https://wa.me/${COMPANY_DATA.phoneRaw}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="footer-val-link text-emerald-400 hover:underline"
+                    style={{ color: "#34D399", fontSize: "11.5px", marginTop: "2px", display: "inline-block" }}
+                  >
+                    Direct WhatsApp Chat ↗
                   </a>
                 </div>
               </div>
