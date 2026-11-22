@@ -35,7 +35,7 @@ export const CATEGORIES: CategoryInfo[] = [
     title: 'Cleaning Materials',
     shortDescription:
       'Industrial & commercial grade cleaners, disinfectants, degreasers, floor care and detergents.',
-    image: '/images/cat-cleaning-materials.webp',
+    image: '/assets/images/product-section-product-1.jpg',
     imageAlt:
       'Commercial cleaning chemical containers and industrial solutions',
     itemCountLabel: '9 Product Lines',
@@ -45,7 +45,7 @@ export const CATEGORIES: CategoryInfo[] = [
     title: 'Hygiene & Disposables',
     shortDescription:
       'Paper towels, tissue rolls, heavy-duty garbage bags (10G–100G), tableware, PPE, soaps and sanitizers.',
-    image: '/images/cat-hygiene-disposables.webp',
+    image: '/assets/images/product-section-product-2.jpg',
     imageAlt:
       'Paper tissue rolls, commercial trash liners and hygiene supplies',
     itemCountLabel: '7 Product Lines',
@@ -55,7 +55,7 @@ export const CATEGORIES: CategoryInfo[] = [
     title: 'Plastic Drums & Containers',
     shortDescription:
       'Industrial waste bins, storage drums and wheeled containers in multiple capacities (10G–1100G).',
-    image: '/images/cat-plastic-drums.webp',
+    image: '/assets/images/product-section-product-3.jpg',
     imageAlt:
       'Commercial wheeled plastic waste containers and heavy-duty storage drums',
     itemCountLabel: '4 Product Lines',
@@ -65,7 +65,7 @@ export const CATEGORIES: CategoryInfo[] = [
     title: 'Cleaning Equipment & Safety',
     shortDescription:
       'Janitorial carts, wringer mops, traffic cones (50cm/75cm/1M), safety barricades, and plastic pallets.',
-    image: '/images/cat-equipment-safety.webp',
+    image: '/assets/images/product-section-product-4.jpg',
     imageAlt:
       'Janitorial cleaning equipment, microfiber cloths and road safety products',
     itemCountLabel: '9 Product Lines',

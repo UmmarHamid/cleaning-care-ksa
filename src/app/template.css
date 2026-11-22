@@ -291,7 +291,8 @@ main {
 .hero-photo {
   position: absolute;
   inset: 0;
-  background: url('/assets/hero-warehouse.webp') right 48% / cover no-repeat;
+  background: url('/assets/images/hero-section-banner.png') right 48% / cover
+    no-repeat;
   clip-path: polygon(
     calc(50% + 60px) 0,
     100% 0,
@@ -2861,7 +2862,8 @@ main {
     inset: auto;
     width: 100%;
     height: 230px;
-    background: url('/assets/hero-warehouse.webp') center 50% / cover no-repeat;
+    background: url('/assets/images/hero-section-banner.png') center 50% / cover
+      no-repeat;
     clip-path: none;
   }
   .hero-shade {
