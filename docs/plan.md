@@ -54,7 +54,7 @@ Copy these tickets directly into Linear under the project **`Cleaning Care KSA â
 - **Owner:** Frontend Dev 1
 - **Context Files:** `@GEMINI.md`, `@tech-specs.md`, `@design-system.md`
 - **Base Prompt for Antigravity / Gemini:**
-  > "Build the Home page hero and authority sections using `design-system.md`. Implement a 12-column split hero on `#1A1D20` dark charcoal featuring a Warm Gold eyebrow badge, bold `Plus Jakarta Sans` headline, dual CTAs (`'Explore Product Catalog'` in `#D32027` + `'WhatsApp Sales Desk'` outline), and the `hero-warehouse.webp` visual framed safely across `390px`, `768px`, and `1440px` viewports. Below the hero, add an overlapping 4-metric stats bar (3 Warehouses in Riyadh, 2 Retail Stores, 500+ Bulk SKUs, Fast KSA Dispatch) and a monochrome-to-color Enterprise Client Trust Strip featuring Al Bawani, Alfanar, Hashem Contracting, Mohammed Al-Deyabi Group, First Gulf Company, and Stepco."
+  > "Build the Home page hero and authority sections using `design-system.md`. Implement a 12-column split hero on `#1A1D20` dark charcoal featuring a Warm Gold eyebrow badge, bold `Plus Jakarta Sans` headline, dual CTAs (`'Explore Product Catalog'` in `#D32027` + `'WhatsApp Sales Desk'` outline), and the `hero-section-banner.png` visual framed safely across `390px`, `768px`, and `1440px` viewports. Below the hero, add an overlapping 4-metric stats bar (3 Warehouses in Riyadh, 2 Retail Stores, 500+ Bulk SKUs, Fast KSA Dispatch) and a monochrome-to-color Enterprise Client Trust Strip featuring Al Bawani, Alfanar, Hashem Contracting, Mohammed Al-Deyabi Group, First Gulf Company, and Stepco."
 
 ### `CC-5` [Feature] Interactive B2B Product Catalog & WhatsApp Bulk Quote Builder
 
@@ -86,5 +86,5 @@ Copy these tickets directly into Linear under the project **`Cleaning Care KSA â
 - **Owner:** Tech Lead
 - **Checklist:**
   > 1. Register approved `.com` domain.
-  > 2. Connect GitHub repo to Cloudflare Pages (`npm run build` -> `out/` directory) and attach custom domain + Auto SSL.
+  > 2. Connect GitHub repo to Cloudflare Pageyarn`yarn build` -> `out/` directory) and attach custom domain + Auto SSL.
   > 3. Provision Zoho Mail (up to 5 mailboxes: `info@`, `sales@`, `orders@`, `support@`, `admin@`) and configure `MX`, `SPF`, `DKIM`, and `DMARC` DNS records in Cloudflare.
