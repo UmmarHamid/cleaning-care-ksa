@@ -9,8 +9,8 @@ export function UtilityBar() {
         <a href={`tel:${COMPANY_DATA.phoneTel}`}>☎ {COMPANY_DATA.phone}</a>
         <span className="utility-vat">VAT: {COMPANY_DATA.vatNumber}</span>
         <span className="utility-spacer" />
-        <a href={`mailto:${COMPANY_DATA.emailLegacy}`}>
-          ✉ {COMPANY_DATA.emailLegacy}
+        <a href={`mailto:${COMPANY_DATA.emailSales}`}>
+          ✉ {COMPANY_DATA.emailSales}
         </a>
       </div>
     </div>

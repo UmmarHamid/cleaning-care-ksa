@@ -35,14 +35,15 @@ export interface InquiryData {
 export function buildWhatsAppInquiryUrl(data: InquiryData): string {
   const base = `https://wa.me/${COMPANY_DATA.phoneRaw}`;
   const lines = [
-    "Hello Cleaning Care Trading Co., I would like to request a bulk quote.",
-    `Company: ${data.company}`,
-    `Contact: ${data.person}`,
-    `Phone: ${data.phone}`,
-    `Email: ${data.email}`,
-    `Category: ${data.category}`,
-    `Estimated Volume: ${data.volume || "Not specified"}`,
-    `Details: ${data.details || "Not specified"}`,
+    "Hello Cleaning Care Trading Co., I would like to request an official B2B quotation.",
+    "",
+    `• Company: ${data.company || "Not specified"}`,
+    `• Contact Person: ${data.person || "Not specified"}`,
+    `• Phone: ${data.phone || "Not specified"}`,
+    `• Email: ${data.email || "Not specified"}`,
+    `• Product Division: ${data.category || "General Inquiry"}`,
+    `• Estimated Volume: ${data.volume || "Not specified"}`,
+    `• Requirements: ${data.details || "Standard wholesale catalog pricing"}`,
   ];
   return `${base}?text=${encodeURIComponent(lines.join("\n"))}`;
 }

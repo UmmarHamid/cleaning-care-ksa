@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { CATEGORIES } from "@/data/catalog";
+import { buildWhatsAppQuoteUrl } from "@/lib/whatsapp";
 
 function CategoryIcon({ id }: { id: string }) {
   if (id === "cleaning-materials") {
@@ -106,8 +107,8 @@ export function ProductsSection() {
 
         <div className="product-grid">
           {CATEGORIES.map((cat) => (
-            <article key={cat.id} className="product-card">
-              <Link className="product-image" href="#contact">
+            <article key={cat.id} className="product-card group">
+              <Link className="product-image" href="/products">
                 <Image
                   src={cat.image}
                   alt={cat.imageAlt}
@@ -122,12 +123,50 @@ export function ProductsSection() {
                   <h3>{cat.title}</h3>
                 </div>
                 <p>{cat.shortDescription}</p>
-                <Link href="#contact" className="text-link">
-                  View Products <span>→</span>
-                </Link>
+                <div className="mt-auto pt-3 flex items-center justify-between">
+                  <Link href="/products" className="text-link">
+                    View Products <span>→</span>
+                  </Link>
+                  {cat.itemCountLabel && (
+                    <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                      {cat.itemCountLabel}
+                    </span>
+                  )}
+                </div>
               </div>
             </article>
           ))}
+        </div>
+
+        {/* Homepage Catalog Action Strip */}
+        <div style={{ marginTop: "36px", background: "#FFFFFF", border: "1px solid #E2E8F0", borderRadius: "14px", padding: "20px 24px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "16px", boxShadow: "0 1px 3px rgba(15,23,42,0.04)" }}>
+          <div>
+            <h4 style={{ margin: "0 0 4px", fontFamily: "var(--heading)", fontSize: "16px", fontWeight: 700, color: "#0F172A" }}>
+              Looking for individual item specifications (10G–1100G) and instant capacity search?
+            </h4>
+            <p style={{ margin: 0, fontSize: "13.5px", color: "#64748B" }}>
+              Browse all 29+ wholesale items with live search, spec selectors, and pre-filled WhatsApp quotes.
+            </p>
+          </div>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            <Link
+              href="/products"
+              className="button button-red"
+              style={{ minHeight: "44px", padding: "10px 20px", fontSize: "13.5px" }}
+            >
+              <span>Explore Full Interactive Catalog</span>
+              <span aria-hidden="true">→</span>
+            </Link>
+            <a
+              href={buildWhatsAppQuoteUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="button button-whatsapp"
+              style={{ minHeight: "44px", padding: "10px 18px", fontSize: "13.5px" }}
+            >
+              <span>Inquire on WhatsApp</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
