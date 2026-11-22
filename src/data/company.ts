@@ -170,48 +170,48 @@ export const COMPANY_DATA: CompanyData = {
     {
       id: "contractors",
       title: "Cleaning Companies\n& Contractors",
-      image: "/assets/industry-1.webp",
-      alt: "Commercial janitorial cleaning operation with cleaning trolley and worker",
+      image: "/images/cat-cleaning-materials.webp",
+      alt: "Commercial janitorial cleaning chemicals and supplies",
       description:
         "Bulk chemicals, janitorial trolleys, and floor care machines for commercial cleaning contractors.",
     },
     {
       id: "offices",
       title: "Corporate Offices",
-      image: "/assets/industry-2.webp",
-      alt: "Modern professional corporate office interior",
+      image: "/images/cat-hygiene-disposables.webp",
+      alt: "Corporate restroom hygiene dispensers, hand soaps and paper disposables",
       description:
         "Restroom hygiene dispensers, hand soaps, sanitizers, and waste sorting systems.",
     },
     {
       id: "horeca",
       title: "Hotels & Restaurants\n(HORECA)",
-      image: "/assets/industry-3.webp",
-      alt: "Premium hotel and restaurant dining interior",
+      image: "/images/cat-equipment-safety.webp",
+      alt: "Commercial floor care equipment and safety supplies for hospitality",
       description:
         "Kitchen degreasers, food-grade tableware, cling film, and sanitary disposables.",
     },
     {
       id: "healthcare",
       title: "Hospitals & Clinics",
-      image: "/assets/industry-4.webp",
-      alt: "Clean modern hospital corridor and clinical environment",
+      image: "/images/warehouse-exterior.webp",
+      alt: "Healthcare facility logistics and medical supply distribution",
       description:
         "Hospital-grade disinfectants, color-coded medical waste bins, and certified PPE gloves.",
     },
     {
       id: "education",
       title: "Schools & Universities",
-      image: "/assets/industry-5.webp",
-      alt: "Modern educational institution and university building",
+      image: "/images/warehouse-interior.webp",
+      alt: "Educational institutional bulk cleaning supply warehousing",
       description:
         "High-traffic floor cleaning compounds, hand washing supplies, and indoor pedal bins.",
     },
     {
       id: "facility-mgmt",
       title: "Facility Management &\nMaintenance Companies",
-      image: "/assets/industry-6.webp",
-      alt: "Professional facility management and maintenance operations",
+      image: "/images/cat-plastic-drums.webp",
+      alt: "Heavy-duty industrial plastic drums and waste containers",
       description:
         "Heavy-duty outdoor waste containers (120G–1100G), pallets, and crowd safety barricades.",
     },

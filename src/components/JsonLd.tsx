@@ -11,7 +11,7 @@ export function JsonLd() {
     legalName: COMPANY_DATA.legalName,
     alternateName: COMPANY_DATA.arabicName,
     url: "https://cleaningcaretrading.com",
-    logo: "https://cleaningcaretrading.com/assets/category-1.webp",
+    logo: "https://cleaningcaretrading.com/assets/logo.svg",
     image: "https://cleaningcaretrading.com/assets/hero-warehouse.webp",
     description: COMPANY_DATA.shortDescription,
     telephone: COMPANY_DATA.phoneTel,

@@ -39,6 +39,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: "/assets/logo.svg",
+    apple: "/assets/logo.svg",
+  },
   openGraph: {
     title:
       "Cleaning Care Trading Co. | Industrial Hygiene & Wholesale Cleaning Supplies Riyadh",

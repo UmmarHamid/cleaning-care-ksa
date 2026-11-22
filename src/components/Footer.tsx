@@ -13,8 +13,12 @@ export function Footer() {
         <div className="footer-grid">
           {/* Col 1: Brand & Description */}
           <div className="footer-col footer-col-brand">
-            <Link className="brand brand-light" href="#home">
-              <BrandLogo variant="dark" />
+            <Link
+              className="brand brand-light min-h-[44px] flex items-center"
+              href="/#home"
+              aria-label="Cleaning Care Trading Co. home"
+            >
+              <BrandLogo variant="dark" size="footer" />
             </Link>
             <p className="footer-arabic-name" lang="ar" dir="rtl">
               {COMPANY_DATA.arabicName}
