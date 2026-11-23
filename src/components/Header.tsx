@@ -1,26 +1,20 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { BrandLogo } from './BrandLogo';
-import { COMPANY_DATA } from '@/data/company';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { BrandLogo } from "./BrandLogo";
+import { COMPANY_DATA } from "@/data/company";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState("home");
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
   const closeMenu = () => setIsOpen(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = [
-        'home',
-        'about',
-        'products',
-        'infrastructure',
-        'contact',
-      ];
+      const sections = ["home", "about", "products", "infrastructure", "contact"];
       const scrollPos = window.scrollY + 120;
 
       for (const section of sections) {
@@ -36,8 +30,8 @@ export function Header() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -54,9 +48,7 @@ export function Header() {
           >
             <span aria-hidden='true'>☎</span> {COMPANY_DATA.phone}
           </a>
-          <span className='utility-vat hidden sm:inline'>
-            VAT: {COMPANY_DATA.vatNumber}
-          </span>
+          <span className='utility-vat hidden sm:inline'>VAT: {COMPANY_DATA.vatNumber}</span>
           <span className='utility-spacer' />
           <a
             href={`mailto:${COMPANY_DATA.emailSales}`}
@@ -81,7 +73,7 @@ export function Header() {
 
           <button
             className='menu-toggle min-h-11 min-w-11'
-            aria-label={isOpen ? 'Close navigation' : 'Open navigation'}
+            aria-label={isOpen ? "Close navigation" : "Open navigation"}
             aria-expanded={isOpen}
             aria-controls='primary-nav'
             onClick={toggleMenu}
@@ -94,39 +86,39 @@ export function Header() {
 
           <nav
             id='primary-nav'
-            className={`primary-nav ${isOpen ? 'open' : ''}`}
+            className={`primary-nav ${isOpen ? "open" : ""}`}
             aria-label='Main Navigation'
           >
             <Link
-              className={`${activeSection === 'home' ? 'active' : ''} min-h-11 flex items-center`}
+              className={`${activeSection === "home" ? "active" : ""} min-h-11 flex items-center`}
               href='/#home'
               onClick={closeMenu}
             >
               Home
             </Link>
             <Link
-              className={`${activeSection === 'about' ? 'active' : ''} min-h-11 flex items-center`}
+              className={`${activeSection === "about" ? "active" : ""} min-h-11 flex items-center`}
               href='/#about'
               onClick={closeMenu}
             >
               About Us
             </Link>
             <Link
-              className={`${activeSection === 'products' ? 'active' : ''} min-h-11 flex items-center`}
+              className={`${activeSection === "products" ? "active" : ""} min-h-11 flex items-center`}
               href='/products'
               onClick={closeMenu}
             >
               Products
             </Link>
             <Link
-              className={`${activeSection === 'infrastructure' ? 'active' : ''} min-h-11 flex items-center`}
+              className={`${activeSection === "infrastructure" ? "active" : ""} min-h-11 flex items-center`}
               href='/#infrastructure'
               onClick={closeMenu}
             >
               Infrastructure
             </Link>
             <Link
-              className={`${activeSection === 'contact' ? 'active' : ''} min-h-11 flex items-center`}
+              className={`${activeSection === "contact" ? "active" : ""} min-h-11 flex items-center`}
               href='/#contact'
               onClick={closeMenu}
             >
