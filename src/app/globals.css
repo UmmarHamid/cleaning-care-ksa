@@ -1,14 +1,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
 @import "tailwindcss";
-@import "./template.css";
+
+@theme {
+  --color-brand-red: #D32027;
+  --color-brand-red-dark: #A8181E;
+  --color-brand-red-hover: #B0191F;
+  --color-brand-gold: #F2B705;
+  --color-brand-charcoal: #1A1D20;
+  
+  --color-slate-dark: #0F172A;
+  --color-slate-body: #334155;
+  --color-muted-gray: #64748B;
+  
+  --color-studio-gray: #F3F4F6;
+  --color-page-bg: #F8FAFC;
+  --color-border-subtle: #E2E8F0;
+  
+  --color-success: #16A34A;
+  --color-success-dark: #15803D;
+  --color-success-light: #F0FDF4;
+
+  --font-heading: "Plus Jakarta Sans", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  --text-2xs: 0.625rem;
+  --spacing-touch: 44px;
+
+  --breakpoint-mobile: 390px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-laptop: 1440px;
+
+  --shadow-card: 0 10px 28px rgba(15, 23, 42, 0.09);
+  --shadow-card-hover: 0 10px 20px -3px rgba(15, 23, 42, 0.08), 0 4px 8px -2px rgba(15, 23, 42, 0.03);
+  --shadow-stat: 0 14px 34px -4px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.03);
+  --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+}
 
 :root {
   --background: #ffffff;
   --foreground: #0F172A;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--body);
+  font-family: var(--font-body);
+  overflow-x: hidden;
 }

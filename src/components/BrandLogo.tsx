@@ -68,15 +68,7 @@ export function BrandLogo({
         width={resolvedWidth}
         height={resolvedHeight}
         priority={priority}
-        className='brand-logo-img object-contain transition-transform duration-200'
-        style={{
-          width: 'auto',
-          height: '100%',
-          maxHeight: '100%',
-          maxWidth: '100%',
-          objectFit: 'contain',
-          display: 'block',
-        }}
+        className='brand-logo-img w-auto h-full max-h-full max-w-full object-contain block transition-transform duration-200'
       />
     </span>
   );

@@ -1,84 +1,79 @@
-import React from 'react';
-import Image from 'next/image';
-import { COMPANY_DATA } from '@/data/company';
+import React from "react";
+import Image from "next/image";
+import { COMPANY_DATA } from "@/data/company";
+import { Check, Warehouse, Store } from "lucide-react";
 
 export function InfrastructureBento() {
   const { infrastructureFeatures, facilities } = COMPANY_DATA;
 
   return (
-    <section id='infrastructure' className='section infrastructure-section'>
-      <div className='container'>
+    <section id='infrastructure' className='py-16 bg-white'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         {/* Section Heading */}
-        <div className='section-heading infra-heading'>
-          <div className='heading-with-lines'>
-            <span className='heading-line' aria-hidden='true' />
-            <span className='infra-eyebrow'>OUR INFRASTRUCTURE</span>
-            <span className='heading-line' aria-hidden='true' />
+        <div className='text-center max-w-3xl mx-auto mb-12'>
+          <div className='flex items-center justify-center gap-3 sm:gap-4 mb-3'>
+            <span className='h-0.5 w-10 sm:w-14 bg-brand-red rounded-full' aria-hidden='true' />
+            <span className='text-brand-red font-heading font-extrabold text-xs sm:text-sm tracking-wider uppercase'>
+              OUR INFRASTRUCTURE
+            </span>
+            <span className='h-0.5 w-10 sm:w-14 bg-brand-red rounded-full' aria-hidden='true' />
           </div>
-          <h2>Strong Facilities for a Reliable Supply</h2>
-          <p className='section-intro'>
-            A well-established logistics and distribution network in Riyadh to
-            ensure consistent inventory, fast delivery and uninterrupted supply
-            for our customers across Saudi Arabia.
+          <h2 className='font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-dark tracking-tight leading-tight mb-3'>
+            Strong Facilities for a Reliable Supply
+          </h2>
+          <p className='font-body text-slate-body text-sm sm:text-base leading-relaxed'>
+            A well-established logistics and distribution network in Riyadh to ensure consistent
+            inventory, fast delivery and uninterrupted supply for our customers across Saudi Arabia.
           </p>
         </div>
 
         {/* Main Bento Hero Card */}
-        <div className='infra-main-grid'>
-          <div className='infra-warehouse-photo relative overflow-hidden'>
+        <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch mb-10'>
+          <div className='lg:col-span-7 relative rounded-2xl lg:rounded-r-none overflow-hidden min-h-[360px] sm:min-h-[440px] h-full shadow-card'>
             <Image
               src='/assets/images/our-infrastructure-warehouse-interior.png'
               alt='Organized warehouse interior with inventory and high pallet racking in Riyadh'
               fill
-              className='object-cover'
+              className='object-cover object-center'
               unoptimized
             />
             <svg
-              className='infra-curve'
+              className='hidden lg:block absolute right-0 top-0 bottom-0 w-[88px] h-full pointer-events-none z-10'
               viewBox='0 0 100 500'
               preserveAspectRatio='none'
               aria-hidden='true'
             >
+              <path d='M 100,0 L 52,0 C 92,150 80,320 5,500 L 100,500 Z' fill='#FFFFFF' />
               <path
-                className='infra-curve-mask'
-                d='M 100,0 L 52,0 C 92,150 80,320 5,500 L 100,500 Z'
-                fill='#FFFFFF'
-              />
-              <path
-                className='infra-curve-stroke'
+                className='stroke-brand-red'
                 d='M 52,0 C 92,150 80,320 5,500'
                 fill='none'
-                stroke='#D32027'
                 strokeWidth='14'
                 strokeLinecap='round'
               />
             </svg>
           </div>
 
-          <div className='infra-features-panel'>
-            <h3>
-              Warehouse &amp;{' '}
-              <span className='highlight-red'>Distribution Facilities</span>
+          <div className='lg:col-span-5 flex flex-col justify-center min-w-0'>
+            <h3 className='font-heading font-extrabold text-xl sm:text-2xl lg:text-3xl text-slate-dark tracking-tight mb-3'>
+              Warehouse &amp; <span className='text-brand-red'>Distribution Facilities</span>
             </h3>
-            <p>
-              Our company operates a well-organized wholesale warehouse and
-              storage facility designed to maintain a large inventory of
-              cleaning products, materials, plastics and hygiene supplies.
+            <p className='font-body text-slate-body text-sm sm:text-base leading-relaxed mb-6'>
+              Our company operates a well-organized wholesale warehouse and storage facility
+              designed to maintain a large inventory of cleaning products, materials, plastics and
+              hygiene supplies.
             </p>
-            <div className='infra-feature-list'>
+            <div className='flex flex-col gap-2.5'>
               {infrastructureFeatures.map((feat, idx) => (
-                <div key={idx} className='infra-feature-row'>
-                  <span className='infra-feature-icon' aria-hidden='true'>
-                    <svg
-                      viewBox='0 0 24 24'
-                      fill='none'
-                      stroke='currentColor'
-                      strokeWidth='2'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    >
-                      <polyline points='20 6 9 17 4 12' />
-                    </svg>
+                <div
+                  key={idx}
+                  className='flex items-center gap-3 p-3 sm:p-3.5 bg-page-bg border border-border-subtle rounded-xl text-xs sm:text-sm font-semibold text-slate-dark shadow-subtle hover:translate-x-1 hover:border-slate-300 transition-all'
+                >
+                  <span
+                    className='w-5 h-5 text-brand-red shrink-0 flex items-center justify-center'
+                    aria-hidden='true'
+                  >
+                    <Check className='w-4 h-4' />
                   </span>
                   <span>{feat}</span>
                 </div>
@@ -88,73 +83,64 @@ export function InfrastructureBento() {
         </div>
 
         {/* 2-Card Facility Bento Strip */}
-        <div className='facility-cards-grid mt-6'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
           {/* Warehouse Card */}
-          <div className='facility-card facility-card-red'>
-            <div className='facility-card-body'>
-              <div className='facility-stat-top'>
-                <span className='facility-stat-num'>{facilities[0].num}</span>
-                <span className='facility-stat-icon-wrap' aria-hidden='true'>
-                  <svg
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  >
-                    <path d='M3 21V9.5L12 3l9 6.5V21H3z' />
-                    <path d='M9 21v-6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6' />
-                    <rect x='10' y='9' width='4' height='3' />
-                  </svg>
-                </span>
+          <div className='grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-6 items-center p-6 sm:p-7 rounded-2xl bg-gradient-to-br from-brand-red to-brand-red-dark text-white shadow-card'>
+            <div className='sm:col-span-6 flex flex-col'>
+              <div className='flex items-start mb-2 gap-4'>
+                <Warehouse size={64} className='shrink-0' />
+                <div className='flex flex-col gap-0.5'>
+                  <span className='font-heading font-extrabold text-5xl text-brand-gold leading-none'>
+                    {facilities[0].num}
+                  </span>
+
+                  <h3 className='font-heading font-bold text-lg text-white mb-1.5'>
+                    {facilities[0].title}
+                  </h3>
+                </div>
               </div>
-              <h3>{facilities[0].title}</h3>
-              <p>{facilities[0].description}</p>
+              <hr className='border-t border-gray-300 mb-4' />
+              <p className='font-body text-white/90 text-xs sm:text-sm leading-relaxed'>
+                {facilities[0].description}
+              </p>
             </div>
-            <div className='facility-card-img'>
+            <div className='sm:col-span-6 relative w-full h-40 sm:h-44 rounded-xl overflow-hidden shadow-subtle'>
               <Image
                 src={facilities[0].image}
                 alt={facilities[0].imageAlt}
-                width={280}
-                height={200}
-                className='object-cover rounded-lg'
+                fill
+                className='object-cover'
                 unoptimized
               />
             </div>
           </div>
 
           {/* Retail Store Card */}
-          <div className='facility-card facility-card-white'>
-            <div className='facility-card-body'>
-              <div className='facility-stat-top'>
-                <span className='facility-stat-num'>{facilities[1].num}</span>
-                <span className='facility-stat-icon-wrap' aria-hidden='true'>
-                  <svg
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  >
-                    <path d='m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7' />
-                    <path d='M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8' />
-                    <path d='M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4' />
-                    <path d='M2 7h20' />
-                  </svg>
-                </span>
+          <div className='grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-6 items-center p-6 sm:p-7 rounded-2xl bg-white border border-border-subtle text-slate-dark shadow-subtle hover:shadow-card transition-all'>
+            <div className='sm:col-span-6 flex flex-col'>
+              <div className='flex items-start mb-2 gap-4'>
+                <Store size={64} className='text-brand-red shrink-0' />
+                <div className='flex flex-col gap-0.5'>
+                  <span className='font-heading font-extrabold text-5xl text-brand-gold leading-none'>
+                    {facilities[1].num}
+                  </span>
+
+                  <h3 className='font-heading font-bold text-lg text-slate-dark mb-1.5'>
+                    {facilities[1].title}
+                  </h3>
+                </div>
               </div>
-              <h3>{facilities[1].title}</h3>
-              <p>{facilities[1].description}</p>
+              <hr className='border-t border-gray-300 mb-4' />
+              <p className='font-body text-slate-body text-xs sm:text-sm leading-relaxed'>
+                {facilities[1].description}
+              </p>
             </div>
-            <div className='facility-card-img'>
+            <div className='sm:col-span-6 relative w-full h-40 sm:h-44 rounded-xl overflow-hidden shadow-subtle'>
               <Image
                 src={facilities[1].image}
                 alt={facilities[1].imageAlt}
-                width={280}
-                height={200}
-                className='object-cover rounded-lg'
+                fill
+                className='object-cover'
                 unoptimized
               />
             </div>

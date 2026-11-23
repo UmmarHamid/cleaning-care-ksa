@@ -1,83 +1,86 @@
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { COMPANY_DATA } from '@/data/company';
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { COMPANY_DATA } from "@/data/company";
+import { Warehouse, Store, ArrowRight } from "lucide-react";
 
 export function InfraBanner() {
   return (
-    <section
-      id='infrastructure-banner'
-      className='section infra-banner-section'
-    >
-      <div className='container'>
-        <div className='infra-banner'>
-          <div className='infra-panel'>
-            <h2>Our Infrastructure in Riyadh</h2>
-            <p>
-              A strong logistics and distribution setup to ensure consistent
-              supply, fast delivery, and reliable service across the Kingdom.
+    <section id='infrastructure-banner' className='py-8 sm:py-12 bg-white'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <div className='relative grid grid-cols-1 lg:grid-cols-12 bg-gradient-to-br from-brand-red-dark to-brand-red rounded-2xl overflow-hidden shadow-card items-stretch'>
+          {/* Left Content Panel */}
+          <div className='lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-center z-10 text-white'>
+            <h2 className='font-heading font-extrabold text-xl sm:text-2xl lg:text-3xl text-white tracking-tight leading-tight mb-2 max-w-sm'>
+              Our Infrastructure in Riyadh
+            </h2>
+            <p className='font-body text-white/90 text-md leading-relaxed mb-6 max-w-sm'>
+              A strong logistics and distribution setup to ensure consistent supply, fast delivery,
+              and reliable service across the Kingdom.
             </p>
-            <Link href='#infrastructure' className='button button-infra-white'>
-              Explore Our Infrastructure <span>→</span>
-            </Link>
+            <div>
+              <Link
+                href='#infrastructure'
+                className='inline-flex items-center gap-2 bg-white hover:bg-page-bg text-brand-red hover:text-brand-red-dark font-heading font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-subtle min-h-touch w-fit transition-all hover:-translate-y-0.5 group'
+              >
+                <span>Explore Our Infrastructure</span>
+                <ArrowRight
+                  className='w-4 h-4 group-hover:translate-x-1 transition-transform'
+                  aria-hidden='true'
+                />
+              </Link>
+            </div>
           </div>
-          <div className='infra-visual'>
+
+          {/* Right Visual Image */}
+          <div className='lg:col-span-7 relative w-full h-56 sm:h-72 lg:h-full min-h-[220px] overflow-hidden [clip-path:none] lg:[clip-path:polygon(7%_0,100%_0,100%_100%,0%_100%)]'>
             <Image
               src='/assets/images/our-infrastructure-warehouse-interior.png'
               alt='Clean, organized Cleaning Care logistics warehouse in Riyadh with tall pallet racks'
               fill
-              className='object-cover'
+              className='object-cover object-center'
               unoptimized
             />
-            <div className='infra-diagonal-strip' aria-hidden='true' />
+            {/* Gold diagonal accent line on desktop */}
+            <div
+              className='hidden lg:block absolute -top-[15%] -bottom-[15%] left-[2.2%] w-2 bg-brand-gold -skew-x-[7.5deg] z-10 shadow-md'
+              aria-hidden='true'
+            />
           </div>
-          <div className='infra-stat-card'>
-            <div className='infra-stat-row'>
-              <span className='infra-stat-icon' aria-hidden='true'>
-                <svg
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                >
-                  <path d='M3 21V9.5L12 3l9 6.5V21H3z' />
-                  <path d='M9 21v-6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6' />
-                  <rect x='10' y='9' width='4' height='3' />
-                </svg>
+
+          {/* Stat Overlay Card */}
+          <div className='relative lg:absolute lg:top-1/2 lg:left-[48.5%] lg:-translate-x-1/2 lg:-translate-y-1/2 m-4 lg:m-0 bg-white rounded-xl p-3 sm:p-3.5 shadow-stat z-20 flex flex-row lg:flex-col justify-around lg:justify-center items-center lg:items-stretch gap-3 border border-border-subtle lg:w-52'>
+            <div className='flex items-center gap-2.5'>
+              <span
+                className='text-brand-red flex items-center justify-center shrink-0'
+                aria-hidden='true'
+              >
+                <Warehouse size={40} />
               </span>
-              <div className='infra-stat-info'>
-                <strong className='infra-stat-num'>
+              <div className='flex flex-col min-w-0'>
+                <strong className='font-heading font-extrabold text-4xl leading-tight text-slate-dark'>
                   {COMPANY_DATA.stats[0].metric}
                 </strong>
-                <span className='infra-stat-label'>
+                <span className='font-body font-semibold text-sm  text-muted-gray leading-tight'>
                   Fully Equipped Warehouses
                 </span>
               </div>
             </div>
-            <div className='infra-stat-divider' aria-hidden='true' />
-            <div className='infra-stat-row'>
-              <span className='infra-stat-icon' aria-hidden='true'>
-                <svg
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                >
-                  <path d='m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7' />
-                  <path d='M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8' />
-                  <path d='M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4' />
-                  <path d='M2 7h20' />
-                </svg>
+
+            <div className='h-8 w-px lg:h-px lg:w-full bg-border-subtle' aria-hidden='true' />
+
+            <div className='flex items-center gap-2.5'>
+              <span
+                className='text-brand-red flex items-center justify-center shrink-0'
+                aria-hidden='true'
+              >
+                <Store size={40} />
               </span>
-              <div className='infra-stat-info'>
-                <strong className='infra-stat-num'>
+              <div className='flex flex-col min-w-0'>
+                <strong className='font-heading font-extrabold text-4xl leading-tight text-slate-dark'>
                   {COMPANY_DATA.stats[1].metric}
                 </strong>
-                <span className='infra-stat-label'>
+                <span className='font-body font-semibold text-sm text-muted-gray leading-tight'>
                   Retail Stores in Riyadh
                 </span>
               </div>
