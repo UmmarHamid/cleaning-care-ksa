@@ -86,5 +86,5 @@ Copy these tickets directly into Linear under the project **`Cleaning Care KSA â
 - **Owner:** Tech Lead
 - **Checklist:**
   > 1. Register approved `.com` domain.
-  > 2. Connect GitHub repo to Cloudflare Pageyarn`yarn build` -> `out/` directory) and attach custom domain + Auto SSL.
+  > 2. Connect GitHub repo to Cloudflare Pages (`pnpm build` -> `out/` directory) and attach custom domain + Auto SSL.
   > 3. Provision Zoho Mail (up to 5 mailboxes: `info@`, `sales@`, `orders@`, `support@`, `admin@`) and configure `MX`, `SPF`, `DKIM`, and `DMARC` DNS records in Cloudflare.
