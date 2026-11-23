@@ -1,9 +1,18 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { CATEGORIES, PRODUCTS, CategoryId } from '@/data/catalog';
+import Image from 'next/image';
+import { DIVISIONS, PRODUCTS, CategoryId } from '@/data/catalog';
 import { ProductCard } from '@/components/ProductCard';
 import { buildWhatsAppQuoteUrl } from '@/lib/whatsapp';
+import {
+  Search,
+  X,
+  CheckCircle2,
+  ArrowRight,
+  MessageCircle,
+  FileSpreadsheet,
+} from 'lucide-react';
 
 interface ProductCatalogProps {
   initialCategory?: CategoryId | 'all';
@@ -19,23 +28,25 @@ export function ProductCatalog({
   );
   const [searchQuery, setSearchQuery] = useState<string>('');
 
+  // Active division details if a single division is chosen
+  const activeDivision = useMemo(() => {
+    if (selectedCategory === 'all') return null;
+    return DIVISIONS.find((d) => d.id === selectedCategory) || null;
+  }, [selectedCategory]);
+
   // Filter products based on active category and instant search query
   const filteredProducts = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
 
     return PRODUCTS.filter((product) => {
-      // Category filter match
       const matchesCategory =
         selectedCategory === 'all' || product.category === selectedCategory;
       if (!matchesCategory) return false;
 
-      // Keyword / Spec / Capacity instant search match
       if (!query) return true;
 
       const matchesName = product.name.toLowerCase().includes(query);
-      const matchesDesc = product.shortDescription
-        .toLowerCase()
-        .includes(query);
+      const matchesDesc = product.shortDescription.toLowerCase().includes(query);
       const matchesPackaging =
         product.packagingNote?.toLowerCase().includes(query) ?? false;
       const matchesSpecs = product.specifications.some((spec) =>
@@ -46,13 +57,13 @@ export function ProductCatalog({
     });
   }, [selectedCategory, searchQuery]);
 
-  // Compute SKU count for each category
-  const categoryCounts = useMemo(() => {
+  // Compute SKU count for each division
+  const divisionCounts = useMemo(() => {
     const counts: Record<string, number> = {
       all: PRODUCTS.length,
     };
-    for (const cat of CATEGORIES) {
-      counts[cat.id] = PRODUCTS.filter((p) => p.category === cat.id).length;
+    for (const div of DIVISIONS) {
+      counts[div.id] = div.subCategories.length;
     }
     return counts;
   }, []);
@@ -63,284 +74,133 @@ export function ProductCatalog({
   };
 
   return (
-    <section
-      id='products-catalog'
-      className='section'
-      style={{
-        background: '#F8FAFC',
-        paddingTop: '48px',
-        paddingBottom: '64px',
-      }}
-    >
-      <div className='container'>
+    <section id='products-catalog' className='py-12 sm:py-16 bg-page-bg'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         {/* Section Heading (if enabled) */}
         {showHeader && (
-          <div className='section-heading product-heading'>
-            <div className='heading-with-lines'>
-              <span className='heading-line' aria-hidden='true' />
-              <h2>Wholesale B2B Product Catalog</h2>
-              <span className='heading-line' aria-hidden='true' />
+          <div className='text-center max-w-3xl mx-auto mb-10'>
+            <div className='flex items-center justify-center gap-3 mb-3'>
+              <span className='h-0.5 w-12 bg-brand-red rounded-full' aria-hidden='true' />
+              <span className='text-brand-red font-heading font-extrabold text-xs sm:text-sm tracking-wider uppercase'>
+                PROCUREMENT CATALOG
+              </span>
+              <span className='h-0.5 w-12 bg-brand-red rounded-full' aria-hidden='true' />
             </div>
-            <p className='product-subtitle'>
-              Browse over 29 commercial supply lines across all 4 divisions.
-              Real-time Riyadh stock ready for immediate commercial dispatch.
+            <h2 className='font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-dark tracking-tight leading-tight mb-3'>
+              Wholesale B2B Product Catalog
+            </h2>
+            <p className='font-body text-slate-body text-sm sm:text-base leading-relaxed'>
+              Browse all 4 core divisions and sub-categories. Immediate bulk warehouse supply across Saudi Arabia.
             </p>
           </div>
         )}
 
         {/* Search & Filter Toolbar Container */}
-        <div
-          style={{
-            background: '#FFFFFF',
-            border: '1px solid #E2E8F0',
-            borderRadius: '16px',
-            padding: '18px 20px',
-            marginBottom: '24px',
-            boxShadow: '0 1px 3px rgba(15,23,42,0.04)',
-          }}
-        >
+        <div className='bg-white border border-border-subtle rounded-2xl p-4 sm:p-6 mb-8 shadow-card'>
           {/* Search Row */}
-          <div
-            style={{
-              position: 'relative',
-              width: '100%',
-              marginBottom: '14px',
-            }}
-          >
-            <span
-              style={{
-                position: 'absolute',
-                left: '14px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                color: '#94A3B8',
-                pointerEvents: 'none',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <svg
-                width='18'
-                height='18'
-                fill='none'
-                viewBox='0 0 24 24'
-                stroke='currentColor'
-                strokeWidth='2'
-                aria-hidden='true'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
-                />
-              </svg>
+          <div className='relative w-full mb-3.5'>
+            <span className='absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none flex items-center'>
+              <Search className='w-4.5 h-4.5' aria-hidden='true' />
             </span>
             <input
               type='text'
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder='Instant search by product name, specification (e.g. 1100G, 240L, 75cm, 100G, 5L Can)...'
-              style={{
-                width: '100%',
-                paddingLeft: '42px',
-                paddingRight: searchQuery ? '40px' : '16px',
-                height: '46px',
-                fontSize: '14px',
-                color: '#0F172A',
-                background: '#F8FAFC',
-                border: '1.5px solid #E2E8F0',
-                borderRadius: '10px',
-                outline: 'none',
-                fontFamily: 'var(--body)',
-                boxSizing: 'border-box',
-              }}
+              placeholder='Instant search by name, capacity, or gauge (e.g. 1100G, 240L, 75cm, 100G, 5L Jerrycan, Maxi roll)...'
+              className='w-full pl-11 pr-10 h-11 text-sm text-slate-dark bg-page-bg border border-border-subtle rounded-lg outline-none font-body focus:border-brand-red focus:bg-white focus:ring-1 focus:ring-brand-red transition-all'
               aria-label='Search wholesale products'
             />
             {searchQuery && (
               <button
                 type='button'
                 onClick={() => setSearchQuery('')}
-                style={{
-                  position: 'absolute',
-                  right: '10px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  border: 'none',
-                  background: 'transparent',
-                  color: '#94A3B8',
-                  cursor: 'pointer',
-                  padding: '6px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
+                className='absolute right-2.5 top-1/2 -translate-y-1/2 border-none bg-transparent text-slate-400 hover:text-slate-600 cursor-pointer p-1.5 flex items-center justify-center'
                 aria-label='Clear search'
               >
-                <svg
-                  width='16'
-                  height='16'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M6 18L18 6M6 6l12 12'
-                  />
-                </svg>
+                <X className='w-4 h-4' />
               </button>
             )}
           </div>
 
           {/* Quick Search Chips */}
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              gap: '8px',
-              marginBottom: '16px',
-              fontSize: '12px',
-              color: '#64748B',
-            }}
-          >
-            <span style={{ fontWeight: 600 }}>Popular Searches:</span>
+          <div className='flex flex-wrap items-center gap-2 mb-4 text-xs text-muted-gray'>
+            <span className='font-semibold'>Popular Specifications:</span>
             {[
               '1100G',
               '240L',
               '75cm',
               '100G',
-              '5L Can',
+              '5L Jerrycan',
               'Maxi Roll',
               'Degreaser',
               'Safety Cones',
-            ].map((term) => (
-              <button
-                key={term}
-                type='button'
-                onClick={() => setSearchQuery(term)}
-                style={{
-                  border: '1px solid #E2E8F0',
-                  borderRadius: '6px',
-                  padding: '6px 12px',
-                  background:
-                    searchQuery.toLowerCase() === term.toLowerCase()
-                      ? '#D32027'
-                      : '#F1F5F9',
-                  color:
-                    searchQuery.toLowerCase() === term.toLowerCase()
-                      ? '#FFFFFF'
-                      : '#334155',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                  minHeight: '36px',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                }}
-                className='min-h-[36px] sm:min-h-[36px]'
-              >
-                {term}
-              </button>
-            ))}
+              'Nitrile',
+            ].map((term) => {
+              const isTermActive = searchQuery.toLowerCase() === term.toLowerCase();
+              return (
+                <button
+                  key={term}
+                  type='button'
+                  onClick={() => setSearchQuery(term)}
+                  className={`min-h-9 px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer transition-all inline-flex items-center ${
+                    isTermActive
+                      ? 'bg-brand-red text-white shadow-xs'
+                      : 'bg-page-bg hover:bg-slate-100 text-slate-body border border-border-subtle'
+                  }`}
+                >
+                  {term}
+                </button>
+              );
+            })}
           </div>
 
-          {/* Category Tabs (Touch scroll on mobile) */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              overflowX: 'auto',
-              paddingBottom: '4px',
-            }}
-          >
-            {/* All Products Tab */}
+          {/* Division Filter Tabs (Horizontal scroll on mobile) */}
+          <div className='flex items-center gap-2 overflow-x-auto pb-1'>
+            {/* All Divisions Tab */}
             <button
               type='button'
               onClick={() => setSelectedCategory('all')}
-              style={{
-                flexShrink: 0,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 18px',
-                borderRadius: '8px',
-                fontSize: '13px',
-                fontWeight: 650,
-                cursor: 'pointer',
-                minHeight: '44px',
-                border:
-                  selectedCategory === 'all'
-                    ? '1px solid #D32027'
-                    : '1px solid #E2E8F0',
-                background: selectedCategory === 'all' ? '#D32027' : '#F8FAFC',
-                color: selectedCategory === 'all' ? '#FFFFFF' : '#334155',
-                transition: 'all 0.15s ease',
-              }}
+              className={`shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs sm:text-sm font-semibold cursor-pointer min-h-touch transition-all ${
+                selectedCategory === 'all'
+                  ? 'bg-brand-red text-white shadow-subtle'
+                  : 'bg-page-bg hover:bg-slate-100 text-slate-body border border-border-subtle'
+              }`}
             >
-              <span>All Products</span>
+              <span>All Divisions</span>
               <span
-                style={{
-                  fontSize: '11px',
-                  padding: '2px 7px',
-                  borderRadius: '12px',
-                  fontWeight: 700,
-                  background:
-                    selectedCategory === 'all'
-                      ? 'rgba(255,255,255,0.25)'
-                      : '#E2E8F0',
-                  color: selectedCategory === 'all' ? '#FFFFFF' : '#475569',
-                }}
+                className={`text-2xs px-2 py-0.5 rounded-full font-bold ${
+                  selectedCategory === 'all'
+                    ? 'bg-white/25 text-white'
+                    : 'bg-slate-200 text-slate-600'
+                }`}
               >
-                {categoryCounts.all}
+                {divisionCounts.all}
               </span>
             </button>
 
-            {/* Division Tabs */}
-            {CATEGORIES.map((cat) => {
-              const isActive = selectedCategory === cat.id;
+            {/* Individual Division Tabs */}
+            {DIVISIONS.map((div) => {
+              const isActive = selectedCategory === div.id;
               return (
                 <button
-                  key={cat.id}
+                  key={div.id}
                   type='button'
-                  onClick={() => setSelectedCategory(cat.id)}
-                  style={{
-                    flexShrink: 0,
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '10px 18px',
-                    borderRadius: '8px',
-                    fontSize: '13px',
-                    fontWeight: 650,
-                    cursor: 'pointer',
-                    minHeight: '44px',
-                    border: isActive
-                      ? '1px solid #D32027'
-                      : '1px solid #E2E8F0',
-                    background: isActive ? '#D32027' : '#F8FAFC',
-                    color: isActive ? '#FFFFFF' : '#334155',
-                    transition: 'all 0.15s ease',
-                  }}
+                  onClick={() => setSelectedCategory(div.id)}
+                  className={`shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs sm:text-sm font-semibold cursor-pointer min-h-touch transition-all ${
+                    isActive
+                      ? 'bg-brand-red text-white shadow-subtle'
+                      : 'bg-page-bg hover:bg-slate-100 text-slate-body border border-border-subtle'
+                  }`}
                 >
-                  <span>{cat.title}</span>
+                  <span>{div.title}</span>
                   <span
-                    style={{
-                      fontSize: '11px',
-                      padding: '2px 7px',
-                      borderRadius: '12px',
-                      fontWeight: 700,
-                      background: isActive
-                        ? 'rgba(255,255,255,0.25)'
-                        : '#E2E8F0',
-                      color: isActive ? '#FFFFFF' : '#475569',
-                    }}
+                    className={`text-2xs px-2 py-0.5 rounded-full font-bold ${
+                      isActive
+                        ? 'bg-white/25 text-white'
+                        : 'bg-slate-200 text-slate-600'
+                    }`}
                   >
-                    {categoryCounts[cat.id]}
+                    {divisionCounts[div.id]}
                   </span>
                 </button>
               );
@@ -348,36 +208,71 @@ export function ProductCatalog({
           </div>
         </div>
 
+        {/* Active Division Feature Banner (if a single division is chosen) */}
+        {activeDivision && (
+          <div className='mb-8 rounded-2xl bg-gradient-to-br from-brand-charcoal to-slate-dark text-white p-6 sm:p-8 border border-slate-700 shadow-card flex flex-col lg:flex-row items-center justify-between gap-6'>
+            <div className='flex flex-col sm:flex-row items-center sm:items-start gap-6 max-w-3xl'>
+              <div className='w-28 h-28 sm:w-32 sm:h-32 rounded-xl bg-white/10 p-2 shrink-0 flex items-center justify-center overflow-hidden'>
+                <Image
+                  src={activeDivision.image}
+                  alt={activeDivision.imageAlt}
+                  width={140}
+                  height={140}
+                  className='object-contain w-full h-full'
+                  unoptimized
+                />
+              </div>
+              <div className='text-center sm:text-left'>
+                <span className='inline-block text-2xs font-bold uppercase tracking-wider text-brand-gold bg-brand-gold/15 px-2.5 py-1 rounded mb-2'>
+                  {activeDivision.subtitle}
+                </span>
+                <h3 className='font-heading font-extrabold text-xl sm:text-2xl text-white mb-2'>
+                  {activeDivision.title}
+                </h3>
+                <p className='text-xs sm:text-sm text-slate-300 leading-relaxed mb-4'>
+                  {activeDivision.shortDescription}
+                </p>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 text-2xs sm:text-xs text-slate-200'>
+                  {activeDivision.wholesaleHighlights.map((hl, i) => (
+                    <div key={i} className='flex items-center gap-1.5'>
+                      <CheckCircle2 className='w-3.5 h-3.5 text-brand-gold shrink-0' />
+                      <span>{hl}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className='shrink-0 w-full lg:w-auto flex flex-col sm:flex-row lg:flex-col gap-2.5'>
+              <a
+                href={buildWhatsAppQuoteUrl(
+                  `Wholesale Tender Inquiry: ${activeDivision.title}`,
+                )}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-xs sm:text-sm rounded-lg shadow-subtle min-h-touch transition-all'
+              >
+                <MessageCircle className='w-4 h-4' />
+                <span>Request Division Tender</span>
+              </a>
+            </div>
+          </div>
+        )}
+
         {/* Results Metadata Bar */}
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '12px',
-            marginBottom: '18px',
-          }}
-        >
-          <p
-            style={{
-              margin: 0,
-              fontSize: '13.5px',
-              color: '#475569',
-              fontWeight: 500,
-            }}
-          >
+        <div className='flex flex-wrap items-center justify-between gap-3 mb-6'>
+          <p className='text-sm text-slate-600 font-medium'>
             Showing{' '}
-            <strong style={{ color: '#0F172A', fontWeight: 700 }}>
+            <strong className='text-slate-dark font-bold'>
               {filteredProducts.length}
             </strong>{' '}
-            {filteredProducts.length === 1 ? 'product' : 'products'}
+            {filteredProducts.length === 1 ? 'sub-category' : 'sub-categories'}
             {selectedCategory !== 'all' && (
               <span>
                 {' '}
                 in{' '}
-                <span style={{ color: '#D32027', fontWeight: 650 }}>
-                  {CATEGORIES.find((c) => c.id === selectedCategory)?.title}
+                <span className='text-brand-red font-semibold'>
+                  {DIVISIONS.find((c) => c.id === selectedCategory)?.title}
                 </span>
               </span>
             )}
@@ -385,7 +280,7 @@ export function ProductCatalog({
               <span>
                 {' '}
                 matching &ldquo;
-                <strong style={{ color: '#0F172A' }}>{searchQuery}</strong>
+                <strong className='text-slate-dark'>{searchQuery}</strong>
                 &rdquo;
               </span>
             )}
@@ -395,27 +290,16 @@ export function ProductCatalog({
             <button
               type='button'
               onClick={handleClearFilters}
-              style={{
-                border: 'none',
-                background: 'transparent',
-                color: '#D32027',
-                fontSize: '12.5px',
-                fontWeight: 650,
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                padding: '4px 8px',
-              }}
+              className='border-none bg-transparent text-brand-red hover:text-brand-red-dark text-xs font-semibold cursor-pointer inline-flex items-center gap-1.5 p-1'
             >
               <span>✕ Reset Filters</span>
             </button>
           )}
         </div>
 
-        {/* Products Grid — 4 Columns on Laptop, 2 on Tablet, 1 on Mobile */}
+        {/* Sub-Categories Grid */}
         {filteredProducts.length > 0 ? (
-          <div className='catalog-grid'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
             {filteredProducts.map((product, index) => (
               <ProductCard
                 key={product.id}
@@ -426,151 +310,59 @@ export function ProductCatalog({
           </div>
         ) : (
           /* Empty Search State */
-          <div
-            style={{
-              background: '#FFFFFF',
-              border: '1px solid #E2E8F0',
-              borderRadius: '18px',
-              padding: '48px 24px',
-              textAlign: 'center',
-              maxWidth: '480px',
-              margin: '40px auto',
-            }}
-          >
-            <h3
-              style={{
-                margin: '0 0 8px',
-                fontFamily: 'var(--heading)',
-                fontSize: '18px',
-                fontWeight: 700,
-                color: '#0F172A',
-              }}
-            >
-              No products found
+          <div className='bg-white border border-border-subtle rounded-2xl p-10 sm:p-12 text-center max-w-lg mx-auto my-10 shadow-card'>
+            <h3 className='m-0 mb-2 font-heading text-lg font-bold text-slate-dark'>
+              No matching specifications found
             </h3>
-            <p
-              style={{
-                margin: '0 0 20px',
-                fontSize: '13.5px',
-                color: '#64748B',
-                lineHeight: 1.5,
-              }}
-            >
-              No wholesale items matched your search query &ldquo;{searchQuery}
-              &rdquo;. Try another keyword or browse all product divisions.
+            <p className='m-0 mb-5 text-sm text-muted-gray leading-normal'>
+              No wholesale lines matched &ldquo;{searchQuery}&rdquo;. Try another specification term or browse all 4 product divisions.
             </p>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                gap: '10px',
-                flexWrap: 'wrap',
-              }}
-            >
+            <div className='flex justify-center gap-2.5 flex-wrap'>
               <button
                 type='button'
                 onClick={handleClearFilters}
-                className='button button-red'
-                style={{
-                  minHeight: '42px',
-                  padding: '8px 18px',
-                  fontSize: '13px',
-                }}
+                className='inline-flex items-center justify-center bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold rounded-lg shadow-subtle min-h-touch px-5 py-2 text-xs sm:text-sm transition-colors'
               >
-                View All Products
+                View All Divisions
               </button>
               <a
                 href={buildWhatsAppQuoteUrl(
-                  searchQuery ? `Custom Inquiry: ${searchQuery}` : undefined,
+                  searchQuery ? `Custom Tender Inquiry: ${searchQuery}` : undefined,
                 )}
                 target='_blank'
                 rel='noopener noreferrer'
-                className='button button-whatsapp'
-                style={{
-                  minHeight: '42px',
-                  padding: '8px 18px',
-                  fontSize: '13px',
-                }}
+                className='inline-flex items-center justify-center gap-2 bg-success hover:bg-success-dark text-white font-heading font-bold rounded-lg shadow-subtle min-h-touch px-5 py-2 text-xs sm:text-sm transition-colors'
               >
-                Inquire on WhatsApp
+                <MessageCircle className='w-4 h-4' />
+                <span>Inquire on WhatsApp</span>
               </a>
             </div>
           </div>
         )}
 
-        {/* Wholesale Tender & Custom Supply Banner */}
-        <div
-          style={{
-            marginTop: '48px',
-            background: 'linear-gradient(135deg, #1A1D20 0%, #0F172A 100%)',
-            borderRadius: '16px',
-            padding: '28px 32px',
-            color: '#FFFFFF',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '20px',
-            border: '1px solid #334155',
-          }}
-        >
-          <div style={{ maxWidth: '680px' }}>
-            <span
-              style={{
-                display: 'inline-block',
-                background: 'rgba(242,183,5,0.18)',
-                color: '#F2B705',
-                fontSize: '11px',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                padding: '3px 10px',
-                borderRadius: '4px',
-                marginBottom: '8px',
-              }}
-            >
-              Enterprise & Tender Procurement
+        {/* Wholesale Tender & Custom RFP Banner */}
+        <div className='mt-12 bg-gradient-to-br from-brand-charcoal to-slate-dark rounded-2xl p-7 sm:p-8 text-white flex flex-wrap items-center justify-between gap-6 border border-slate-700 shadow-card'>
+          <div className='max-w-2xl'>
+            <span className='inline-flex items-center gap-1.5 bg-brand-gold/20 text-brand-gold text-2xs font-bold uppercase tracking-wider px-2.5 py-1 rounded mb-2'>
+              <FileSpreadsheet className='w-3.5 h-3.5' />
+              <span>Institutional &amp; Government Tenders</span>
             </span>
-            <h3
-              style={{
-                margin: '0 0 6px',
-                fontFamily: 'var(--heading)',
-                fontSize: '20px',
-                fontWeight: 800,
-                color: '#FFFFFF',
-                letterSpacing: '-0.02em',
-              }}
-            >
+            <h3 className='font-heading text-xl sm:text-2xl font-extrabold text-white tracking-tight mb-2'>
               Need Custom Quantities, Special Sizes, or Unlisted SKUs?
             </h3>
-            <p
-              style={{
-                margin: 0,
-                fontSize: '13px',
-                color: '#94A3B8',
-                lineHeight: 1.5,
-              }}
-            >
-              Our procurement desk supplies construction camps, hospital
-              tenders, facility managers, and hotel chains across Riyadh with
-              volume contract rates and direct warehouse delivery.
+            <p className='text-sm text-slate-300 leading-relaxed'>
+              Our procurement desk supplies construction camps, hospital tenders, facility managers, and hotel chains across Riyadh with volume contract rates and direct warehouse delivery.
             </p>
           </div>
-          <div>
+          <div className='flex items-center gap-3 flex-wrap'>
             <a
               href={buildWhatsAppQuoteUrl('Custom B2B Tender / Volume Order')}
               target='_blank'
               rel='noopener noreferrer'
-              className='button button-red'
-              style={{
-                minHeight: '44px',
-                padding: '10px 22px',
-                fontSize: '13px',
-                whiteSpace: 'nowrap',
-              }}
+              className='inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-xs sm:text-sm rounded-lg shadow-subtle min-h-touch transition-all whitespace-nowrap'
             >
               <span>Contact Procurement Desk</span>
-              <span aria-hidden='true'>→</span>
+              <ArrowRight className='w-4 h-4' aria-hidden='true' />
             </a>
           </div>
         </div>

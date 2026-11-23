@@ -1,183 +1,163 @@
-import React from 'react';
-import Image from 'next/image';
-import { COMPANY_DATA } from '@/data/company';
+import React from "react";
+import Image from "next/image";
+import { COMPANY_DATA } from "@/data/company";
+import { Factory, Truck, Tag, CreditCard, Layers, ShieldCheck } from "lucide-react";
 
 export function WhyChooseSection() {
   const { strengths } = COMPANY_DATA;
 
   return (
-    <section className='section why-section'>
-      <div className='container'>
-        <div className='why-grid'>
-          <div className='why-content'>
-            <div className='why-eyebrow-wrap'>
-              <span className='why-eyebrow'>WHY CHOOSE CLEANING CARE?</span>
-              <span className='why-eyebrow-line' aria-hidden='true' />
+    <section className='py-12 sm:py-16 bg-white'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch'>
+          <div className='lg:col-span-7 flex flex-col justify-center min-w-0'>
+            <div className='flex items-center gap-3.5 mb-2.5'>
+              <span className='text-brand-red font-heading font-black text-xs sm:text-sm tracking-wider uppercase'>
+                WHY CHOOSE CLEANING CARE?
+              </span>
+              <span
+                className='inline-block w-11 h-[2.5px] bg-brand-red rounded-sm shrink-0'
+                aria-hidden='true'
+              />
             </div>
-            <h2>Your Reliable B2B Supply Partner in Saudi Arabia</h2>
-            <p className='section-intro'>
-              We combine extensive inventory, competitive pricing and reliable
-              service to meet the cleaning and hygiene supply needs of
-              businesses across the Kingdom.
+            <h2 className=' max-w-xl font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-dark tracking-tight leading-tight mb-3'>
+              Your Reliable B2B Supply Partner in Saudi Arabia
+            </h2>
+            <p className='font-body text-slate-body text-lg  leading-relaxed mb-6 max-w-xl'>
+              We combine extensive inventory, competitive pricing and reliable service to meet the
+              cleaning and hygiene supply needs of businesses across the Kingdom.
             </p>
-            <div className='strength-grid'>
+
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full'>
               {/* Strength 1 */}
-              <div className='strength'>
-                <span className='strength-icon' aria-hidden='true'>
-                  <svg
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  >
-                    <path d='m7.5 4.27 9 5.15' />
-                    <path d='M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z' />
-                    <path d='m3.3 7 8.7 5 8.7-5' />
-                    <path d='M12 22V12' />
-                  </svg>
+              <div className='flex items-start gap-2.5 p-3 sm:p-3.5 bg-white border border-border-subtle rounded-xl shadow-subtle hover:shadow-card hover:-translate-y-0.5 transition-all'>
+                <span
+                  className=' shrink-0 text-brand-red mt-0.5 flex items-center justify-center'
+                  aria-hidden='true'
+                >
+                  <Factory size={32} />
                 </span>
-                <div className='strength-body'>
-                  <h3>{strengths[0].title}</h3>
-                  <p>{strengths[0].description}</p>
+                <div className='flex flex-col gap-1 min-w-0'>
+                  <h3 className='font-heading font-bold text-xs sm:text-sm text-slate-dark leading-tight'>
+                    {strengths[0].title}
+                  </h3>
+                  <p className='font-body text-2xs sm:text-xs text-slate-body leading-normal'>
+                    {strengths[0].description}
+                  </p>
                 </div>
               </div>
 
               {/* Strength 2 */}
-              <div className='strength'>
-                <span className='strength-icon' aria-hidden='true'>
-                  <svg
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  >
-                    <path d='M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z' />
-                    <path d='m9 12 2 2 4-4' />
-                  </svg>
+              <div className='flex items-start gap-2.5 p-3 sm:p-3.5 bg-white border border-border-subtle rounded-xl shadow-subtle hover:shadow-card hover:-translate-y-0.5 transition-all'>
+                <span
+                  className='shrink-0 text-brand-red mt-0.5 flex items-center justify-center'
+                  aria-hidden='true'
+                >
+                  <Truck size={32} />
                 </span>
-                <div className='strength-body'>
-                  <h3>{strengths[1].title}</h3>
-                  <p>{strengths[1].description}</p>
+                <div className='flex flex-col gap-1 min-w-0'>
+                  <h3 className='font-heading font-bold text-xs sm:text-sm text-slate-dark leading-tight'>
+                    {strengths[1].title}
+                  </h3>
+                  <p className='font-body text-2xs sm:text-xs text-slate-body leading-normal'>
+                    {strengths[1].description}
+                  </p>
                 </div>
               </div>
 
               {/* Strength 3 */}
-              <div className='strength'>
-                <span className='strength-icon' aria-hidden='true'>
-                  <svg
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  >
-                    <path d='M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z' />
-                    <circle cx='7.5' cy='7.5' r='.5' fill='currentColor' />
-                  </svg>
+              <div className='flex items-start gap-2.5 p-3 sm:p-3.5 bg-white border border-border-subtle rounded-xl shadow-subtle hover:shadow-card hover:-translate-y-0.5 transition-all'>
+                <span
+                  className='shrink-0 text-brand-red mt-0.5 flex items-center justify-center'
+                  aria-hidden='true'
+                >
+                  <Tag size={32} />
                 </span>
-                <div className='strength-body'>
-                  <h3>{strengths[2].title}</h3>
-                  <p>{strengths[2].description}</p>
+                <div className='flex flex-col gap-1 min-w-0'>
+                  <h3 className='font-heading font-bold text-xs sm:text-sm text-slate-dark leading-tight'>
+                    {strengths[2].title}
+                  </h3>
+                  <p className='font-body text-2xs sm:text-xs text-slate-body leading-normal'>
+                    {strengths[2].description}
+                  </p>
                 </div>
               </div>
 
               {/* Strength 4 */}
-              <div className='strength'>
-                <span className='strength-icon' aria-hidden='true'>
-                  <svg
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  >
-                    <path d='M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2' />
-                    <path d='M15 18H9' />
-                    <path d='M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14' />
-                    <circle cx='17' cy='18.5' r='2.5' />
-                    <circle cx='7' cy='18.5' r='2.5' />
-                  </svg>
+              <div className='flex items-start gap-2.5 p-3 sm:p-3.5 bg-white border border-border-subtle rounded-xl shadow-subtle hover:shadow-card hover:-translate-y-0.5 transition-all'>
+                <span
+                  className='shrink-0 text-brand-red mt-0.5 flex items-center justify-center'
+                  aria-hidden='true'
+                >
+                  <CreditCard size={32} />
                 </span>
-                <div className='strength-body'>
-                  <h3>{strengths[3].title}</h3>
-                  <p>{strengths[3].description}</p>
+                <div className='flex flex-col gap-1 min-w-0'>
+                  <h3 className='font-heading font-bold text-xs sm:text-sm text-slate-dark leading-tight'>
+                    {strengths[3].title}
+                  </h3>
+                  <p className='font-body text-2xs sm:text-xs text-slate-body leading-normal'>
+                    {strengths[3].description}
+                  </p>
                 </div>
               </div>
 
               {/* Strength 5 */}
-              <div className='strength'>
-                <span className='strength-icon' aria-hidden='true'>
-                  <svg
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  >
-                    <path d='M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5a9 9 0 0 1 18 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3' />
-                    <path d='M21 16v2a4 4 0 0 1-4 4h-5' />
-                  </svg>
+              <div className='flex items-start gap-2.5 p-3 sm:p-3.5 bg-white border border-border-subtle rounded-xl shadow-subtle hover:shadow-card hover:-translate-y-0.5 transition-all'>
+                <span
+                  className='shrink-0 text-brand-red mt-0.5 flex items-center justify-center'
+                  aria-hidden='true'
+                >
+                  <Layers size={32} />
                 </span>
-                <div className='strength-body'>
-                  <h3>{strengths[4].title}</h3>
-                  <p>{strengths[4].description}</p>
+                <div className='flex flex-col gap-1 min-w-0'>
+                  <h3 className='font-heading font-bold text-xs sm:text-sm text-slate-dark leading-tight'>
+                    {strengths[4].title}
+                  </h3>
+                  <p className='font-body text-2xs sm:text-xs text-slate-body leading-normal'>
+                    {strengths[4].description}
+                  </p>
                 </div>
               </div>
 
               {/* Strength 6 */}
-              <div className='strength'>
-                <span className='strength-icon' aria-hidden='true'>
-                  <svg
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  >
-                    <path d='M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z' />
-                    <path d='m9 12 2 2 4-4' />
-                  </svg>
+              <div className='flex items-start gap-2.5 p-3 sm:p-3.5 bg-white border border-border-subtle rounded-xl shadow-subtle hover:shadow-card hover:-translate-y-0.5 transition-all'>
+                <span
+                  className='shrink-0 text-brand-red mt-0.5 flex items-center justify-center'
+                  aria-hidden='true'
+                >
+                  <ShieldCheck size={32} />
                 </span>
-                <div className='strength-body'>
-                  <h3>{strengths[5].title}</h3>
-                  <p>{strengths[5].description}</p>
+                <div className='flex flex-col gap-1 min-w-0'>
+                  <h3 className='font-heading font-bold text-xs sm:text-sm text-slate-dark leading-tight'>
+                    {strengths[5].title}
+                  </h3>
+                  <p className='font-body text-2xs sm:text-xs text-slate-body leading-normal'>
+                    {strengths[5].description}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className='why-photo'>
+          <div className='lg:col-span-5 relative rounded-2xl overflow-hidden shadow-card min-h-[380px] sm:min-h-[460px] h-full w-full'>
             <Image
               src='/assets/images/why-choose-us-warehouse-team.jpg'
               alt='Cleaning Care warehouse specialist in safety vest managing operations'
               fill
-              className='object-cover'
+              className='object-cover object-[center_30%]'
               unoptimized
             />
             <svg
-              className='why-curve'
+              className='hidden lg:block absolute left-0 top-0 bottom-0 w-[88px] h-full pointer-events-none z-10'
               viewBox='0 0 100 500'
               preserveAspectRatio='none'
               aria-hidden='true'
             >
+              <path d='M 0,0 L 48,0 C 8,150 20,320 95,500 L 0,500 Z' fill='#FFFFFF' />
               <path
-                className='why-curve-mask'
-                d='M 0,0 L 48,0 C 8,150 20,320 95,500 L 0,500 Z'
-                fill='#FFFFFF'
-              />
-              <path
-                className='why-curve-stroke'
+                className='stroke-brand-red'
                 d='M 48,0 C 8,150 20,320 95,500'
                 fill='none'
-                stroke='#D32027'
                 strokeWidth='14'
                 strokeLinecap='round'
               />

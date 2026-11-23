@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { COMPANY_DATA } from '@/data/company';
+import { BRAND_COLORS } from '@/lib/tokens';
 import { JsonLd } from '@/components/JsonLd';
 
 export const viewport: Viewport = {
-  themeColor: '#1A1D20',
+  themeColor: BRAND_COLORS.charcoal,
   width: 'device-width',
   initialScale: 1,
 };

@@ -18,499 +18,395 @@ export interface CategoryInfo {
   itemCountLabel?: string;
 }
 
+export interface SubCategoryItem {
+  id: string;
+  name: string;
+  category: CategoryId;
+  shortDescription: string;
+  specifications: string[]; // Wholesale capacities, sizes, gauges
+  packagingNote: string;
+  popular?: boolean;
+}
+
+export interface DivisionCategory extends CategoryInfo {
+  subtitle: string;
+  subCategories: SubCategoryItem[];
+  wholesaleHighlights: string[];
+}
+
 export interface ProductItem {
   id: string;
   name: string;
   category: CategoryId;
   shortDescription: string;
-  specifications: string[]; // e.g., ['10G', '20G', '30G', '50G', '55G', '70G', '90G', '100G'] or ['50CM', '75CM', '1M']
+  specifications: string[];
   packagingNote?: string;
-  image: string; // Path under /assets/ or /images/
+  image: string;
   featured?: boolean;
 }
 
-export const CATEGORIES: CategoryInfo[] = [
+export const DIVISIONS: DivisionCategory[] = [
   {
     id: 'cleaning-materials',
     title: 'Cleaning Materials',
+    subtitle: 'Industrial & Institutional Chemical Formulations',
     shortDescription:
-      'Industrial & commercial grade cleaners, disinfectants, degreasers, floor care and detergents.',
+      'Heavy-duty commercial grade cleaners, disinfectants, degreasers, floor care and detergents.',
     image: '/assets/images/product-section-product-1.jpg',
-    imageAlt:
-      'Commercial cleaning chemical containers and industrial solutions',
-    itemCountLabel: '9 Product Lines',
+    imageAlt: 'Commercial cleaning chemical containers and industrial solutions',
+    itemCountLabel: '9 Sub-Categories',
+    wholesaleHighlights: [
+      'High-concentration industrial blending',
+      'Available in 5L cans up to 200L bulk drums',
+      'Hospital & commercial clinical compliance',
+      'Direct warehouse dispatch in Riyadh',
+    ],
+    subCategories: [
+      {
+        id: 'multi-purpose-cleaners',
+        name: 'Multi-Purpose Cleaners',
+        category: 'cleaning-materials',
+        shortDescription:
+          'High-concentration surface cleaners for commercial floors, tiles, marble, and counters.',
+        specifications: ['5L Jerrycan', '20L Jerrycan', '200L Drum Bulk'],
+        packagingNote: 'Pallet of 48 cans / Bulk drum dispatch',
+        popular: true,
+      },
+      {
+        id: 'disinfectants-sanitizers',
+        name: 'Disinfectants & Surface Sanitizers',
+        category: 'cleaning-materials',
+        shortDescription:
+          'Hospital-grade broad-spectrum antimicrobial sanitizers and surface disinfectants.',
+        specifications: ['750ml Spray', '5L Jerrycan', '20L Bulk Drum'],
+        packagingNote: 'Certified antibacterial & antiviral clinical formulation',
+        popular: true,
+      },
+      {
+        id: 'commercial-glass-cleaners',
+        name: 'Commercial Glass Cleaners',
+        category: 'cleaning-materials',
+        shortDescription:
+          'Streak-free quick-drying formula for commercial storefronts, architectural glass, and mirrors.',
+        specifications: ['750ml Trigger', '5L Refill Can', '20L Jerrycan'],
+        packagingNote: 'Bulk refill cartons for facility managers',
+      },
+      {
+        id: 'floor-care-cleaners',
+        name: 'Floor Cleaners & Polishers',
+        category: 'cleaning-materials',
+        shortDescription:
+          'High-shine neutral floor cleaners formulated for marble, terrazzo, polished concrete, and epoxy.',
+        specifications: ['5L Can', '20L Jerrycan', '200L Drum'],
+        packagingNote: 'Compatible with commercial floor scrubbing machines',
+        popular: true,
+      },
+      {
+        id: 'heavy-duty-degreasers',
+        name: 'Heavy-Duty Industrial Degreasers',
+        category: 'cleaning-materials',
+        shortDescription:
+          'Industrial solvent and alkaline degreasers for grease, oil, and workshop machinery cleaning.',
+        specifications: ['5L Can', '20L Jerrycan', '200L Steel Drum'],
+        packagingNote: 'Heavy-duty industrial formulation',
+        popular: true,
+      },
+      {
+        id: 'washroom-cleaners',
+        name: 'Washroom Cleaners & Descalers',
+        category: 'cleaning-materials',
+        shortDescription:
+          'Acidic and neutral bathroom cleaners for limescale, mineral deposit removal, and sanitization.',
+        specifications: ['1L Bottle', '5L Can', '20L Jerrycan'],
+        packagingNote: 'Carton of 12 x 1L / 4 x 5L wholesale case',
+      },
+      {
+        id: 'carpet-shampoos',
+        name: 'Carpet Shampoos & Fabric Cleaners',
+        category: 'cleaning-materials',
+        shortDescription:
+          'Low-foaming extraction carpet shampoos for hotel ballrooms, prayer halls, and corporate offices.',
+        specifications: ['5L Can', '20L Jerrycan'],
+        packagingNote: 'Formulated for injection/extraction machines',
+      },
+      {
+        id: 'industrial-detergents',
+        name: 'Industrial & Laundry Detergents',
+        category: 'cleaning-materials',
+        shortDescription:
+          'Commercial laundry powders, liquid detergents, and stain removers for hotel and hospital linens.',
+        specifications: ['10kg Bag', '25kg Industrial Sack', '20L Liquid'],
+        packagingNote: 'Heavy-duty commercial laundry grade',
+      },
+      {
+        id: 'room-fresheners',
+        name: 'Air & Room Fresheners',
+        category: 'cleaning-materials',
+        shortDescription:
+          'Long-lasting commercial room deodorizers and aerosol fresheners for hospitality and corporate lobbies.',
+        specifications: ['300ml Aerosol', '500ml Trigger Spray', '5L Refill'],
+        packagingNote: 'Wholesale cases of 24 units',
+      },
+    ],
   },
   {
     id: 'hygiene-disposables',
     title: 'Hygiene & Disposables',
+    subtitle: 'Commercial Paper, Heavy-Duty Liners & PPE Supplies',
     shortDescription:
       'Paper towels, tissue rolls, heavy-duty garbage bags (10G–100G), tableware, PPE, soaps and sanitizers.',
     image: '/assets/images/product-section-product-2.jpg',
-    imageAlt:
-      'Paper tissue rolls, commercial trash liners and hygiene supplies',
-    itemCountLabel: '7 Product Lines',
+    imageAlt: 'Paper tissue rolls, commercial trash liners and hygiene supplies',
+    itemCountLabel: '7 Sub-Categories',
+    wholesaleHighlights: [
+      'Complete garbage bag gauge range: 10G to 100G',
+      'Virgin pulp & recycled commercial paper rolls',
+      'Bulk catering tableware & certified nitrile PPE',
+      'Palletized supply for camps, towers & hotels',
+    ],
+    subCategories: [
+      {
+        id: 'paper-towels-tissue-rolls',
+        name: 'Commercial Paper Towels & Maxi Rolls',
+        category: 'hygiene-disposables',
+        shortDescription:
+          'Jumbo toilet rolls, Maxi rolls, C-fold towels, and centerpull dispenser rolls.',
+        specifications: ['Maxi Roll 300M', 'Centerpull 2-Ply', 'C-Fold Towels', 'Jumbo Roll 2-Ply'],
+        packagingNote: 'Bulk wrapped packs / Pallet distribution',
+        popular: true,
+      },
+      {
+        id: 'heavy-duty-garbage-bags',
+        name: 'Heavy-Duty Commercial Garbage Bags',
+        category: 'hygiene-disposables',
+        shortDescription:
+          'Tear-resistant LDPE and HDPE trash liners engineered for municipal, hospital, and construction waste.',
+        specifications: ['10G', '20G', '30G', '50G', '55G', '70G', '90G', '100G'],
+        packagingNote: 'Rolls packed in 25kg/50kg master export cartons',
+        popular: true,
+      },
+      {
+        id: 'bulk-shopping-bags',
+        name: 'Custom & Bulk Shopping Bags',
+        category: 'hygiene-disposables',
+        shortDescription:
+          'Standard and reinforced carrier shopping bags for retail chains, supermarkets, and wholesale stores.',
+        specifications: ['Small Bulk', 'Medium Bulk', 'Large Bulk', 'Jumbo Heavy-Duty'],
+        packagingNote: 'Available plain or custom corporate branded in bulk',
+      },
+      {
+        id: 'disposable-tableware',
+        name: 'Disposable Tableware & Food Packaging',
+        category: 'hygiene-disposables',
+        shortDescription:
+          'Disposable plates, bowls, cups, spoons, forks, and food containers for worker camps and catering.',
+        specifications: ['Plates Pack', 'Bowls Pack', 'Hot/Cold Cups', 'Cutlery Set Bulk'],
+        packagingNote: 'Hygienically packaged food-grade cartons',
+      },
+      {
+        id: 'liquid-soaps-sanitizers',
+        name: 'Commercial Liquid Soaps & Sanitizers',
+        category: 'hygiene-disposables',
+        shortDescription:
+          'Antibacterial hand soaps, luxury foam refills, and alcohol-based gel hand sanitizers.',
+        specifications: ['500ml Pump', '5L Refill Can', '20L Bulk Jerrycan'],
+        packagingNote: 'Standard dispenser cartridges and bulk refill jugs',
+        popular: true,
+      },
+      {
+        id: 'disposable-gloves-ppe',
+        name: 'Disposable Gloves & Personal Protective Equipment',
+        category: 'hygiene-disposables',
+        shortDescription:
+          'Nitrile, latex, and vinyl gloves, disposable face masks, aprons, and shoe covers for facility hygiene.',
+        specifications: ['Nitrile (S/M/L/XL)', 'Latex 100-pack', 'Vinyl 100-pack', 'PE Aprons'],
+        packagingNote: 'Cases of 10 boxes (1,000 gloves per carton)',
+        popular: true,
+      },
+      {
+        id: 'foil-cling-rolls',
+        name: 'Aluminium Foil & Commercial Cling Film',
+        category: 'hygiene-disposables',
+        shortDescription:
+          'Heavy-duty food-grade aluminium foil and stretch cling film rolls for central kitchens and catering.',
+        specifications: ['Foil 30cm x 150M', 'Foil 45cm x 150M', 'Cling 45cm x 300M'],
+        packagingNote: 'Cutter box packaging / Master catering carton',
+      },
+    ],
   },
   {
     id: 'plastic-drums',
     title: 'Plastic Drums & Containers',
+    subtitle: 'Industrial Wheeled Bins & HDPE Chemical Drums',
     shortDescription:
       'Industrial waste bins, storage drums and wheeled containers in multiple capacities (10G–1100G).',
     image: '/assets/images/product-section-product-3.jpg',
-    imageAlt:
-      'Commercial wheeled plastic waste containers and heavy-duty storage drums',
-    itemCountLabel: '4 Product Lines',
+    imageAlt: 'Commercial wheeled plastic waste containers and heavy-duty storage drums',
+    itemCountLabel: '4 Sub-Categories',
+    wholesaleHighlights: [
+      'Full capacity range: 10G to 1100G',
+      'Wheeled bins from 120L to 1100L with foot pedals',
+      'EN840 certified virgin HDPE UV-stabilized plastic',
+      'Color-coded municipal sorting options (Green, Yellow, Blue, Charcoal)',
+    ],
+    subCategories: [
+      {
+        id: 'wheeled-waste-containers',
+        name: 'Commercial Wheeled Waste Containers (120L–1100L)',
+        category: 'plastic-drums',
+        shortDescription:
+          'EN840 certified 2-wheeled and 4-wheeled industrial mobile waste dumpsters with pedal options.',
+        specifications: ['120L Pedal Bin', '240L Heavy-Duty', '660L 4-Wheeled', '1100L Dumpster'],
+        packagingNote: 'Stackable nested shipment from Riyadh warehouse',
+        popular: true,
+      },
+      {
+        id: 'hdpe-storage-drums',
+        name: 'Heavy-Duty HDPE Industrial Storage Drums',
+        category: 'plastic-drums',
+        shortDescription:
+          'Blow-molded chemical and water storage drums with leak-proof screw caps and carrying handles.',
+        specifications: ['10G', '20G', '30G', '50G', '55G', '70G', '90G', '100G'],
+        packagingNote: 'UN-rated for chemical & industrial transport',
+        popular: true,
+      },
+      {
+        id: 'chemical-open-top-barrels',
+        name: 'Chemical Storage Barrels with Galvanized Clamp Rings',
+        category: 'plastic-drums',
+        shortDescription:
+          'Wide-mouth open-top HDPE barrels with heavy-duty locking rings for solids, powders, and liquids.',
+        specifications: ['30L Open-Top', '60L Clamp-Ring', '120L Barrel', '220L Full-Open'],
+        packagingNote: 'Airtight EPDM gasket with galvanized steel locking ring',
+      },
+      {
+        id: 'indoor-recycling-bins',
+        name: 'Commercial Indoor Recycling & Waste Separation Stations',
+        category: 'plastic-drums',
+        shortDescription:
+          'Color-coded multi-stream sorting bins for corporate office lobbies, schools, and hospitals.',
+        specifications: ['3-Compartment Station', '4-Stream Center', '60L Slim Bin', 'Stainless Trim'],
+        packagingNote: 'Supplied with Arabic/English categorization labels',
+      },
+    ],
   },
   {
     id: 'equipment-safety',
     title: 'Cleaning Equipment & Safety',
+    subtitle: 'Professional Janitorial Hardware & Traffic Safety Equipment',
     shortDescription:
       'Janitorial carts, wringer mops, traffic cones (50cm/75cm/1M), safety barricades, and plastic pallets.',
     image: '/assets/images/product-section-product-4.jpg',
-    imageAlt:
-      'Janitorial cleaning equipment, microfiber cloths and road safety products',
-    itemCountLabel: '9 Product Lines',
+    imageAlt: 'Janitorial cleaning equipment, microfiber cloths and road safety products',
+    itemCountLabel: '8 Sub-Categories',
+    wholesaleHighlights: [
+      'Traffic safety cones in 50cm, 75cm, 1M with 8kg–20kg bases',
+      'Modular 1M x 1M interlocking road safety barricades',
+      'Heavy-duty rackable HDPE plastic pallets',
+      'Full commercial housekeeping carts & wringer systems',
+    ],
+    subCategories: [
+      {
+        id: 'janitorial-carts',
+        name: 'Commercial Janitorial Housekeeping Carts',
+        category: 'equipment-safety',
+        shortDescription:
+          'Ergonomic cleaning trolleys with non-marking wheels, vinyl waste bags, and storage shelves.',
+        specifications: ['Standard 3-Shelf', 'Lockable Cabinet Cart', 'Heavy-Duty Hotel Trolley'],
+        packagingNote: 'Flat-pack carton with quick-assembly hardware',
+        popular: true,
+      },
+      {
+        id: 'mop-wringer-buckets',
+        name: 'Downward-Press Commercial Mop Wringer Buckets',
+        category: 'equipment-safety',
+        shortDescription:
+          'High-efficiency commercial mop buckets with down-press wringer mechanisms and dirty water dividers.',
+        specifications: ['20L Single Bucket', '32L Heavy Wringer', 'Dual 36L Division System'],
+        packagingNote: 'Durable corrosion-resistant nylon wheels',
+        popular: true,
+      },
+      {
+        id: 'microfiber-cleaning-cloths',
+        name: 'HACCP Color-Coded Microfiber Cleaning Cloths',
+        category: 'equipment-safety',
+        shortDescription:
+          'High-density 300GSM microfiber towels for lint-free, streak-free hospital and office cleaning.',
+        specifications: ['Blue (General)', 'Red (Restroom)', 'Yellow (Disinfection)', 'Green (Kitchen)'],
+        packagingNote: 'Packs of 10 / Master bulk carton of 200 cloths',
+      },
+      {
+        id: 'brooms-brushes-squeegees',
+        name: 'Commercial Brooms, Floor Scrubbers & Squeegees',
+        category: 'equipment-safety',
+        shortDescription:
+          'Heavy-duty floor wipers, industrial push brooms, and telescopic handles for facility maintenance.',
+        specifications: ['45cm Wiper', '60cm Floor Squeegee', 'Industrial Stiff Broom', 'Aluminium Pole'],
+        packagingNote: 'Wholesale bundles with threaded heavy-duty handles',
+      },
+      {
+        id: 'traffic-safety-cones',
+        name: 'Traffic Safety Cones with Weighted Rubber Bases',
+        category: 'equipment-safety',
+        shortDescription:
+          'UV-stabilized high-visibility orange road cones with reflective white collars and heavy bases.',
+        specifications: ['50CM (8KG Base)', '75CM (12KG Base)', '1M (15KG Base)', '1M (20KG Base)'],
+        packagingNote: 'Palletized bundles for highway & construction projects',
+        popular: true,
+      },
+      {
+        id: 'safety-barricades',
+        name: 'Modular Interlocking Plastic Safety Barricades',
+        category: 'equipment-safety',
+        shortDescription:
+          'Durable red-and-white modular safety fencing for crowd management, construction zones, and hazards.',
+        specifications: ['1M x 1M Interlocking', '1.5M Heavy Barrier', 'Water-Fillable Base'],
+        packagingNote: 'Nestable design for rapid truck dispatch in Riyadh',
+        popular: true,
+      },
+      {
+        id: 'flexible-delineator-cylinders',
+        name: 'Flexible Delineator Safety Cylinders & Bollards',
+        category: 'equipment-safety',
+        shortDescription:
+          'Impact-resistant rebounding polyurethane safety bollards for parking structures and lane dividers.',
+        specifications: ['75cm Reflective', '1M Spring Delineator', 'Surface Anchor Kit'],
+        packagingNote: 'Supplied with concrete/asphalt bolt fixings',
+      },
+      {
+        id: 'hdpe-plastic-pallets',
+        name: 'Heavy-Duty Rackable & Nestable HDPE Plastic Pallets',
+        category: 'equipment-safety',
+        shortDescription:
+          'Hygienic, washable 4-way entry plastic pallets for warehouse racking, food, and pharmaceutical storage.',
+        specifications: ['1200x1000mm Rackable (1.5T)', '1200x800mm Euro (1.2T)', 'Nestable Light (1T)'],
+        packagingNote: 'High-density polyethylene for long-term warehouse operations',
+        popular: true,
+      },
+    ],
   },
 ];
 
-export const PRODUCTS: ProductItem[] = [
-  // ==========================================
-  // Division 1: Cleaning Materials (cleaning-materials)
-  // ==========================================
-  {
-    id: 'multi-purpose-cleaner',
-    name: 'Multi-Purpose Cleaners',
-    category: 'cleaning-materials',
-    shortDescription:
-      'Commercial & industrial grade high-concentration surface cleaners for floors, tiles, and counters.',
-    specifications: ['5L Jerrycan', '20L Jerrycan', '200L Drum Bulk'],
-    packagingNote: 'Heavy-duty HDPE industrial containers',
-    image: '/images/cat-cleaning-materials.webp',
-    featured: true,
-  },
-  {
-    id: 'disinfectants-sanitizers',
-    name: 'Disinfectants & Surface Sanitizers',
-    category: 'cleaning-materials',
-    shortDescription:
-      'Hospital-grade antimicrobial sanitizers and surface disinfectants formulated for clinical compliance.',
-    specifications: ['750ml Spray', '5L Jerrycan', '20L Bulk'],
-    packagingNote: 'Broad-spectrum antibacterial & antiviral certified',
-    image: '/images/cat-cleaning-materials.webp',
-    featured: true,
-  },
-  {
-    id: 'glass-cleaner',
-    name: 'Commercial Glass Cleaners',
-    category: 'cleaning-materials',
-    shortDescription:
-      'Streak-free quick-drying formula for commercial storefronts, architectural glass, and mirrors.',
-    specifications: ['750ml Trigger Spray', '5L Refill', '20L Jerrycan'],
-    image: '/images/cat-cleaning-materials.webp',
-  },
-  {
-    id: 'floor-care-cleaner',
-    name: 'Floor Cleaners & Polishers',
-    category: 'cleaning-materials',
-    shortDescription:
-      'High-shine neutral floor cleaners formulated for marble, terrazzo, polished concrete, tile, and epoxy.',
-    specifications: ['5L Can', '20L Jerrycan', '200L Drum'],
-    image: '/images/cat-cleaning-materials.webp',
-    featured: true,
-  },
-  {
-    id: 'heavy-duty-degreaser',
-    name: 'Heavy-Duty Industrial Degreasers',
-    category: 'cleaning-materials',
-    shortDescription:
-      'Fast-acting industrial solvent and water-based degreasers for commercial kitchens, workshops, and plant machinery.',
-    specifications: ['5L Can', '20L Jerrycan', '200L Drum'],
-    packagingNote:
-      'Dissolves petroleum grease, vegetable oils, and carbon deposits',
-    image: '/images/cat-cleaning-materials.webp',
-    featured: true,
-  },
-  {
-    id: 'washroom-cleaner-descaler',
-    name: 'Washroom Cleaners & Acid Descalers',
-    category: 'cleaning-materials',
-    shortDescription:
-      'Powerful descaling and anti-limescale toilet cleaners for public restrooms and hospitality facilities.',
-    specifications: ['1L Squeeze Bottle', '5L Refill', '20L Bulk'],
-    image: '/images/cat-cleaning-materials.webp',
-  },
-  {
-    id: 'carpet-upholstery-shampoo',
-    name: 'Carpet & Upholstery Shampoos',
-    category: 'cleaning-materials',
-    shortDescription:
-      'Low-foam extraction cleaner for commercial carpet extractors and fabric upholstery in corporate offices.',
-    specifications: ['5L Can', '20L Jerrycan'],
-    image: '/images/cat-cleaning-materials.webp',
-  },
-  {
-    id: 'industrial-laundry-detergent',
-    name: 'Industrial & Laundry Detergents',
-    category: 'cleaning-materials',
-    shortDescription:
-      'High-efficiency commercial laundry powders and liquid concentrates for hotels, hospitals, and linen services.',
-    specifications: ['10KG Sack', '20KG Bulk Sack', '20L Liquid Can'],
-    image: '/images/cat-cleaning-materials.webp',
-  },
-  {
-    id: 'room-fresheners-air-care',
-    name: 'Room Fresheners & Air Care Deodorizers',
-    category: 'cleaning-materials',
-    shortDescription:
-      'Long-lasting fragrance sprays and automatic dispenser refills for lobbies, washrooms, and conference halls.',
-    specifications: [
-      '300ml Aerosol',
-      'Dispenser Refill 250ml',
-      '5L Liquid Bulk',
-    ],
-    image: '/images/cat-cleaning-materials.webp',
-  },
+// Flat CATEGORIES list for Header, Footer, Inquiry dropdown, etc.
+export const CATEGORIES: CategoryInfo[] = DIVISIONS.map((div) => ({
+  id: div.id,
+  title: div.title,
+  shortDescription: div.shortDescription,
+  image: div.image,
+  imageAlt: div.imageAlt,
+  itemCountLabel: div.itemCountLabel,
+}));
 
-  // ==========================================
-  // Division 2: Hygiene & Disposable Products (hygiene-disposables)
-  // ==========================================
-  {
-    id: 'jumbo-tissue-paper-towels',
-    name: 'Paper Towels & Jumbo Tissue Rolls',
-    category: 'hygiene-disposables',
-    shortDescription:
-      'High-absorbency commercial virgin pulp maxi rolls, centerfeed towels, and folded hand towels.',
-    specifications: [
-      'Maxi Roll 1-Ply',
-      'Maxi Roll 2-Ply',
-      'Centerfeed',
-      'Interfold V-Fold',
-      'Autocut',
-    ],
-    packagingNote:
-      'Shrink-wrapped bulk packs of 6 rolls / 12 packs per master carton',
-    image: '/images/cat-hygiene-disposables.webp',
-    featured: true,
-  },
-  {
-    id: 'heavy-duty-garbage-bags',
-    name: 'Heavy-Duty Garbage Bags',
-    category: 'hygiene-disposables',
-    shortDescription:
-      'Puncture-resistant LDPE and HDPE commercial waste disposal liners in all standard industrial capacities.',
-    specifications: ['10G', '20G', '30G', '50G', '55G', '70G', '90G', '100G'],
-    packagingNote:
-      'Available in black, yellow hazard, clear recyclable, and medical red',
-    image: '/images/cat-hygiene-disposables.webp',
-    featured: true,
-  },
-  {
-    id: 'commercial-shopping-bags',
-    name: 'Commercial Shopping & Carry Bags',
-    category: 'hygiene-disposables',
-    shortDescription:
-      'Reinforced handle plastic and biodegradable shopping bags for retail outlets and distribution.',
-    specifications: ['Small', 'Medium', 'Large', 'Custom Bulk Specification'],
-    packagingNote:
-      'Custom logo printing available on bulk enterprise contracts',
-    image: '/images/cat-hygiene-disposables.webp',
-  },
-  {
-    id: 'disposable-tableware-cutlery',
-    name: 'Disposable Tableware & Cutlery',
-    category: 'hygiene-disposables',
-    shortDescription:
-      'Food-grade single-use catering disposables for staff cafeterias, events, and restaurants.',
-    specifications: [
-      'Plates',
-      'Bowls',
-      'Cups',
-      'Spoons',
-      'Forks',
-      'Complete Combo Pack',
-    ],
-    image: '/images/cat-hygiene-disposables.webp',
-  },
-  {
-    id: 'disposable-gloves-ppe',
-    name: 'Disposable PPE & Examination Gloves',
-    category: 'hygiene-disposables',
-    shortDescription:
-      'Powder-free medical examination and food-service grade nitrile, latex, and vinyl gloves.',
-    specifications: ['Small', 'Medium', 'Large', 'X-Large'],
-    packagingNote: 'Box of 100 pcs / 10 boxes per master carton',
-    image: '/images/cat-hygiene-disposables.webp',
-    featured: true,
-  },
-  {
-    id: 'liquid-hand-soap',
-    name: 'Liquid Hand Soaps & Sanitizers',
-    category: 'hygiene-disposables',
-    shortDescription:
-      'Gentle antibacterial moisturizing foam and liquid hand washes for commercial dispensers.',
-    specifications: [
-      '500ml Pump',
-      '5L Refill Can',
-      '20L Bulk Drum',
-      'Cartridge Refill 1L',
-    ],
-    image: '/images/cat-hygiene-disposables.webp',
-  },
-  {
-    id: 'aluminium-foil-cling-film',
-    name: 'Aluminium Foil & Cling Film Rolls',
-    category: 'hygiene-disposables',
-    shortDescription:
-      'Heavy-gauge commercial food wrap rolls for restaurants, catering operations, and kitchen facilities.',
-    specifications: [
-      '30cm x 150M',
-      '45cm x 150M',
-      'Commercial Jumbo Cutter Box',
-    ],
-    image: '/images/cat-hygiene-disposables.webp',
-  },
-
-  // ==========================================
-  // Division 3: Plastic Drums & Waste Containers (plastic-drums)
-  // ==========================================
-  {
-    id: 'commercial-wheeled-waste-containers',
-    name: 'Industrial Wheeled Waste Containers',
-    category: 'plastic-drums',
-    shortDescription:
-      'Heavy-duty UV-stabilized HDPE outdoor and facility waste bins equipped with reinforced rubber wheels.',
-    specifications: [
-      '10G',
-      '20G',
-      '30G',
-      '50G',
-      '55G',
-      '70G',
-      '90G',
-      '100G',
-      '120G',
-      '240G',
-      '660G',
-      '1100G',
-    ],
-    packagingNote:
-      'Available with ergonomic foot pedal mechanisms and color-coded recycling lids',
-    image: '/images/cat-plastic-drums.webp',
-    featured: true,
-  },
-  {
-    id: 'indoor-pedal-waste-bins',
-    name: 'Commercial Indoor Pedal Bins',
-    category: 'plastic-drums',
-    shortDescription:
-      'Hands-free foot pedal bins for hygiene-critical environments such as clinics, kitchens, and offices.',
-    specifications: ['10G', '20G', '30G', '50G', '55G', '70G', '90G', '100G'],
-    packagingNote:
-      'Constructed with impact-resistant polypropylene with tight-closing lids',
-    image: '/images/cat-plastic-drums.webp',
-    featured: true,
-  },
-  {
-    id: 'storage-drums-containers',
-    name: 'Heavy-Duty Plastic Storage Drums',
-    category: 'plastic-drums',
-    shortDescription:
-      'Tight-head and open-top UN-rated plastic drums for liquid chemicals, detergents, and industrial bulk goods.',
-    specifications: ['30L', '60L', '120L', '200L / 55G', '1000L IBC Tote'],
-    packagingNote:
-      'High-density polyethylene (HDPE) with leak-proof gasket closures',
-    image: '/images/cat-plastic-drums.webp',
-    featured: true,
-  },
-  {
-    id: 'open-top-material-drums',
-    name: 'Open-Top Chemical & Material Barrels',
-    category: 'plastic-drums',
-    shortDescription:
-      'Wide-mouth drums with galvanized locking clamp rings for powder chemicals, waste collection, and parts.',
-    specifications: ['50L', '100L', '150L', '200L / 55G'],
-    image: '/images/cat-plastic-drums.webp',
-  },
-
-  // ==========================================
-  // Division 4: Cleaning Equipment & Safety Products (equipment-safety)
-  // ==========================================
-  {
-    id: 'janitorial-cleaning-carts',
-    name: 'Commercial Janitorial Carts',
-    category: 'equipment-safety',
-    shortDescription:
-      'Multi-tier professional housekeeping trolleys with heavy-duty vinyl waste bags and tool organizers.',
-    specifications: ['3-Tier Standard', 'High-Capacity Lockable Cabinet Cart'],
-    image: '/images/cat-equipment-safety.webp',
-    featured: true,
-  },
-  {
-    id: 'mops-wringer-buckets',
-    name: 'Mops & Downward-Press Wringer Buckets',
-    category: 'equipment-safety',
-    shortDescription:
-      'Heavy-duty mobile mopping buckets with downward-pressure wringers, non-marking casters, and fiberglass handles.',
-    specifications: [
-      '20L Single Bucket',
-      '36L Dual Separation Bucket',
-      'Kentucky Cotton Head',
-      'Microfiber Head',
-    ],
-    image: '/images/cat-equipment-safety.webp',
-    featured: true,
-  },
-  {
-    id: 'color-coded-microfiber-cloths',
-    name: 'Color-Coded Microfiber Cleaning Cloths',
-    category: 'equipment-safety',
-    shortDescription:
-      'Lint-free split-microfiber cloths designed for cross-contamination prevention in HACCP and healthcare environments.',
-    specifications: [
-      'Blue (General Areas)',
-      'Red (Sanitary & Toilets)',
-      'Yellow (Disinfection & Surfaces)',
-      'Green (Food & Kitchen Areas)',
-    ],
-    packagingNote:
-      'Pack of 10 pcs / Master carton of 100 pcs (40cm x 40cm, 320 GSM)',
-    image: '/images/cat-equipment-safety.webp',
-    featured: true,
-  },
-  {
-    id: 'brooms-brushes-squeegees',
-    name: 'Commercial Brooms, Brushes & Floor Wipers',
-    category: 'equipment-safety',
-    shortDescription:
-      'Industrial floor squeegees with natural moss rubber blades, stiff outdoor sweeping brooms, and scrub brushes.',
-    specifications: [
-      '45cm Squeegee',
-      '55cm Squeegee',
-      '75cm Heavy Squeegee',
-      '1M Industrial Wiper',
-    ],
-    image: '/images/cat-equipment-safety.webp',
-  },
-  {
-    id: 'rotary-floor-pads-accessories',
-    name: 'Floor Machine Pads & Buffer Accessories',
-    category: 'equipment-safety',
-    shortDescription:
-      'Commercial rotary scrubbing, stripping, and polishing floor pads for single-disc and scrubber-dryer machines.',
-    specifications: [
-      '16 inch',
-      '17 inch',
-      '20 inch',
-      'Black (Stripping)',
-      'Red (Buffing)',
-      'White (Polishing)',
-    ],
-    image: '/images/cat-equipment-safety.webp',
-  },
-  {
-    id: 'traffic-safety-cones',
-    name: 'Traffic & Facility Safety Cones',
-    category: 'equipment-safety',
-    shortDescription:
-      'High-visibility orange PVC safety cones with 3M reflective sleeves for parking lots, warehouses, and roadside work.',
-    specifications: ['50CM Height', '75CM Height', '1M Height'],
-    packagingNote:
-      'Weighted base options available: 8KG, 12KG, 15KG, 18KG, 20KG',
-    image: '/images/cat-equipment-safety.webp',
-    featured: true,
-  },
-  {
-    id: 'safety-barricades',
-    name: 'Interlocking Plastic Safety Barricades',
-    category: 'equipment-safety',
-    shortDescription:
-      'Modular water- and sand-ballastable crowd and hazard barrier panels for construction sites and warehouses.',
-    specifications: ['1M x 1M Interlocking Panel', '2M x 1M Heavy Panel'],
-    packagingNote: 'Bright UV-resistant red and white high-visibility panels',
-    image: '/images/cat-equipment-safety.webp',
-    featured: true,
-  },
-  {
-    id: 'flexible-safety-cylinders',
-    name: 'Flexible Safety Cylinders & Delineators',
-    category: 'equipment-safety',
-    shortDescription:
-      'Impact-recovery polyurethane flexible guide posts and bollards with reflective collars for traffic lanes.',
-    specifications: ['75CM Flexible Post', '1M Spring-Base Delineator'],
-    image: '/images/cat-equipment-safety.webp',
-  },
-  {
-    id: 'heavy-duty-plastic-pallets',
-    name: 'Heavy-Duty Industrial Plastic Pallets',
-    category: 'equipment-safety',
-    shortDescription:
-      'Racking-grade, hygienic, 4-way entry plastic pallets for food processing, cleanrooms, and automated warehouses.',
-    specifications: ['1200 x 1000 mm Standard', '1200 x 800 mm Euro Size'],
-    packagingNote:
-      'Static load capacity up to 6,000 KG / Dynamic load up to 1,500 KG',
-    image: '/images/cat-equipment-safety.webp',
-    featured: true,
-  },
-];
-
-// ==========================================
-// Utility Query Functions
-// ==========================================
-
-/**
- * Returns all products belonging to a given division/category.
- */
-export function getProductsByCategory(category: CategoryId): ProductItem[] {
-  return PRODUCTS.filter((item) => item.category === category);
-}
-
-/**
- * Finds a single product by its unique string identifier.
- */
-export function getProductById(id: string): ProductItem | undefined {
-  return PRODUCTS.find((item) => item.id === id);
-}
-
-/**
- * Returns all products marked as featured for showcase grids.
- */
-export function getFeaturedProducts(): ProductItem[] {
-  return PRODUCTS.filter((item) => item.featured);
-}
-
-/**
- * Searches products by keyword across name, description, and specifications,
- * with optional category filtering.
- */
-export function searchProducts(
-  query: string,
-  category?: CategoryId | 'all',
-): ProductItem[] {
-  const normalized = query.trim().toLowerCase();
-
-  return PRODUCTS.filter((item) => {
-    if (category && category !== 'all' && item.category !== category) {
-      return false;
-    }
-    if (!normalized) return true;
-
-    const matchesName = item.name.toLowerCase().includes(normalized);
-    const matchesDesc = item.shortDescription
-      .toLowerCase()
-      .includes(normalized);
-    const matchesSpecs = item.specifications.some((spec) =>
-      spec.toLowerCase().includes(normalized),
-    );
-    const matchesPkg = item.packagingNote
-      ? item.packagingNote.toLowerCase().includes(normalized)
-      : false;
-
-    return matchesName || matchesDesc || matchesSpecs || matchesPkg;
-  });
-}
-
-/**
- * Finds category metadata by its ID.
- */
-export function getCategoryById(id: CategoryId): CategoryInfo | undefined {
-  return CATEGORIES.find((cat) => cat.id === id);
-}
+// Backward-compatible flattened PRODUCTS list
+export const PRODUCTS: ProductItem[] = DIVISIONS.flatMap((div) =>
+  div.subCategories.map((sub) => ({
+    id: sub.id,
+    name: sub.name,
+    category: sub.category,
+    shortDescription: sub.shortDescription,
+    specifications: sub.specifications,
+    packagingNote: sub.packagingNote,
+    image: div.image,
+    featured: sub.popular,
+  })),
+);
