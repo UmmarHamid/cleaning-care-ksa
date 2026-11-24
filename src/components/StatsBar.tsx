@@ -1,6 +1,7 @@
 import React from 'react';
 import { COMPANY_DATA } from '@/data/company';
 import { Layers, Store, Truck, Warehouse } from 'lucide-react';
+import { AnimatedCounter } from '@/components/motion/AnimatedCounter';
 
 export function StatsBar() {
   return (
@@ -11,7 +12,7 @@ export function StatsBar() {
           <Warehouse className='text-brand-red w-8 h-8 sm:w-10 sm:h-10 shrink-0' />
           <div className='flex flex-col justify-center leading-snug'>
             <strong className='font-heading font-extrabold text-xl sm:text-2xl lg:text-3xl text-slate-dark tracking-tight leading-none'>
-              {COMPANY_DATA.stats[0].metric}
+              <AnimatedCounter value={COMPANY_DATA.stats[0].metric} />
             </strong>
             <span className='font-heading font-bold text-2xs sm:text-xs text-slate-dark leading-tight mt-1'>
               {COMPANY_DATA.stats[0].label}
@@ -27,7 +28,7 @@ export function StatsBar() {
           <Store className='text-brand-red w-8 h-8 sm:w-10 sm:h-10 shrink-0' />
           <div className='flex flex-col justify-center leading-snug'>
             <strong className='font-heading font-extrabold text-xl sm:text-2xl lg:text-3xl text-slate-dark tracking-tight leading-none'>
-              {COMPANY_DATA.stats[1].metric}
+              <AnimatedCounter value={COMPANY_DATA.stats[1].metric} />
             </strong>
             <span className='font-heading font-bold text-2xs sm:text-xs text-slate-dark leading-tight mt-1'>
               {COMPANY_DATA.stats[1].label}
@@ -43,7 +44,7 @@ export function StatsBar() {
           <Layers className='text-brand-red w-8 h-8 sm:w-10 sm:h-10 shrink-0' />
           <div className='flex flex-col justify-center leading-snug'>
             <strong className='font-heading font-extrabold text-xl sm:text-2xl lg:text-3xl text-slate-dark tracking-tight leading-none'>
-              {COMPANY_DATA.stats[2].metric}
+              <AnimatedCounter value={COMPANY_DATA.stats[2].metric} />
             </strong>
             <span className='font-heading font-bold text-2xs sm:text-xs text-slate-dark leading-tight mt-1'>
               {COMPANY_DATA.stats[2].label}

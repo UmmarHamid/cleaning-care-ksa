@@ -118,10 +118,10 @@ export const COMPANY_DATA: CompanyData = {
       isText: false,
     },
     {
-      metric: 'Bulk Supply',
-      label: '& B2B Distribution',
-      subtext: '',
-      isText: true,
+      metric: '500+',
+      label: 'Bulk SKUs',
+      subtext: 'in Stock',
+      isText: false,
     },
     {
       metric: 'Fast',

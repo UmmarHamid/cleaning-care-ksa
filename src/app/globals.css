@@ -34,6 +34,47 @@
   --shadow-card-hover: 0 10px 20px -3px rgba(15, 23, 42, 0.08), 0 4px 8px -2px rgba(15, 23, 42, 0.03);
   --shadow-stat: 0 14px 34px -4px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.03);
   --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+
+  --animate-marquee: marquee 35s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+}
+
+@utility bg-industrial-grid {
+  background-size: 32px 32px;
+  background-position: center;
+  background-image:
+    linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+}
+
+@utility bg-brand-glow {
+  background-image: radial-gradient(
+    ellipse at center,
+    rgba(211, 32, 39, 0.06) 0%,
+    rgba(242, 183, 5, 0.05) 45%,
+    transparent 70%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes marquee {
+    from, to {
+      transform: none;
+    }
+  }
+  .animate-marquee {
+    animation: none;
+  }
 }
 
 :root {

@@ -42,7 +42,7 @@ export function ProductsSection() {
           {CATEGORIES.map((cat) => (
             <article
               key={cat.id}
-              className='flex flex-col h-full rounded-2xl border border-border-subtle bg-white overflow-hidden shadow-subtle hover:shadow-card hover:-translate-y-1 transition-all group'
+              className='group flex flex-col h-full rounded-2xl border border-border-subtle bg-white overflow-hidden shadow-subtle hover:shadow-md hover:-translate-y-1 hover:border-[#D32027]/40 transition-all duration-300 ease-out motion-reduce:transform-none'
             >
               <Link className='w-full h-52 bg-studio-gray p-4 flex items-center justify-center overflow-hidden' href='/products'>
                 <Image
@@ -50,7 +50,7 @@ export function ProductsSection() {
                   alt={cat.imageAlt}
                   width={300}
                   height={210}
-                  className='w-full h-full object-contain group-hover:scale-105 transition-transform duration-300'
+                  className='w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 motion-reduce:transform-none'
                   unoptimized
                 />
               </Link>
@@ -67,10 +67,10 @@ export function ProductsSection() {
                 <div className='mt-auto pt-2 flex items-center justify-between'>
                   <Link
                     href='/products'
-                    className='inline-flex items-center gap-1.5 text-brand-red hover:text-brand-red-dark font-heading font-bold text-sm min-h-touch transition-all group-hover:translate-x-0.5'
+                    className='inline-flex items-center gap-1.5 text-brand-red hover:text-brand-red-dark font-heading font-bold text-sm min-h-touch transition-all group-hover:translate-x-0.5 motion-reduce:transform-none'
                   >
                     <span>View Products</span>
-                    <ArrowRight size={16} />
+                    <ArrowRight size={16} className='group-hover:translate-x-0.5 transition-transform duration-300 motion-reduce:transform-none' />
                   </Link>
                 </div>
               </div>

@@ -2,13 +2,18 @@ import React from "react";
 import Image from "next/image";
 import { COMPANY_DATA } from "@/data/company";
 import { Check, Warehouse, Store } from "lucide-react";
+import { AnimatedCounter } from "@/components/motion/AnimatedCounter";
+import { RevealOnScroll } from "@/components/motion/RevealOnScroll";
 
 export function InfrastructureBento() {
   const { infrastructureFeatures, facilities } = COMPANY_DATA;
 
   return (
-    <section id='infrastructure' className='py-16 bg-white'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+    <section id='infrastructure' className='py-16 bg-white relative overflow-hidden'>
+      {/* Background Architectural Grid & Ambient Brand Glow */}
+      <div className='absolute inset-0 bg-industrial-grid pointer-events-none z-0' aria-hidden='true' />
+      <div className='absolute inset-0 bg-brand-glow pointer-events-none z-0' aria-hidden='true' />
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10'>
         {/* Section Heading */}
         <div className='text-center max-w-3xl mx-auto mb-12'>
           <div className='flex items-center justify-center gap-3 sm:gap-4 mb-3'>
@@ -29,7 +34,10 @@ export function InfrastructureBento() {
 
         {/* Main Bento Hero Card */}
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch mb-10'>
-          <div className='lg:col-span-7 relative rounded-2xl lg:rounded-r-none overflow-hidden min-h-[360px] sm:min-h-[440px] h-full shadow-card'>
+          <RevealOnScroll
+            delay={0}
+            className='lg:col-span-7 relative rounded-2xl lg:rounded-r-none overflow-hidden min-h-[360px] sm:min-h-[440px] h-full shadow-card'
+          >
             <Image
               src='/assets/images/our-infrastructure-warehouse-interior.png'
               alt='Organized warehouse interior with inventory and high pallet racking in Riyadh'
@@ -52,9 +60,12 @@ export function InfrastructureBento() {
                 strokeLinecap='round'
               />
             </svg>
-          </div>
+          </RevealOnScroll>
 
-          <div className='lg:col-span-5 flex flex-col justify-center min-w-0'>
+          <RevealOnScroll
+            delay={60}
+            className='lg:col-span-5 flex flex-col justify-center min-w-0'
+          >
             <h3 className='font-heading font-extrabold text-xl sm:text-2xl lg:text-3xl text-slate-dark tracking-tight mb-3'>
               Warehouse &amp; <span className='text-brand-red'>Distribution Facilities</span>
             </h3>
@@ -79,19 +90,22 @@ export function InfrastructureBento() {
                 </div>
               ))}
             </div>
-          </div>
+          </RevealOnScroll>
         </div>
 
         {/* 2-Card Facility Bento Strip */}
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
           {/* Warehouse Card */}
-          <div className='grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-6 items-center p-6 sm:p-7 rounded-2xl bg-gradient-to-br from-brand-red to-brand-red-dark text-white shadow-card'>
+          <RevealOnScroll
+            delay={120}
+            className='grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-6 items-center p-6 sm:p-7 rounded-2xl bg-gradient-to-br from-brand-red to-brand-red-dark text-white shadow-card'
+          >
             <div className='sm:col-span-6 flex flex-col'>
               <div className='flex items-start mb-2 gap-4'>
                 <Warehouse size={64} className='shrink-0' />
                 <div className='flex flex-col gap-0.5'>
                   <span className='font-heading font-extrabold text-5xl text-brand-gold leading-none'>
-                    {facilities[0].num}
+                    <AnimatedCounter value={facilities[0].num} />
                   </span>
 
                   <h3 className='font-heading font-bold text-lg text-white mb-1.5'>
@@ -113,16 +127,19 @@ export function InfrastructureBento() {
                 unoptimized
               />
             </div>
-          </div>
+          </RevealOnScroll>
 
           {/* Retail Store Card */}
-          <div className='grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-6 items-center p-6 sm:p-7 rounded-2xl bg-white border border-border-subtle text-slate-dark shadow-subtle hover:shadow-card transition-all'>
+          <RevealOnScroll
+            delay={180}
+            className='grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-6 items-center p-6 sm:p-7 rounded-2xl bg-white border border-border-subtle text-slate-dark shadow-subtle hover:shadow-card transition-all'
+          >
             <div className='sm:col-span-6 flex flex-col'>
               <div className='flex items-start mb-2 gap-4'>
                 <Store size={64} className='text-brand-red shrink-0' />
                 <div className='flex flex-col gap-0.5'>
                   <span className='font-heading font-extrabold text-5xl text-brand-gold leading-none'>
-                    {facilities[1].num}
+                    <AnimatedCounter value={facilities[1].num} />
                   </span>
 
                   <h3 className='font-heading font-bold text-lg text-slate-dark mb-1.5'>
@@ -144,7 +161,7 @@ export function InfrastructureBento() {
                 unoptimized
               />
             </div>
-          </div>
+          </RevealOnScroll>
         </div>
       </div>
     </section>

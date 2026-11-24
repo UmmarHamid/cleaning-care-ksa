@@ -12,6 +12,16 @@ export function Hero() {
       id='home'
       className='relative overflow-hidden bg-brand-charcoal min-h-[520px] flex items-center'
     >
+      {/* Subtle Ambient Industrial Grid & Brand Glow */}
+      <div
+        className='absolute inset-0 bg-industrial-grid [filter:invert(1)_brightness(1.5)] opacity-20 pointer-events-none z-0'
+        aria-hidden='true'
+      />
+      <div
+        className='absolute inset-0 bg-brand-glow pointer-events-none z-0'
+        aria-hidden='true'
+      />
+
       {/* Background Warehouse Photography with Angular Geometric Accents */}
       <div
         className="absolute inset-0 bg-[url('/assets/images/hero-section-banner.png')] bg-right bg-cover no-repeat opacity-30 lg:opacity-100 lg:[clip-path:polygon(calc(50%+60px)_0,100%_0,100%_100%,calc(50%-60px)_100%)] z-0"

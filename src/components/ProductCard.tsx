@@ -26,7 +26,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const quoteUrl = buildWhatsAppQuoteUrl(product.name, selectedSpec);
 
   return (
-    <article className='flex flex-col h-full rounded-2xl border border-border-subtle bg-white shadow-subtle hover:shadow-card hover:-translate-y-1 transition-all group overflow-hidden'>
+    <article className='group flex flex-col h-full rounded-2xl border border-border-subtle bg-white shadow-subtle hover:shadow-md hover:-translate-y-1 hover:border-[#D32027]/40 transition-all duration-300 ease-out motion-reduce:transform-none overflow-hidden'>
       {/* Studio Image Container — Swiss Precision #F3F4F6 surface */}
       <div className='w-full h-48 bg-studio-gray p-4 flex items-center justify-center relative overflow-hidden'>
         <Image
@@ -34,7 +34,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           alt={`${product.name} — Wholesale B2B supply Riyadh`}
           width={280}
           height={180}
-          className='w-full h-full object-contain group-hover:scale-105 transition-transform duration-300'
+          className='w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 motion-reduce:transform-none'
           priority={priority}
           unoptimized
         />
@@ -113,9 +113,9 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             className='w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-xs sm:text-sm rounded-lg shadow-subtle min-h-touch transition-all group-hover:shadow-md'
             aria-label={`Request bulk quote for ${product.name} (${selectedSpec})`}
           >
-            <MessageCircle className='w-4 h-4' />
+            <MessageCircle className='w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-300 motion-reduce:transform-none' />
             <span>Request Bulk Quote</span>
-            <ArrowRight className='w-3.5 h-3.5 group-hover:translate-x-1 transition-transform' />
+            <ArrowRight className='w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-300 motion-reduce:transform-none' />
           </a>
         </div>
       </div>
