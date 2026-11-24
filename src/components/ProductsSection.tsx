@@ -3,7 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CATEGORIES } from '@/data/catalog';
 import { buildWhatsAppQuoteUrl } from '@/lib/whatsapp';
-import { ArrowRight, BrushCleaning, Toilet, TrafficCone, Trash } from 'lucide-react';
+import { ArrowRight, BrushCleaning, Toilet, TrafficCone, Trash, Truck } from 'lucide-react';
+import { SpotlightCard } from '@/components/motion/SpotlightCard';
+import { BorderBeam } from '@/components/motion/BorderBeam';
 
 function CategoryIcon({ id }: { id: string }) {
   if (id === 'cleaning-materials') {
@@ -40,72 +42,81 @@ export function ProductsSection() {
         {/* Categories Grid */}
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
           {CATEGORIES.map((cat) => (
-            <article
+            <SpotlightCard
               key={cat.id}
-              className='flex flex-col h-full rounded-2xl border border-border-subtle bg-white overflow-hidden shadow-subtle hover:shadow-card hover:-translate-y-1 transition-all group'
+              className='h-full rounded-2xl'
             >
-              <Link className='w-full h-52 bg-studio-gray p-4 flex items-center justify-center overflow-hidden' href='/products'>
-                <Image
-                  src={cat.image}
-                  alt={cat.imageAlt}
-                  width={300}
-                  height={210}
-                  className='w-full h-full object-contain group-hover:scale-105 transition-transform duration-300'
-                  unoptimized
-                />
-              </Link>
-              <div className='p-5 sm:p-6 flex flex-col flex-1'>
-                <div className='flex items-center gap-2.5 mb-2.5'>
-                  <CategoryIcon id={cat.id} />
-                  <h3 className='font-heading font-bold text-base sm:text-lg text-slate-dark leading-tight'>
-                    {cat.title}
-                  </h3>
+              <article className='group flex flex-col h-full rounded-2xl border border-border-subtle bg-white overflow-hidden shadow-subtle hover:shadow-md hover:-translate-y-1 hover:border-[#D32027]/40 transition-all duration-300 ease-out motion-reduce:transform-none'>
+                <Link className='w-full h-52 bg-studio-gray p-4 flex items-center justify-center overflow-hidden' href='/products'>
+                  <Image
+                    src={cat.image}
+                    alt={cat.imageAlt}
+                    width={300}
+                    height={210}
+                    className='w-full h-full object-contain'
+                    unoptimized
+                  />
+                </Link>
+                <div className='p-5 sm:p-6 flex flex-col flex-1'>
+                  <div className='flex items-center gap-2.5 mb-2.5'>
+                    <CategoryIcon id={cat.id} />
+                    <h3 className='font-heading font-bold text-base sm:text-lg text-slate-dark leading-tight'>
+                      {cat.title}
+                    </h3>
+                  </div>
+                  <p className='font-body text-slate-body text-xs sm:text-sm leading-relaxed mb-4 flex-1'>
+                    {cat.shortDescription}
+                  </p>
+                  <div className='mt-auto pt-2 flex items-center justify-between'>
+                    <Link
+                      href='/products'
+                      className='inline-flex items-center gap-1.5 text-brand-red hover:text-brand-red-dark font-heading font-bold text-sm min-h-touch transition-all group-hover:translate-x-0.5 motion-reduce:transform-none'
+                    >
+                      <span>View Products</span>
+                      <ArrowRight size={16} className='group-hover:translate-x-0.5 transition-transform duration-300 motion-reduce:transform-none' />
+                    </Link>
+                  </div>
                 </div>
-                <p className='font-body text-slate-body text-xs sm:text-sm leading-relaxed mb-4 flex-1'>
-                  {cat.shortDescription}
-                </p>
-                <div className='mt-auto pt-2 flex items-center justify-between'>
-                  <Link
-                    href='/products'
-                    className='inline-flex items-center gap-1.5 text-brand-red hover:text-brand-red-dark font-heading font-bold text-sm min-h-touch transition-all group-hover:translate-x-0.5'
-                  >
-                    <span>View Products</span>
-                    <ArrowRight size={16} />
-                  </Link>
-                </div>
-              </div>
-            </article>
+              </article>
+            </SpotlightCard>
           ))}
         </div>
 
-        {/* Homepage Catalog Action Strip */}
-        <div className='mt-10 bg-white border border-border-subtle rounded-2xl p-6 sm:p-8 flex flex-wrap items-center justify-between gap-6 shadow-card'>
-          <div className='max-w-xl'>
-            <h4 className='font-heading text-base sm:text-lg font-bold text-slate-dark mb-1'>
-              Looking for individual item specifications (10G–1100G) and instant capacity search?
-            </h4>
-            <p className='font-body text-xs sm:text-sm text-muted-gray'>
-              Browse all 29+ wholesale items with live search, spec selectors, and pre-filled WhatsApp quotes.
-            </p>
+        {/* Featured "Bulk Wholesale & Same-Day Riyadh Dispatch" Action Strip Card */}
+        <SpotlightCard className='relative mt-10 rounded-2xl' hoverScale={1.01} maxTilt={1.5}>
+          <div className='relative bg-white border border-border-subtle rounded-2xl p-6 sm:p-8 flex flex-wrap items-center justify-between gap-6 shadow-card overflow-hidden w-full'>
+            <BorderBeam size={90} duration={4.5} colorFrom="#D32027" colorTo="#F2B705" borderWidth={1.5} />
+            <div className='max-w-xl relative z-10'>
+              <div className='inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-gold/15 text-slate-dark border border-brand-gold/30 text-2xs font-extrabold uppercase tracking-wider mb-2.5'>
+                <Truck className='w-3.5 h-3.5 text-brand-red' />
+                <span>Bulk Wholesale &amp; Same-Day Riyadh Dispatch</span>
+              </div>
+              <h4 className='font-heading text-base sm:text-lg font-bold text-slate-dark mb-1'>
+                Looking for individual item specifications (10G–1100G) and instant capacity search?
+              </h4>
+              <p className='font-body text-xs sm:text-sm text-muted-gray'>
+                Browse all 29+ wholesale items with live search, spec selectors, and pre-filled WhatsApp quotes.
+              </p>
+            </div>
+            <div className='flex items-center gap-3 flex-wrap relative z-10'>
+              <Link
+                href='/products'
+                className='inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-subtle min-h-touch transition-all'
+              >
+                <span>Explore Full Interactive Catalog</span>
+                <span aria-hidden='true'>→</span>
+              </Link>
+              <a
+                href={buildWhatsAppQuoteUrl()}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='inline-flex items-center justify-center gap-2 bg-success hover:bg-success-dark text-white font-heading font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-subtle min-h-touch transition-all'
+              >
+                <span>Inquire on WhatsApp</span>
+              </a>
+            </div>
           </div>
-          <div className='flex items-center gap-3 flex-wrap'>
-            <Link
-              href='/products'
-              className='inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-subtle min-h-touch transition-all'
-            >
-              <span>Explore Full Interactive Catalog</span>
-              <span aria-hidden='true'>→</span>
-            </Link>
-            <a
-              href={buildWhatsAppQuoteUrl()}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='inline-flex items-center justify-center gap-2 bg-success hover:bg-success-dark text-white font-heading font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-subtle min-h-touch transition-all'
-            >
-              <span>Inquire on WhatsApp</span>
-            </a>
-          </div>
-        </div>
+        </SpotlightCard>
       </div>
     </section>
   );

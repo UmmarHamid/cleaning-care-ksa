@@ -1,11 +1,27 @@
-import React from 'react';
-import { COMPANY_DATA } from '@/data/company';
-import { Layers, Store, Truck, Warehouse } from 'lucide-react';
+import React from "react";
+import { COMPANY_DATA } from "@/data/company";
+import { Layers, Store, Truck, Warehouse } from "lucide-react";
+import { SpotlightCard } from "@/components/motion/SpotlightCard";
+import { BorderBeam } from "@/components/motion/BorderBeam";
 
 export function StatsBar() {
   return (
-    <section className='relative z-20 -mt-11 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full' aria-label='Company highlights'>
-      <div className='bg-white border border-border-subtle rounded-2xl shadow-stat p-3 sm:p-5 grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-0 lg:divide-x divide-border-subtle'>
+    <section
+      className='relative z-20 -mt-11 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full'
+      aria-label='Company highlights'
+    >
+      <SpotlightCard
+        maxTilt={1.5}
+        hoverScale={1.005}
+        className='relative bg-white border border-border-subtle rounded-2xl shadow-stat p-3 sm:p-5 grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-0 lg:divide-x divide-border-subtle overflow-hidden'
+      >
+        <BorderBeam
+          duration={4.5}
+          size={90}
+          borderWidth={1.5}
+          colorFrom='#D32027'
+          colorTo='#F2B705'
+        />
         {/* Stat 1: 3 Warehouses */}
         <div className='flex items-center justify-center gap-3 sm:gap-4 p-2 sm:p-3'>
           <Warehouse className='text-brand-red w-8 h-8 sm:w-10 sm:h-10 shrink-0' />
@@ -69,7 +85,7 @@ export function StatsBar() {
             </span>
           </div>
         </div>
-      </div>
+      </SpotlightCard>
     </section>
   );
 }

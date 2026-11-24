@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { COMPANY_DATA } from "@/data/company";
 import { Sparkles, Building2, UtensilsCrossed, Plus, GraduationCap, Wrench } from "lucide-react";
+import { SpotlightCard } from "@/components/motion/SpotlightCard";
 
 export function IndustriesSection() {
   const { industries } = COMPANY_DATA;
@@ -25,142 +26,154 @@ export function IndustriesSection() {
 
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4'>
           {/* 1. Cleaning Companies & Contractors */}
-          <article className='flex flex-col items-center rounded-2xl bg-white border border-border-subtle shadow-subtle hover:shadow-card hover:-translate-y-1 transition-all overflow-hidden text-center group'>
-            <div className='w-full h-28 relative bg-slate-100 overflow-hidden'>
-              <Image
-                src={industries[0].image}
-                alt={industries[0].alt}
-                fill
-                className='object-cover group-hover:scale-105 transition-transform duration-300'
-                unoptimized
-              />
-            </div>
-            <div
-              className='w-16 h-16 rounded-full bg-white shadow-subtle border border-slate-100 flex items-center justify-center text-brand-red -mt-5 mb-2 relative z-10 shrink-0'
-              aria-hidden='true'
-            >
-              <Sparkles className='w-10 h-10' />
-            </div>
-            <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
-              Cleaning Companies
-              <br />
-              &amp; Contractors
-            </h3>
-          </article>
+          <SpotlightCard className='h-full rounded-2xl' hoverScale={1.02}>
+            <article className='flex flex-col items-center h-full rounded-2xl bg-white border border-border-subtle shadow-subtle hover:shadow-card transition-all overflow-hidden text-center group'>
+              <div className='w-full h-28 relative bg-slate-100 overflow-hidden'>
+                <Image
+                  src={industries[0].image}
+                  alt={industries[0].alt}
+                  fill
+                  className='object-cover'
+                  unoptimized
+                />
+              </div>
+              <div
+                className='w-16 h-16 rounded-full bg-white shadow-subtle border border-slate-100 flex items-center justify-center text-brand-red -mt-5 mb-2 relative z-10 shrink-0'
+                aria-hidden='true'
+              >
+                <Sparkles className='w-10 h-10' />
+              </div>
+              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
+                Cleaning Companies
+                <br />
+                &amp; Contractors
+              </h3>
+            </article>
+          </SpotlightCard>
 
           {/* 2. Corporate Offices */}
-          <article className='flex flex-col items-center rounded-2xl bg-white border border-border-subtle shadow-subtle hover:shadow-card hover:-translate-y-1 transition-all overflow-hidden text-center group'>
-            <div className='w-full h-28 relative bg-slate-100 overflow-hidden'>
-              <Image
-                src={industries[1].image}
-                alt={industries[1].alt}
-                fill
-                className='object-cover group-hover:scale-105 transition-transform duration-300'
-                unoptimized
-              />
-            </div>
-            <div
-              className='w-16 h-16 rounded-full bg-white shadow-subtle border border-slate-100 flex items-center justify-center text-brand-red -mt-5 mb-2 relative z-10 shrink-0'
-              aria-hidden='true'
-            >
-              <Building2 className='w-10 h-10' />
-            </div>
-            <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
-              Corporate Offices
-            </h3>
-          </article>
+          <SpotlightCard className='h-full rounded-2xl' hoverScale={1.02}>
+            <article className='flex flex-col items-center h-full rounded-2xl bg-white border border-border-subtle shadow-subtle hover:shadow-card transition-all overflow-hidden text-center group'>
+              <div className='w-full h-28 relative bg-slate-100 overflow-hidden'>
+                <Image
+                  src={industries[1].image}
+                  alt={industries[1].alt}
+                  fill
+                  className='object-cover'
+                  unoptimized
+                />
+              </div>
+              <div
+                className='w-16 h-16 rounded-full bg-white shadow-subtle border border-slate-100 flex items-center justify-center text-brand-red -mt-5 mb-2 relative z-10 shrink-0'
+                aria-hidden='true'
+              >
+                <Building2 className='w-10 h-10' />
+              </div>
+              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
+                Corporate Offices
+              </h3>
+            </article>
+          </SpotlightCard>
 
           {/* 3. Hotels & Restaurants (HORECA) */}
-          <article className='flex flex-col items-center rounded-2xl bg-white border border-border-subtle shadow-subtle hover:shadow-card hover:-translate-y-1 transition-all overflow-hidden text-center group'>
-            <div className='w-full h-28 relative bg-slate-100 overflow-hidden'>
-              <Image
-                src={industries[2].image}
-                alt={industries[2].alt}
-                fill
-                className='object-cover group-hover:scale-105 transition-transform duration-300'
-                unoptimized
-              />
-            </div>
-            <div
-              className='w-16 h-16 rounded-full bg-white shadow-subtle border border-slate-100 flex items-center justify-center text-brand-red -mt-5 mb-2 relative z-10 shrink-0'
-              aria-hidden='true'
-            >
-              <UtensilsCrossed className='w-10 h-10' />
-            </div>
-            <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
-              Hotels &amp; Restaurants
-              <br />
-              (HORECA)
-            </h3>
-          </article>
+          <SpotlightCard className='h-full rounded-2xl' hoverScale={1.02}>
+            <article className='flex flex-col items-center h-full rounded-2xl bg-white border border-border-subtle shadow-subtle hover:shadow-card transition-all overflow-hidden text-center group'>
+              <div className='w-full h-28 relative bg-slate-100 overflow-hidden'>
+                <Image
+                  src={industries[2].image}
+                  alt={industries[2].alt}
+                  fill
+                  className='object-cover'
+                  unoptimized
+                />
+              </div>
+              <div
+                className='w-16 h-16 rounded-full bg-white shadow-subtle border border-slate-100 flex items-center justify-center text-brand-red -mt-5 mb-2 relative z-10 shrink-0'
+                aria-hidden='true'
+              >
+                <UtensilsCrossed className='w-10 h-10' />
+              </div>
+              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
+                Hotels &amp; Restaurants
+                <br />
+                (HORECA)
+              </h3>
+            </article>
+          </SpotlightCard>
 
           {/* 4. Hospitals & Clinics */}
-          <article className='flex flex-col items-center rounded-2xl bg-white border border-border-subtle shadow-subtle hover:shadow-card hover:-translate-y-1 transition-all overflow-hidden text-center group'>
-            <div className='w-full h-28 relative bg-slate-100 overflow-hidden'>
-              <Image
-                src={industries[3].image}
-                alt={industries[3].alt}
-                fill
-                className='object-cover group-hover:scale-105 transition-transform duration-300'
-                unoptimized
-              />
-            </div>
-            <div
-              className='w-16 h-16 rounded-full bg-white shadow-subtle border border-slate-100 flex items-center justify-center text-brand-red -mt-5 mb-2 relative z-10 shrink-0'
-              aria-hidden='true'
-            >
-              <Plus className='w-10 h-10 stroke-[3]' />
-            </div>
-            <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
-              Hospitals &amp; Clinics
-            </h3>
-          </article>
+          <SpotlightCard className='h-full rounded-2xl' hoverScale={1.02}>
+            <article className='flex flex-col items-center h-full rounded-2xl bg-white border border-border-subtle shadow-subtle hover:shadow-card transition-all overflow-hidden text-center group'>
+              <div className='w-full h-28 relative bg-slate-100 overflow-hidden'>
+                <Image
+                  src={industries[3].image}
+                  alt={industries[3].alt}
+                  fill
+                  className='object-cover'
+                  unoptimized
+                />
+              </div>
+              <div
+                className='w-16 h-16 rounded-full bg-white shadow-subtle border border-slate-100 flex items-center justify-center text-brand-red -mt-5 mb-2 relative z-10 shrink-0'
+                aria-hidden='true'
+              >
+                <Plus className='w-10 h-10 stroke-[3]' />
+              </div>
+              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
+                Hospitals &amp; Clinics
+              </h3>
+            </article>
+          </SpotlightCard>
 
           {/* 5. Schools & Universities */}
-          <article className='flex flex-col items-center rounded-2xl bg-white border border-border-subtle shadow-subtle hover:shadow-card hover:-translate-y-1 transition-all overflow-hidden text-center group'>
-            <div className='w-full h-28 relative bg-slate-100 overflow-hidden'>
-              <Image
-                src={industries[4].image}
-                alt={industries[4].alt}
-                fill
-                className='object-cover group-hover:scale-105 transition-transform duration-300'
-                unoptimized
-              />
-            </div>
-            <div
-              className='w-16 h-16 rounded-full bg-white shadow-subtle border border-slate-100 flex items-center justify-center text-brand-red -mt-5 mb-2 relative z-10 shrink-0'
-              aria-hidden='true'
-            >
-              <GraduationCap className='w-10 h-10' />
-            </div>
-            <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
-              Schools &amp; Universities
-            </h3>
-          </article>
+          <SpotlightCard className='h-full rounded-2xl' hoverScale={1.02}>
+            <article className='flex flex-col items-center h-full rounded-2xl bg-white border border-border-subtle shadow-subtle hover:shadow-card transition-all overflow-hidden text-center group'>
+              <div className='w-full h-28 relative bg-slate-100 overflow-hidden'>
+                <Image
+                  src={industries[4].image}
+                  alt={industries[4].alt}
+                  fill
+                  className='object-cover'
+                  unoptimized
+                />
+              </div>
+              <div
+                className='w-16 h-16 rounded-full bg-white shadow-subtle border border-slate-100 flex items-center justify-center text-brand-red -mt-5 mb-2 relative z-10 shrink-0'
+                aria-hidden='true'
+              >
+                <GraduationCap className='w-10 h-10' />
+              </div>
+              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
+                Schools &amp; Universities
+              </h3>
+            </article>
+          </SpotlightCard>
 
           {/* 6. Facility Management & Maintenance Companies */}
-          <article className='flex flex-col items-center rounded-2xl bg-white border border-border-subtle shadow-subtle hover:shadow-card hover:-translate-y-1 transition-all overflow-hidden text-center group'>
-            <div className='w-full h-28 relative bg-slate-100 overflow-hidden'>
-              <Image
-                src={industries[5].image}
-                alt={industries[5].alt}
-                fill
-                className='object-cover group-hover:scale-105 transition-transform duration-300'
-                unoptimized
-              />
-            </div>
-            <div
-              className='w-16 h-16 rounded-full bg-white shadow-subtle border border-slate-100 flex items-center justify-center text-brand-red -mt-5 mb-2 relative z-10 shrink-0'
-              aria-hidden='true'
-            >
-              <Wrench className='w-10 h-10' />
-            </div>
-            <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
-              Facility Management &amp;
-              <br />
-              Maintenance Companies
-            </h3>
-          </article>
+          <SpotlightCard className='h-full rounded-2xl' hoverScale={1.02}>
+            <article className='flex flex-col items-center h-full rounded-2xl bg-white border border-border-subtle shadow-subtle hover:shadow-card transition-all overflow-hidden text-center group'>
+              <div className='w-full h-28 relative bg-slate-100 overflow-hidden'>
+                <Image
+                  src={industries[5].image}
+                  alt={industries[5].alt}
+                  fill
+                  className='object-cover'
+                  unoptimized
+                />
+              </div>
+              <div
+                className='w-16 h-16 rounded-full bg-white shadow-subtle border border-slate-100 flex items-center justify-center text-brand-red -mt-5 mb-2 relative z-10 shrink-0'
+                aria-hidden='true'
+              >
+                <Wrench className='w-10 h-10' />
+              </div>
+              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
+                Facility Management &amp;
+                <br />
+                Maintenance Companies
+              </h3>
+            </article>
+          </SpotlightCard>
         </div>
       </div>
     </section>
