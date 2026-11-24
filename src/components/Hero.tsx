@@ -22,6 +22,15 @@ export function Hero() {
         aria-hidden='true'
       />
 
+      {/* Continuous Ambient Hero Aurora (Crimson Red & Warm Gold Drifting Orbs) */}
+      <div
+        className='absolute inset-0 overflow-hidden pointer-events-none z-0 select-none'
+        aria-hidden='true'
+      >
+        <div className='absolute -top-24 -left-20 w-[420px] h-[420px] sm:w-[560px] sm:h-[560px] rounded-full bg-[#D32027]/10 blur-3xl animate-aurora-1' />
+        <div className='absolute top-1/4 left-1/4 w-[360px] h-[360px] sm:w-[480px] sm:h-[480px] rounded-full bg-[#F2B705]/10 blur-3xl animate-aurora-2' />
+      </div>
+
       {/* Background Warehouse Photography with Angular Geometric Accents */}
       <div
         className="absolute inset-0 bg-[url('/assets/images/hero-section-banner.png')] bg-right bg-cover no-repeat opacity-30 lg:opacity-100 lg:[clip-path:polygon(calc(50%+60px)_0,100%_0,100%_100%,calc(50%-60px)_100%)] z-0"

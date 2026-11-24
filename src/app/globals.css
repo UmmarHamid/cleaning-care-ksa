@@ -45,6 +45,39 @@
       transform: translateX(-100%);
     }
   }
+
+  @keyframes aurora-1 {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(80px, -40px, 0) scale(1.15);
+    }
+    100% {
+      transform: translate3d(-40px, 50px, 0) scale(0.95);
+    }
+  }
+
+  @keyframes aurora-2 {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(-70px, 50px, 0) scale(1.18);
+    }
+    100% {
+      transform: translate3d(50px, -30px, 0) scale(0.92);
+    }
+  }
+
+  @keyframes border-beam {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 @utility bg-industrial-grid {
@@ -66,14 +99,42 @@
   );
 }
 
+@utility animate-aurora-1 {
+  animation: aurora-1 14s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@utility animate-aurora-2 {
+  animation: aurora-2 14s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@utility animate-border-beam {
+  animation: border-beam 7s linear infinite;
+  will-change: transform;
+}
+
+@utility border-beam-mask {
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-clip: content-box, border-box;
+  -webkit-mask-clip: content-box, border-box;
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  padding: 1.5px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   @keyframes marquee {
     from, to {
       transform: none;
     }
   }
-  .animate-marquee {
-    animation: none;
+  .animate-marquee,
+  .animate-aurora-1,
+  .animate-aurora-2,
+  .animate-border-beam {
+    animation: none !important;
   }
 }
 

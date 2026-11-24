@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { COMPANY_DATA } from "@/data/company";
 import { Warehouse, Store, ArrowRight } from "lucide-react";
-import { AnimatedCounter } from "@/components/motion/AnimatedCounter";
 
 export function InfraBanner() {
   return (
@@ -63,7 +62,7 @@ export function InfraBanner() {
               </span>
               <div className='flex flex-col min-w-0'>
                 <strong className='font-heading font-extrabold text-4xl leading-tight text-slate-dark'>
-                  <AnimatedCounter value={COMPANY_DATA.stats[0].metric} />
+                  {COMPANY_DATA.stats[0].metric}
                 </strong>
                 <span className='font-body font-semibold text-sm  text-muted-gray leading-tight'>
                   Fully Equipped Warehouses
@@ -82,7 +81,7 @@ export function InfraBanner() {
               </span>
               <div className='flex flex-col min-w-0'>
                 <strong className='font-heading font-extrabold text-4xl leading-tight text-slate-dark'>
-                  <AnimatedCounter value={COMPANY_DATA.stats[1].metric} />
+                  {COMPANY_DATA.stats[1].metric}
                 </strong>
                 <span className='font-body font-semibold text-sm text-muted-gray leading-tight'>
                   Retail Stores in Riyadh

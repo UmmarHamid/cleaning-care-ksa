@@ -2,8 +2,8 @@ import React from "react";
 import Image from "next/image";
 import { COMPANY_DATA } from "@/data/company";
 import { Check, Warehouse, Store } from "lucide-react";
-import { AnimatedCounter } from "@/components/motion/AnimatedCounter";
 import { RevealOnScroll } from "@/components/motion/RevealOnScroll";
+import { SpotlightCard } from "@/components/motion/SpotlightCard";
 
 export function InfrastructureBento() {
   const { infrastructureFeatures, facilities } = COMPANY_DATA;
@@ -36,60 +36,64 @@ export function InfrastructureBento() {
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch mb-10'>
           <RevealOnScroll
             delay={0}
-            className='lg:col-span-7 relative rounded-2xl lg:rounded-r-none overflow-hidden min-h-[360px] sm:min-h-[440px] h-full shadow-card'
+            className='lg:col-span-7 h-full'
           >
-            <Image
-              src='/assets/images/our-infrastructure-warehouse-interior.png'
-              alt='Organized warehouse interior with inventory and high pallet racking in Riyadh'
-              fill
-              className='object-cover object-center'
-              unoptimized
-            />
-            <svg
-              className='hidden lg:block absolute right-0 top-0 bottom-0 w-[88px] h-full pointer-events-none z-10'
-              viewBox='0 0 100 500'
-              preserveAspectRatio='none'
-              aria-hidden='true'
-            >
-              <path d='M 100,0 L 52,0 C 92,150 80,320 5,500 L 100,500 Z' fill='#FFFFFF' />
-              <path
-                className='stroke-brand-red'
-                d='M 52,0 C 92,150 80,320 5,500'
-                fill='none'
-                strokeWidth='14'
-                strokeLinecap='round'
+            <SpotlightCard className='relative rounded-2xl lg:rounded-r-none overflow-hidden min-h-[360px] sm:min-h-[440px] h-full shadow-card'>
+              <Image
+                src='/assets/images/our-infrastructure-warehouse-interior.png'
+                alt='Organized warehouse interior with inventory and high pallet racking in Riyadh'
+                fill
+                className='object-cover object-center'
+                unoptimized
               />
-            </svg>
+              <svg
+                className='hidden lg:block absolute right-0 top-0 bottom-0 w-[88px] h-full pointer-events-none z-10'
+                viewBox='0 0 100 500'
+                preserveAspectRatio='none'
+                aria-hidden='true'
+              >
+                <path d='M 100,0 L 52,0 C 92,150 80,320 5,500 L 100,500 Z' fill='#FFFFFF' />
+                <path
+                  className='stroke-brand-red'
+                  d='M 52,0 C 92,150 80,320 5,500'
+                  fill='none'
+                  strokeWidth='14'
+                  strokeLinecap='round'
+                />
+              </svg>
+            </SpotlightCard>
           </RevealOnScroll>
 
           <RevealOnScroll
             delay={60}
-            className='lg:col-span-5 flex flex-col justify-center min-w-0'
+            className='lg:col-span-5 h-full'
           >
-            <h3 className='font-heading font-extrabold text-xl sm:text-2xl lg:text-3xl text-slate-dark tracking-tight mb-3'>
-              Warehouse &amp; <span className='text-brand-red'>Distribution Facilities</span>
-            </h3>
-            <p className='font-body text-slate-body text-sm sm:text-base leading-relaxed mb-6'>
-              Our company operates a well-organized wholesale warehouse and storage facility
-              designed to maintain a large inventory of cleaning products, materials, plastics and
-              hygiene supplies.
-            </p>
-            <div className='flex flex-col gap-2.5'>
-              {infrastructureFeatures.map((feat, idx) => (
-                <div
-                  key={idx}
-                  className='flex items-center gap-3 p-3 sm:p-3.5 bg-page-bg border border-border-subtle rounded-xl text-xs sm:text-sm font-semibold text-slate-dark shadow-subtle hover:translate-x-1 hover:border-slate-300 transition-all'
-                >
-                  <span
-                    className='w-5 h-5 text-brand-red shrink-0 flex items-center justify-center'
-                    aria-hidden='true'
+            <SpotlightCard className='flex flex-col justify-center min-w-0 p-6 sm:p-8 rounded-2xl border border-border-subtle bg-white shadow-subtle h-full'>
+              <h3 className='font-heading font-extrabold text-xl sm:text-2xl lg:text-3xl text-slate-dark tracking-tight mb-3'>
+                Warehouse &amp; <span className='text-brand-red'>Distribution Facilities</span>
+              </h3>
+              <p className='font-body text-slate-body text-sm sm:text-base leading-relaxed mb-6'>
+                Our company operates a well-organized wholesale warehouse and storage facility
+                designed to maintain a large inventory of cleaning products, materials, plastics and
+                hygiene supplies.
+              </p>
+              <div className='flex flex-col gap-2.5'>
+                {infrastructureFeatures.map((feat, idx) => (
+                  <div
+                    key={idx}
+                    className='flex items-center gap-3 p-3 sm:p-3.5 bg-page-bg border border-border-subtle rounded-xl text-xs sm:text-sm font-semibold text-slate-dark shadow-subtle hover:translate-x-1 hover:border-slate-300 transition-all'
                   >
-                    <Check className='w-4 h-4' />
-                  </span>
-                  <span>{feat}</span>
-                </div>
-              ))}
-            </div>
+                    <span
+                      className='w-5 h-5 text-brand-red shrink-0 flex items-center justify-center'
+                      aria-hidden='true'
+                    >
+                      <Check className='w-4 h-4' />
+                    </span>
+                    <span>{feat}</span>
+                  </div>
+                ))}
+              </div>
+            </SpotlightCard>
           </RevealOnScroll>
         </div>
 
@@ -98,69 +102,76 @@ export function InfrastructureBento() {
           {/* Warehouse Card */}
           <RevealOnScroll
             delay={120}
-            className='grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-6 items-center p-6 sm:p-7 rounded-2xl bg-gradient-to-br from-brand-red to-brand-red-dark text-white shadow-card'
+            className='h-full'
           >
-            <div className='sm:col-span-6 flex flex-col'>
-              <div className='flex items-start mb-2 gap-4'>
-                <Warehouse size={64} className='shrink-0' />
-                <div className='flex flex-col gap-0.5'>
-                  <span className='font-heading font-extrabold text-5xl text-brand-gold leading-none'>
-                    <AnimatedCounter value={facilities[0].num} />
-                  </span>
+            <SpotlightCard
+              spotlightColor='rgba(255, 255, 255, 0.15)'
+              className='grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-6 items-center p-6 sm:p-7 rounded-2xl bg-gradient-to-br from-brand-red to-brand-red-dark text-white shadow-card h-full'
+            >
+              <div className='sm:col-span-6 flex flex-col'>
+                <div className='flex items-start mb-2 gap-4'>
+                  <Warehouse size={64} className='shrink-0' />
+                  <div className='flex flex-col gap-0.5'>
+                    <span className='font-heading font-extrabold text-5xl text-brand-gold leading-none'>
+                      {facilities[0].num}
+                    </span>
 
-                  <h3 className='font-heading font-bold text-lg text-white mb-1.5'>
-                    {facilities[0].title}
-                  </h3>
+                    <h3 className='font-heading font-bold text-lg text-white mb-1.5'>
+                      {facilities[0].title}
+                    </h3>
+                  </div>
                 </div>
+                <hr className='border-t border-gray-300 mb-4' />
+                <p className='font-body text-white/90 text-xs sm:text-sm leading-relaxed'>
+                  {facilities[0].description}
+                </p>
               </div>
-              <hr className='border-t border-gray-300 mb-4' />
-              <p className='font-body text-white/90 text-xs sm:text-sm leading-relaxed'>
-                {facilities[0].description}
-              </p>
-            </div>
-            <div className='sm:col-span-6 relative w-full h-40 sm:h-44 rounded-xl overflow-hidden shadow-subtle'>
-              <Image
-                src={facilities[0].image}
-                alt={facilities[0].imageAlt}
-                fill
-                className='object-cover'
-                unoptimized
-              />
-            </div>
+              <div className='sm:col-span-6 relative w-full h-40 sm:h-44 rounded-xl overflow-hidden shadow-subtle'>
+                <Image
+                  src={facilities[0].image}
+                  alt={facilities[0].imageAlt}
+                  fill
+                  className='object-cover'
+                  unoptimized
+                />
+              </div>
+            </SpotlightCard>
           </RevealOnScroll>
 
           {/* Retail Store Card */}
           <RevealOnScroll
             delay={180}
-            className='grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-6 items-center p-6 sm:p-7 rounded-2xl bg-white border border-border-subtle text-slate-dark shadow-subtle hover:shadow-card transition-all'
+            className='h-full'
           >
-            <div className='sm:col-span-6 flex flex-col'>
-              <div className='flex items-start mb-2 gap-4'>
-                <Store size={64} className='text-brand-red shrink-0' />
-                <div className='flex flex-col gap-0.5'>
-                  <span className='font-heading font-extrabold text-5xl text-brand-gold leading-none'>
-                    <AnimatedCounter value={facilities[1].num} />
-                  </span>
+            <SpotlightCard className='grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-6 items-center p-6 sm:p-7 rounded-2xl bg-white border border-border-subtle text-slate-dark shadow-subtle hover:shadow-card transition-all h-full'>
+              <div className='sm:col-span-6 flex flex-col'>
+                <div className='flex items-start mb-2 gap-4'>
+                  <Store size={64} className='text-brand-red shrink-0' />
+                  <div className='flex flex-col gap-0.5'>
+                    <span className='font-heading font-extrabold text-5xl text-brand-gold leading-none'>
+                      {facilities[1].num}
+                    </span>
 
-                  <h3 className='font-heading font-bold text-lg text-slate-dark mb-1.5'>
-                    {facilities[1].title}
-                  </h3>
+                    <h3 className='font-heading font-bold text-lg text-slate-dark mb-1.5'>
+                      {facilities[1].title}
+                    </h3>
+                  </div>
                 </div>
+                <hr className='border-t border-gray-300 mb-4' />
+                <p className='font-body text-slate-body text-xs sm:text-sm leading-relaxed'>
+                  {facilities[1].description}
+                </p>
               </div>
-              <hr className='border-t border-gray-300 mb-4' />
-              <p className='font-body text-slate-body text-xs sm:text-sm leading-relaxed'>
-                {facilities[1].description}
-              </p>
-            </div>
-            <div className='sm:col-span-6 relative w-full h-40 sm:h-44 rounded-xl overflow-hidden shadow-subtle'>
-              <Image
-                src={facilities[1].image}
-                alt={facilities[1].imageAlt}
-                fill
-                className='object-cover'
-                unoptimized
-              />
-            </div>
+              <div className='sm:col-span-6 relative w-full h-40 sm:h-44 rounded-xl overflow-hidden shadow-subtle'>
+                <Image
+                  src={facilities[1].image}
+                  alt={facilities[1].imageAlt}
+                  fill
+                  className='object-cover'
+                  unoptimized
+                />
+              </div>
+            </SpotlightCard>
           </RevealOnScroll>
         </div>
       </div>
