@@ -1,23 +1,7 @@
 /**
  * Cloudflare Pages Edge Middleware — Cleaning Care Trading Co.
- * 
- * Provides an "Under Construction / Maintenance Mode" edge gate on the production domain.
- * 
- * HOW TO BYPASS:
- * 1. Visit: https://<your-domain>/?preview_key=cc-preview-2026
- *    (or ?bypass=cc-preview-2026)
- *    This sets a 30-day cookie ('cc_maintenance_bypass=true') and redirects to the full site.
- * 
- * 2. To re-lock and test the maintenance screen again:
- *    Visit: https://<your-domain>/?lock=true
- * 
- * 3. PR / Preview Environments:
- *    Any PR preview URL (*.pages.dev with branch/commit prefix) automatically bypasses
- *    maintenance mode so preview testing is completely unaffected.
- * 
- * 4. TO DISABLE ON LAUNCH DAY:
- *    Set environment variable MAINTENANCE_MODE=false in Cloudflare Pages dashboard,
- *    or simply delete this functions/_middleware.ts file.
+ *
+ * Provides an "Under Construction / Maintenance Mode" edge gate for Cloudflare Pages.
  */
 
 interface Env {
@@ -36,9 +20,11 @@ interface EventContext<Env, P extends string, Data> {
   data: Data;
 }
 
-type PagesFunction<Env = unknown, P extends string = string, Data extends Record<string, unknown> = Record<string, unknown>> = (
-  context: EventContext<Env, P, Data>
-) => Response | Promise<Response>;
+type PagesFunction<
+  Env = unknown,
+  P extends string = string,
+  Data extends Record<string, unknown> = Record<string, unknown>,
+> = (context: EventContext<Env, P, Data>) => Response | Promise<Response>;
 
 const DEFAULT_BYPASS_SECRET = 'cc-preview-2026';
 const COOKIE_NAME = 'cc_maintenance_bypass';
@@ -53,7 +39,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     return context.next();
   }
 
-  // 2. Allow static assets, images, icons, and API/manifest routes through
+  // 2. Allow static assets, images, icons, and system routes through
   const isStaticAsset =
     url.pathname.startsWith('/assets/') ||
     url.pathname.startsWith('/images/') ||
@@ -68,20 +54,34 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   }
 
   // 3. Cloudflare Pages PR Previews automatically bypass
-  // Previews have hostnames like <branch>.<project>.pages.dev (more than 3 dot segments)
-  // or CF_PAGES_BRANCH != 'main'
-  const isPagesDev = url.hostname.endsWith('.pages.dev');
-  const isPrPreview =
-    (isPagesDev && url.hostname.split('.pages.dev')[0].includes('.')) ||
-    (env.CF_PAGES_BRANCH && env.CF_PAGES_BRANCH !== 'main');
+  const isCustomDomain =
+    url.hostname.includes('cleaningcaretradingco.com') ||
+    url.hostname.includes('cleaningcaretrading.com') ||
+    url.hostname.includes('cleaningcare.com');
 
-  if (isPrPreview) {
-    return context.next();
+  if (!isCustomDomain) {
+    const isWorkersDev = url.hostname.endsWith('.workers.dev');
+    const isPagesDev = url.hostname.endsWith('.pages.dev');
+
+    const workerParts = isWorkersDev ? url.hostname.split('.workers.dev')[0].split('.') : [];
+    const isWorkerPreview = isWorkersDev && workerParts.length > 2;
+
+    const pagesParts = isPagesDev ? url.hostname.split('.pages.dev')[0].split('.') : [];
+    const isPagesPreview = isPagesDev && pagesParts.length > 1;
+
+    if (isWorkerPreview || isPagesPreview) {
+      return context.next();
+    }
   }
 
   // 4. Handle Relock / Logout (?lock=true or ?bypass_clear=true)
-  if (url.searchParams.get('lock') === 'true' || url.searchParams.get('bypass_clear') === 'true') {
-    const cleanUrl = new URL(url.pathname, url.origin);
+  if (
+    url.searchParams.get('lock') === 'true' ||
+    url.searchParams.get('bypass_clear') === 'true'
+  ) {
+    const cleanUrl = new URL(request.url);
+    cleanUrl.searchParams.delete('lock');
+    cleanUrl.searchParams.delete('bypass_clear');
     return new Response(null, {
       status: 302,
       headers: {
@@ -99,8 +99,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     url.searchParams.get('access');
 
   if (queryKey && queryKey.trim() === activeSecret) {
-    // Valid secret provided: set 30-day cookie and redirect to clean pathname
-    const cleanUrl = new URL(url.pathname, url.origin);
+    const cleanUrl = new URL(request.url);
+    cleanUrl.searchParams.delete('preview_key');
+    cleanUrl.searchParams.delete('bypass');
+    cleanUrl.searchParams.delete('access');
     const isHttps = url.protocol === 'https:';
     const cookieHeader = `${COOKIE_NAME}=true; Path=/; Max-Age=${COOKIE_MAX_AGE}; SameSite=Lax; HttpOnly${
       isHttps ? '; Secure' : ''
@@ -272,78 +274,96 @@ function renderMaintenanceHtml(): string {
       font-size: 1rem;
       line-height: 1.65;
       color: #94A3B8;
-      max-width: 680px;
-      margin: 0 auto 2rem;
+      max-width: 640px;
+      margin: 0 auto 2.5rem;
     }
     @media (min-width: 640px) {
       .subtitle { font-size: 1.125rem; }
     }
+    .subtitle strong {
+      color: #FFFFFF;
+      font-weight: 600;
+    }
     .actions {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      flex-direction: column;
       gap: 0.875rem;
-      margin-bottom: 2.75rem;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+    @media (min-width: 640px) {
+      .actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
     }
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
+      gap: 0.625rem;
       min-height: 48px;
-      padding: 0.75rem 1.75rem;
-      border-radius: 0.625rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
       font-size: 0.9375rem;
-      font-weight: 700;
+      font-weight: 600;
       text-decoration: none;
       transition: all 0.2s ease;
       cursor: pointer;
+      width: 100%;
+    }
+    @media (min-width: 640px) {
+      .btn { width: auto; }
     }
     .btn-whatsapp {
-      background: #16A34A;
-      color: #FFFFFF;
-      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+      background-color: #25D366;
+      color: #0F172A;
+      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.25);
     }
     .btn-whatsapp:hover {
-      background: #15803D;
+      background-color: #20BD5A;
       transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
     }
     .btn-red {
-      background: #D32027;
+      background-color: #D32027;
       color: #FFFFFF;
-      box-shadow: 0 4px 14px rgba(211, 32, 39, 0.35);
+      box-shadow: 0 4px 14px rgba(211, 32, 39, 0.3);
     }
     .btn-red:hover {
-      background: #B0191F;
+      background-color: #B0191F;
       transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(211, 32, 39, 0.4);
     }
     .btn-outline {
-      background: transparent;
+      background-color: transparent;
       color: #E2E8F0;
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
     .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.4);
+      background-color: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
     }
     .stats-card {
-      background: rgba(30, 41, 59, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 1rem;
       padding: 1.5rem;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1.25rem;
+      margin-bottom: 2.5rem;
       backdrop-filter: blur(8px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     }
     @media (min-width: 640px) {
-      .stats-card { grid-template-columns: repeat(4, 1fr); }
+      .stats-card {
+        grid-template-columns: repeat(4, 1fr);
+        padding: 2rem 1.5rem;
+      }
     }
     .stat-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       text-align: center;
     }
     .stat-metric {
@@ -351,34 +371,46 @@ function renderMaintenanceHtml(): string {
       font-size: 1.75rem;
       font-weight: 800;
       color: #FFFFFF;
-      line-height: 1;
-      margin-bottom: 0.35rem;
+      line-height: 1.2;
     }
-    .stat-metric span { color: #F2B705; }
+    .stat-metric span {
+      color: #F2B705;
+    }
     .stat-label {
       font-size: 0.75rem;
-      font-weight: 600;
       color: #94A3B8;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+      font-weight: 500;
     }
     .info-bar {
-      margin-top: 1.75rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 1.5rem;
       font-size: 0.8125rem;
-      color: #94A3B8;
+      color: #64748B;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
     }
-    .info-bar strong { color: #F1F5F9; }
+    @media (min-width: 640px) {
+      .info-bar {
+        flex-direction: row;
+        justify-content: center;
+        gap: 2rem;
+      }
+    }
+    .info-bar strong {
+      color: #CBD5E1;
+    }
     footer {
       position: relative;
       z-index: 10;
-      padding: 1.5rem;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
-      background: #0B1120;
-      font-size: 0.8125rem;
+      padding: 1.25rem 1.5rem;
+      background: rgba(15, 23, 42, 0.85);
+      font-size: 0.75rem;
       color: #64748B;
     }
     .footer-inner {
@@ -386,10 +418,9 @@ function renderMaintenanceHtml(): string {
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      sm-flex-direction: row;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
+      gap: 0.75rem;
       text-align: center;
     }
     @media (min-width: 640px) {
@@ -453,13 +484,16 @@ function renderMaintenanceHtml(): string {
   <!-- Main Content -->
   <main>
     <div class="container">
+      <!-- Status Badge -->
       <div class="badge">
         <span class="badge-dot"></span>
-        <span>Scheduled Deployment in Progress</span>
+        <span>Infrastructure Staging In Progress</span>
       </div>
 
+      <!-- Main Headline -->
       <h1>
-        Our Official B2B Wholesale Platform<br>
+        Commercial Catalog &amp;<br>
+        B2B Wholesale Platform<br>
         <span class="h1-accent">Is Launching Soon</span>
       </h1>
 
@@ -519,16 +553,16 @@ function renderMaintenanceHtml(): string {
       <div>
         &copy; ${new Date().getFullYear()} Cleaning Care Trading Co. (شركة عناية التنظيف للتجارة). All Rights Reserved.
       </div>
-      
+
       <!-- Quick Bypass Form for Team / Stakeholders -->
       <form class="team-access-form" method="GET" action="/">
         <label for="preview-key-input" style="font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em;">Team Access:</label>
-        <input 
+        <input
           id="preview-key-input"
-          type="password" 
-          name="preview_key" 
-          placeholder="Enter Passkey" 
-          class="access-input" 
+          type="password"
+          name="preview_key"
+          placeholder="Enter Passkey"
+          class="access-input"
           aria-label="Enter preview passkey"
           required
         >
