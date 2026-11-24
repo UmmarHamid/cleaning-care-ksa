@@ -1,26 +1,29 @@
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { COMPANY_DATA } from '@/data/company';
-import { ArrowRight } from 'lucide-react';
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { COMPANY_DATA } from "@/data/company";
+import { ArrowRight } from "lucide-react";
+import { SpotlightCard } from "@/components/motion/SpotlightCard";
 
 export function AboutSection() {
   const { about } = COMPANY_DATA;
 
   return (
-    <section id='about' className='py-16 bg-page-bg'>
+    <section id='about' className='py-16'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='bg-white rounded-2xl md:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-card border border-border-subtle'>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center'>
-            <div className='relative overflow-hidden rounded-2xl shadow-card aspect-[3/2] w-full'>
-              <Image
-                src={about.image}
-                alt={about.imageAlt}
-                fill
-                className='object-cover'
-                unoptimized
-              />
-            </div>
+            <SpotlightCard className='rounded-2xl overflow-hidden shadow-card w-full' maxTilt={2} hoverScale={1.015}>
+              <div className='relative overflow-hidden rounded-2xl aspect-[3/2] w-full'>
+                <Image
+                  src={about.image}
+                  alt={about.imageAlt}
+                  fill
+                  className='object-cover'
+                  unoptimized
+                />
+              </div>
+            </SpotlightCard>
             <div className='flex flex-col justify-center'>
               <span className='inline-block text-brand-red font-heading font-extrabold text-sm sm:text-base tracking-wider uppercase mb-3'>
                 {about.eyebrow}

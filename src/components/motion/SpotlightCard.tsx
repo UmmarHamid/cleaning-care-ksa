@@ -9,6 +9,8 @@ export interface SpotlightCardProps extends React.HTMLAttributes<HTMLDivElement>
   spotlightSize?: number;
   maxTilt?: number;
   enableTilt?: boolean;
+  hoverScale?: number;
+  enableScale?: boolean;
 }
 
 export function SpotlightCard({
@@ -18,6 +20,9 @@ export function SpotlightCard({
   spotlightSize = 350,
   maxTilt = 3,
   enableTilt = true,
+  hoverScale = 1.015,
+  enableScale = true,
+  onMouseEnter,
   onMouseMove,
   onMouseLeave,
   style,
@@ -40,6 +45,15 @@ export function SpotlightCard({
     }
   }, []);
 
+  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (onMouseEnter) onMouseEnter(e);
+    const card = cardRef.current;
+    if (!card) return;
+    if (enableScale && !prefersReducedMotion.current) {
+      card.style.setProperty("--card-scale", `${hoverScale}`);
+    }
+  };
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (onMouseMove) onMouseMove(e);
     const card = cardRef.current;
@@ -58,6 +72,10 @@ export function SpotlightCard({
       card.style.setProperty("--x", `${x}px`);
       card.style.setProperty("--y", `${y}px`);
       card.style.setProperty("--spotlight-opacity", "1");
+
+      if (enableScale && !prefersReducedMotion.current) {
+        card.style.setProperty("--card-scale", `${hoverScale}`);
+      }
 
       if (enableTilt && !prefersReducedMotion.current) {
         const centerX = rect.width / 2;
@@ -83,16 +101,19 @@ export function SpotlightCard({
     card.style.setProperty("--spotlight-opacity", "0");
     card.style.setProperty("--tilt-x", "0deg");
     card.style.setProperty("--tilt-y", "0deg");
+    card.style.setProperty("--card-scale", "1");
   };
 
   return (
     <div
       ref={cardRef}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={`relative [transform-style:preserve-3d] transition-transform duration-200 ease-out will-change-transform motion-reduce:transform-none ${className}`}
       style={{
-        transform: "perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))",
+        transform:
+          "perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale3d(var(--card-scale, 1), var(--card-scale, 1), 1)",
         ...style,
       }}
       {...props}

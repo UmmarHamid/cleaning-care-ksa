@@ -11,6 +11,7 @@ import {
   MessageCircle,
   MessageCircleMore,
 } from "lucide-react";
+import { SpotlightCard } from "@/components/motion/SpotlightCard";
 
 export function InquiryForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -122,7 +123,8 @@ export function InquiryForm() {
   const directWhatsAppUrl = buildWhatsAppInquiryUrl(formData);
 
   return (
-    <article className='rounded-2xl border border-border-subtle overflow-hidden shadow-card bg-white p-6 sm:p-8 flex flex-col h-full'>
+    <SpotlightCard className='h-full rounded-2xl' maxTilt={1.5} hoverScale={1.005}>
+      <article className='rounded-2xl border border-border-subtle overflow-hidden shadow-card bg-white p-6 sm:p-8 flex flex-col h-full'>
       {/* Form Card Header */}
       <div className='flex items-start gap-3.5 pb-6 mb-6 border-b border-border-subtle'>
         <span
@@ -385,5 +387,6 @@ export function InquiryForm() {
         </form>
       )}
     </article>
+  </SpotlightCard>
   );
 }

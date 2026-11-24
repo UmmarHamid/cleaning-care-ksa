@@ -2,12 +2,14 @@ import React from "react";
 import { COMPANY_DATA } from "@/data/company";
 import { buildWhatsAppQuoteUrl } from "@/lib/whatsapp";
 import { Phone, Mail, MapPin, FileText, ArrowRight, ExternalLink } from "lucide-react";
+import { SpotlightCard } from "@/components/motion/SpotlightCard";
 
 export function ContactInfoCard() {
   const whatsappUrl = buildWhatsAppQuoteUrl();
 
   return (
-    <article className='rounded-2xl border border-border-subtle overflow-hidden shadow-card bg-white flex flex-col h-full'>
+    <SpotlightCard className='h-full rounded-2xl' maxTilt={1.5} hoverScale={1.005}>
+      <article className='rounded-2xl border border-border-subtle overflow-hidden shadow-card bg-white flex flex-col h-full'>
       {/* Card Header */}
       <div className='flex items-start gap-4 p-6 sm:p-8 bg-gradient-to-br from-brand-red to-brand-red-dark text-white'>
         <div className='border-l-4 border-brand-gold pl-4'>
@@ -147,5 +149,6 @@ export function ContactInfoCard() {
         </div>
       </div>
     </article>
+  </SpotlightCard>
   );
 }

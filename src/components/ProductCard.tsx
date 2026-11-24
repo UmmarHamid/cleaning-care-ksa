@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ProductItem, CategoryId } from '@/data/catalog';
 import { buildWhatsAppQuoteUrl } from '@/lib/whatsapp';
 import { PackageCheck, ArrowRight, MessageCircle } from 'lucide-react';
+import { SpotlightCard } from '@/components/motion/SpotlightCard';
 
 interface ProductCardProps {
   product: ProductItem;
@@ -26,18 +27,19 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const quoteUrl = buildWhatsAppQuoteUrl(product.name, selectedSpec);
 
   return (
-    <article className='group flex flex-col h-full rounded-2xl border border-border-subtle bg-white shadow-subtle hover:shadow-md hover:-translate-y-1 hover:border-[#D32027]/40 transition-all duration-300 ease-out motion-reduce:transform-none overflow-hidden'>
-      {/* Studio Image Container — Swiss Precision #F3F4F6 surface */}
-      <div className='w-full h-48 bg-studio-gray p-4 flex items-center justify-center relative overflow-hidden'>
-        <Image
-          src={product.image}
-          alt={`${product.name} — Wholesale B2B supply Riyadh`}
-          width={280}
-          height={180}
-          className='w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 motion-reduce:transform-none'
-          priority={priority}
-          unoptimized
-        />
+    <SpotlightCard className='h-full rounded-2xl' hoverScale={1.015}>
+      <article className='group flex flex-col h-full rounded-2xl border border-border-subtle bg-white shadow-subtle hover:shadow-md hover:border-[#D32027]/40 transition-all duration-300 ease-out motion-reduce:transform-none overflow-hidden'>
+        {/* Studio Image Container — Swiss Precision #F3F4F6 surface */}
+        <div className='w-full h-48 bg-studio-gray p-4 flex items-center justify-center relative overflow-hidden'>
+          <Image
+            src={product.image}
+            alt={`${product.name} — Wholesale B2B supply Riyadh`}
+            width={280}
+            height={180}
+            className='w-full h-full object-contain'
+            priority={priority}
+            unoptimized
+          />
 
         {/* Category Pill Tag */}
         <span className='absolute top-3 left-3 px-2.5 py-1 text-2xs font-bold uppercase tracking-wider text-slate-700 bg-white/95 rounded-md shadow-xs border border-border-subtle pointer-events-none'>
@@ -120,5 +122,6 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </div>
       </div>
     </article>
+  </SpotlightCard>
   );
 }

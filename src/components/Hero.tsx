@@ -3,6 +3,7 @@ import Link from "next/link";
 import { COMPANY_DATA } from "@/data/company";
 import { buildWhatsAppQuoteUrl } from "@/lib/whatsapp";
 import { ArrowRight, MessageCircleMore } from "lucide-react";
+import { BorderBeam } from "@/components/motion/BorderBeam";
 
 export function Hero() {
   const whatsappUrl = buildWhatsAppQuoteUrl();
@@ -69,12 +70,19 @@ export function Hero() {
           {/* Dual Action CTAs */}
           <div className='flex flex-wrap items-center gap-3.5'>
             <Link
-              className='inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-subtle min-h-touch transition-all group'
+              className='relative overflow-hidden inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-subtle min-h-touch transition-all group'
               href='/products'
             >
-              <span>Explore Product Catalog</span>
+              <BorderBeam
+                duration={3.5}
+                size={80}
+                borderWidth={1.5}
+                colorFrom='#FFFFFF'
+                colorTo='#F2B705'
+              />
+              <span className='relative z-10'>Explore Product Catalog</span>
               <ArrowRight
-                className='w-4 h-4 group-hover:translate-x-1 transition-transform'
+                className='w-4 h-4 group-hover:translate-x-1 transition-transform relative z-10'
                 aria-hidden='true'
               />
             </Link>
