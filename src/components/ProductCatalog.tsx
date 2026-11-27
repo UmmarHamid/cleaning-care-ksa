@@ -78,9 +78,9 @@ export function ProductCatalog({
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         {/* Section Heading (if enabled) */}
         {showHeader && (
-          <div className='text-center max-w-3xl mx-auto mb-10'>
-            <div className='flex items-center justify-center gap-3 mb-3'>
-              <span className='h-0.5 w-12 bg-brand-red rounded-full' aria-hidden='true' />
+          <div className='text-center sm:text-left max-w-3xl mx-auto sm:mx-0 mb-10'>
+            <div className='flex items-center justify-center sm:justify-start gap-3 mb-3'>
+              <span className='h-0.5 w-12 sm:hidden bg-brand-red rounded-full' aria-hidden='true' />
               <span className='text-brand-red font-heading font-extrabold text-xs sm:text-sm tracking-wider uppercase'>
                 PROCUREMENT CATALOG
               </span>
@@ -142,7 +142,7 @@ export function ProductCatalog({
                   key={term}
                   type='button'
                   onClick={() => setSearchQuery(term)}
-                  className={`min-h-9 px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer transition-all inline-flex items-center ${
+                  className={`min-h-[38px] px-3.5 py-1.5 rounded-md text-xs font-semibold cursor-pointer transition-all inline-flex items-center ${
                     isTermActive
                       ? 'bg-brand-red text-white shadow-xs'
                       : 'bg-page-bg hover:bg-slate-100 text-slate-body border border-border-subtle'
@@ -342,7 +342,7 @@ export function ProductCatalog({
 
         {/* Wholesale Tender & Custom RFP Banner */}
         <div className='mt-12 bg-gradient-to-br from-brand-charcoal to-slate-dark rounded-2xl p-7 sm:p-8 text-white flex flex-wrap items-center justify-between gap-6 border border-slate-700 shadow-card'>
-          <div className='max-w-2xl'>
+          <div className='max-w-2xl mx-auto sm:mx-0 text-center sm:text-left flex flex-col items-center sm:items-start'>
             <span className='inline-flex items-center gap-1.5 bg-brand-gold/20 text-brand-gold text-2xs font-bold uppercase tracking-wider px-2.5 py-1 rounded mb-2'>
               <FileSpreadsheet className='w-3.5 h-3.5' />
               <span>Institutional &amp; Government Tenders</span>
@@ -354,7 +354,7 @@ export function ProductCatalog({
               Our procurement desk supplies construction camps, hospital tenders, facility managers, and hotel chains across Riyadh with volume contract rates and direct warehouse delivery.
             </p>
           </div>
-          <div className='flex items-center gap-3 flex-wrap'>
+          <div className='w-full sm:w-auto flex items-center justify-center sm:justify-start gap-3 flex-wrap'>
             <a
               href={buildWhatsAppQuoteUrl('Custom B2B Tender / Volume Order')}
               target='_blank'

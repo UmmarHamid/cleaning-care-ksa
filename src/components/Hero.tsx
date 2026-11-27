@@ -47,7 +47,7 @@ export function Hero() {
 
       {/* Content */}
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 pt-12 pb-24 lg:pt-16 lg:pb-28'>
-        <div className='max-w-xl text-white'>
+        <div className='max-w-xl text-white text-center sm:text-left flex flex-col items-center sm:items-start mx-auto sm:mx-0'>
           {/* Eyebrow Badge */}
           <span className='inline-flex items-center rounded-full px-4 py-1.5 bg-brand-gold text-slate-dark font-heading font-bold text-xs sm:text-sm tracking-tight'>
             {COMPANY_DATA.tagline}
@@ -68,9 +68,9 @@ export function Hero() {
           </p>
 
           {/* Dual Action CTAs */}
-          <div className='flex flex-wrap items-center gap-3.5'>
+          <div className='flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto'>
             <Link
-              className='relative overflow-hidden inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-subtle min-h-touch transition-all group'
+              className='relative overflow-hidden inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-subtle min-h-touch transition-all group w-full sm:w-auto'
               href='/products'
             >
               <BorderBeam
@@ -88,7 +88,7 @@ export function Hero() {
             </Link>
 
             <a
-              className='inline-flex items-center justify-center gap-2 bg-transparent hover:bg-white/10 text-white font-heading font-bold text-sm sm:text-base px-6 py-3 rounded-lg border border-white/30 hover:border-white/60 min-h-touch transition-all'
+              className='inline-flex items-center justify-center gap-2 bg-transparent hover:bg-white/10 text-white font-heading font-bold text-sm sm:text-base px-6 py-3 rounded-lg border border-white/30 hover:border-white/60 min-h-touch transition-all w-full sm:w-auto'
               href={whatsappUrl}
               target='_blank'
               rel='noopener noreferrer'

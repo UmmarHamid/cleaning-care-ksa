@@ -18,15 +18,15 @@ export function WhatsAppCtaStrip() {
       />
 
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10'>
-        <div className='flex flex-col md:flex-row items-center justify-between gap-6'>
-          <div className='flex items-center gap-4.5 w-full md:w-auto'>
+        <div className='flex flex-col md:flex-row items-center justify-between gap-6 text-center sm:text-left'>
+          <div className='flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4 w-full md:w-auto text-center sm:text-left'>
             <div
               className='w-12 h-12 text-success shrink-0 flex items-center justify-center'
               aria-hidden='true'
             >
               <MessageCircle className='w-10 h-10' />
             </div>
-            <span className='w-[3px] h-10 bg-brand-gold rounded-sm shrink-0' aria-hidden='true' />
+            <span className='hidden sm:block w-[3px] h-10 bg-brand-gold rounded-sm shrink-0' aria-hidden='true' />
             <div>
               <h2 className='text-white font-heading font-extrabold text-xl sm:text-2xl leading-tight mb-1'>
                 Need a Quick Quote?
@@ -37,7 +37,7 @@ export function WhatsAppCtaStrip() {
             </div>
           </div>
 
-          <div className='w-full md:w-auto flex justify-start md:justify-end'>
+          <div className='w-full md:w-auto flex justify-center sm:justify-start md:justify-end'>
             <a
               className='inline-flex items-center justify-center gap-2.5 px-6 py-3 bg-white hover:bg-success text-success-dark hover:text-white font-heading font-bold text-sm rounded-full border-2 border-success transition-all shadow-md group min-h-touch whitespace-nowrap w-full sm:w-auto'
               href={whatsappUrl}

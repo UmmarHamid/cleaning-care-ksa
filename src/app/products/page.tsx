@@ -32,7 +32,7 @@ export default function ProductsPage() {
             {/* Breadcrumbs */}
             <nav
               aria-label='Breadcrumb'
-              className='flex items-center gap-2 text-xs sm:text-sm text-slate-400 mb-4'
+              className='flex items-center justify-center sm:justify-start gap-2 text-xs sm:text-sm text-slate-400 mb-4'
             >
               <Link href='/' className='hover:text-white transition-colors'>
                 Home
@@ -43,7 +43,7 @@ export default function ProductsPage() {
               </span>
             </nav>
 
-            <div className='max-w-3xl'>
+            <div className='max-w-3xl mx-auto sm:mx-0 text-center sm:text-left'>
               <div className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-brand-gold text-xs font-bold uppercase tracking-wider mb-3'>
                 <span>Riyadh Wholesale Inventory</span>
               </div>
@@ -57,7 +57,7 @@ export default function ProductsPage() {
               </p>
 
               {/* Direct Warehouse Phone / VAT Strip */}
-              <div className='mt-6 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-slate-400 border-t border-slate-800/80 pt-4'>
+              <div className='mt-6 flex flex-wrap items-center justify-center sm:justify-start gap-y-2 gap-x-6 text-xs text-slate-400 border-t border-slate-800/80 pt-4'>
                 <span className='inline-flex items-center gap-1.5'>
                   <FileText className='w-3.5 h-3.5 text-brand-gold' />
                   <span>VAT Number:</span>

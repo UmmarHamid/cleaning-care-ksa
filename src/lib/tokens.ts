@@ -41,12 +41,6 @@ export const TYPOGRAPHY = {
   },
 } as const;
 
-export const BREAKPOINTS = {
-  mobile: '390px',
-  tablet: '768px',
-  laptop: '1440px',
-} as const;
-
 export const TOUCH_TARGET_MIN = '44px';
 
 export const SHADOWS = {

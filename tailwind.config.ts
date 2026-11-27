@@ -40,11 +40,6 @@ const config: Config = {
       spacing: {
         touch: '44px',
       },
-      screens: {
-        mobile: '390px',
-        tablet: '768px',
-        laptop: '1440px',
-      },
       boxShadow: {
         card: '0 10px 28px rgba(15, 23, 42, 0.09)',
         'card-hover': '0 10px 20px -3px rgba(15, 23, 42, 0.08), 0 4px 8px -2px rgba(15, 23, 42, 0.03)',

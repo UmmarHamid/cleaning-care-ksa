@@ -51,7 +51,7 @@ export const DIVISIONS: DivisionCategory[] = [
     title: 'Cleaning Materials',
     subtitle: 'Industrial & Institutional Chemical Formulations',
     shortDescription:
-      'Heavy-duty commercial grade cleaners, disinfectants, degreasers, floor care and detergents.',
+      'Industrial & commercial grade cleaners, disinfectants, degreasers, floor care and more.',
     image: '/assets/images/product-section-product-1.jpg',
     imageAlt: 'Commercial cleaning chemical containers and industrial solutions',
     itemCountLabel: '9 Sub-Categories',
@@ -154,7 +154,7 @@ export const DIVISIONS: DivisionCategory[] = [
     title: 'Hygiene & Disposables',
     subtitle: 'Commercial Paper, Heavy-Duty Liners & PPE Supplies',
     shortDescription:
-      'Paper towels, tissue rolls, heavy-duty garbage bags (10G–100G), tableware, PPE, soaps and sanitizers.',
+      'Paper towels, tissue rolls, garbage bags, disposable tableware, PPE, soaps and sanitizers.',
     image: '/assets/images/product-section-product-2.jpg',
     imageAlt: 'Paper tissue rolls, commercial trash liners and hygiene supplies',
     itemCountLabel: '7 Sub-Categories',
@@ -239,7 +239,7 @@ export const DIVISIONS: DivisionCategory[] = [
     title: 'Plastic Drums & Containers',
     subtitle: 'Industrial Wheeled Bins & HDPE Chemical Drums',
     shortDescription:
-      'Industrial waste bins, storage drums and wheeled containers in multiple capacities (10G–1100G).',
+      'Waste bins, drums and wheeled containers in multiple capacities (10G - 1100G) with pedal options.',
     image: '/assets/images/product-section-product-3.jpg',
     imageAlt: 'Commercial wheeled plastic waste containers and heavy-duty storage drums',
     itemCountLabel: '4 Sub-Categories',
@@ -295,7 +295,7 @@ export const DIVISIONS: DivisionCategory[] = [
     title: 'Cleaning Equipment & Safety',
     subtitle: 'Professional Janitorial Hardware & Traffic Safety Equipment',
     shortDescription:
-      'Janitorial carts, wringer mops, traffic cones (50cm/75cm/1M), safety barricades, and plastic pallets.',
+      'Mops, cleaning carts, microfiber cloths, safety cones, barricades, floor pads and heavy-duty pallets.',
     image: '/assets/images/product-section-product-4.jpg',
     imageAlt: 'Janitorial cleaning equipment, microfiber cloths and road safety products',
     itemCountLabel: '8 Sub-Categories',

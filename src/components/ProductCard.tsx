@@ -85,7 +85,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                   role='radio'
                   aria-checked={isSelected}
                   onClick={() => setSelectedSpec(spec)}
-                  className={`px-2.5 py-1 rounded-md text-xs font-semibold cursor-pointer transition-all ${
+                  className={`min-h-[36px] sm:min-h-8 px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer transition-all inline-flex items-center justify-center ${
                     isSelected
                       ? 'bg-brand-red text-white shadow-xs'
                       : 'bg-page-bg hover:bg-slate-100 text-slate-body border border-border-subtle'
