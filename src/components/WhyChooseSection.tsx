@@ -11,8 +11,12 @@ export function WhyChooseSection() {
     <section className='py-12 sm:py-16 bg-white'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch'>
-          <div className='lg:col-span-7 flex flex-col justify-center min-w-0'>
-            <div className='flex items-center gap-3.5 mb-2.5'>
+          <div className='lg:col-span-7 flex flex-col justify-center min-w-0 w-full text-center sm:text-left'>
+            <div className='flex items-center justify-center sm:justify-start gap-3.5 mb-2.5'>
+              <span
+                className='inline-block sm:hidden w-11 h-[2.5px] bg-brand-red rounded-sm shrink-0'
+                aria-hidden='true'
+              />
               <span className='text-brand-red font-heading font-black text-xs sm:text-sm tracking-wider uppercase'>
                 WHY CHOOSE CLEANING CARE?
               </span>
@@ -21,15 +25,15 @@ export function WhyChooseSection() {
                 aria-hidden='true'
               />
             </div>
-            <h2 className=' max-w-xl font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-dark tracking-tight leading-tight mb-3'>
+            <h2 className='w-full max-w-none lg:max-w-xl font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-dark tracking-tight leading-tight mb-3'>
               Your Reliable B2B Supply Partner in Saudi Arabia
             </h2>
-            <p className='font-body text-slate-body text-lg  leading-relaxed mb-6 max-w-xl'>
+            <p className='font-body text-slate-body text-base sm:text-lg leading-relaxed mb-6 w-full max-w-none lg:max-w-xl'>
               We combine extensive inventory, competitive pricing and reliable service to meet the
               cleaning and hygiene supply needs of businesses across the Kingdom.
             </p>
 
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full text-left'>
               {/* Strength 1 */}
               <SpotlightCard className='h-full rounded-xl' maxTilt={2} hoverScale={1.02}>
                 <div className='flex items-start gap-2.5 p-3 sm:p-3.5 bg-white border border-border-subtle rounded-xl shadow-subtle hover:shadow-card transition-all h-full'>
@@ -153,11 +157,11 @@ export function WhyChooseSection() {
           </div>
 
           <SpotlightCard
-            className='lg:col-span-5 relative rounded-2xl overflow-hidden shadow-card min-h-[380px] sm:min-h-[460px] h-full w-full'
+            className='lg:col-span-5 relative rounded-2xl overflow-hidden shadow-card min-h-[260px] sm:min-h-[360px] lg:min-h-[460px] h-full w-full'
             maxTilt={2}
             hoverScale={1.01}
           >
-            <div className='relative w-full h-full min-h-[380px] sm:min-h-[460px] rounded-2xl overflow-hidden'>
+            <div className='relative w-full h-full min-h-[260px] sm:min-h-[360px] lg:min-h-[460px] rounded-2xl overflow-hidden'>
               <Image
                 src='/assets/images/why-choose-us-warehouse-team.jpg'
                 alt='Cleaning Care warehouse specialist in safety vest managing operations'

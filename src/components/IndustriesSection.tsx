@@ -10,9 +10,9 @@ export function IndustriesSection() {
   return (
     <section id='industries' className='py-16 bg-white'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='text-center max-w-3xl mx-auto mb-12'>
-          <div className='flex items-center justify-center gap-3 sm:gap-4 mb-3'>
-            <span className='h-0.5 w-10 sm:w-14 bg-brand-red rounded-full' aria-hidden='true' />
+        <div className='text-center sm:text-left max-w-3xl mx-auto sm:mx-0 mb-12'>
+          <div className='flex items-center justify-center sm:justify-start gap-3 sm:gap-4 mb-3'>
+            <span className='h-0.5 w-10 sm:w-14 sm:hidden bg-brand-red rounded-full' aria-hidden='true' />
             <h2 className='font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-dark tracking-tight'>
               Industries We Serve
             </h2>
@@ -43,7 +43,7 @@ export function IndustriesSection() {
               >
                 <Sparkles className='w-10 h-10' />
               </div>
-              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
+              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[60px] sm:min-h-[52px] flex items-center justify-center'>
                 Cleaning Companies
                 <br />
                 &amp; Contractors
@@ -69,7 +69,7 @@ export function IndustriesSection() {
               >
                 <Building2 className='w-10 h-10' />
               </div>
-              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
+              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[60px] sm:min-h-[52px] flex items-center justify-center'>
                 Corporate Offices
               </h3>
             </article>
@@ -93,7 +93,7 @@ export function IndustriesSection() {
               >
                 <UtensilsCrossed className='w-10 h-10' />
               </div>
-              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
+              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[60px] sm:min-h-[52px] flex items-center justify-center'>
                 Hotels &amp; Restaurants
                 <br />
                 (HORECA)
@@ -119,7 +119,7 @@ export function IndustriesSection() {
               >
                 <Plus className='w-10 h-10 stroke-[3]' />
               </div>
-              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
+              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[60px] sm:min-h-[52px] flex items-center justify-center'>
                 Hospitals &amp; Clinics
               </h3>
             </article>
@@ -143,7 +143,7 @@ export function IndustriesSection() {
               >
                 <GraduationCap className='w-10 h-10' />
               </div>
-              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
+              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[60px] sm:min-h-[52px] flex items-center justify-center'>
                 Schools &amp; Universities
               </h3>
             </article>
@@ -167,7 +167,7 @@ export function IndustriesSection() {
               >
                 <Wrench className='w-10 h-10' />
               </div>
-              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[52px] flex items-center justify-center'>
+              <h3 className='font-heading font-black text-xs sm:text-sm text-slate-dark leading-snug px-2.5 pb-4 min-h-[60px] sm:min-h-[52px] flex items-center justify-center'>
                 Facility Management &amp;
                 <br />
                 Maintenance Companies
