@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { PRODUCTS, CategoryId } from '@/data/catalog';
 import { ProductCard } from '@/components/ProductCard';
@@ -14,14 +14,14 @@ import {
   Package,
   Wrench,
   TrafficCone,
-  ChevronLeft,
-  ChevronRight,
+  ChevronDown,
   RotateCcw,
 } from 'lucide-react';
 
-const DEFAULT_PAGE_SIZE = 8;
-const MIN_PAGE_SIZE = 1;
-const MAX_PAGE_SIZE = 100;
+const DEFAULT_VISIBLE_COUNT = 8;
+const SHOW_MORE_STEP = 8;
+const MIN_VISIBLE_COUNT = 1;
+const MAX_VISIBLE_COUNT = 100;
 
 interface CategoryTabItem {
   id: CategoryId | 'all';
@@ -37,24 +37,6 @@ const CATEGORY_TABS: CategoryTabItem[] = [
   { id: 'safety-products', label: 'Safety Products', icon: TrafficCone },
 ];
 
-type PaginationItem = number | 'ellipsis-start' | 'ellipsis-end';
-
-function getPaginationItems(current: number, total: number): PaginationItem[] {
-  if (total <= 7) {
-    return Array.from({ length: total }, (_, i) => i + 1);
-  }
-
-  if (current <= 4) {
-    return [1, 2, 3, 4, 5, 'ellipsis-end', total];
-  }
-
-  if (current >= total - 3) {
-    return [1, 'ellipsis-start', total - 4, total - 3, total - 2, total - 1, total];
-  }
-
-  return [1, 'ellipsis-start', current - 1, current, current + 1, 'ellipsis-end', total];
-}
-
 export function ProductCatalog() {
   const router = useRouter();
   const pathname = usePathname();
@@ -65,12 +47,11 @@ export function ProductCatalog() {
 
   const [searchInput, setSearchInput] = useState<string>('');
   const [appliedSearch, setAppliedSearch] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
-  const [pageSizeInput, setPageSizeInput] = useState<string>(String(DEFAULT_PAGE_SIZE));
+  const [initialCount, setInitialCount] = useState<number>(DEFAULT_VISIBLE_COUNT);
+  const [visibleCount, setVisibleCount] = useState<number>(DEFAULT_VISIBLE_COUNT);
+  const [countInput, setCountInput] = useState<string>(String(DEFAULT_VISIBLE_COUNT));
 
   const [prevCategory, setPrevCategory] = useState<CategoryId | 'all'>(selectedCategory);
-  const catalogTopRef = useRef<HTMLDivElement>(null);
 
   // Synchronize invalid or empty category query parameter in URL (fallback to All Products)
   useEffect(() => {
@@ -79,11 +60,11 @@ export function ProductCatalog() {
     }
   }, [rawCategoryParam, pathname, router]);
 
-  // Reset pagination to page 1 whenever category changes (via URL, back/forward, or click)
+  // Reset visible count whenever category changes (via URL, back/forward, or click)
   if (prevCategory !== selectedCategory) {
     setPrevCategory(selectedCategory);
-    if (currentPage !== 1) {
-      setCurrentPage(1);
+    if (visibleCount !== initialCount) {
+      setVisibleCount(initialCount);
     }
   }
 
@@ -122,61 +103,52 @@ export function ProductCatalog() {
     });
   }, [selectedCategory, appliedSearch]);
 
-  // Pagination Calculations based on active pageSize
+  // Progressive Reveal Calculations
   const totalProducts = filteredProducts.length;
-  const totalPages = Math.ceil(totalProducts / pageSize) || 1;
-  const safeCurrentPage = currentPage > totalPages ? 1 : currentPage;
-  const startIndex = (safeCurrentPage - 1) * pageSize;
-  const currentProducts = filteredProducts.slice(startIndex, startIndex + pageSize);
-  const showingStart = totalProducts === 0 ? 0 : startIndex + 1;
-  const showingEnd = Math.min(startIndex + pageSize, totalProducts);
+  const showingCount = Math.min(visibleCount, totalProducts);
+  const currentProducts = filteredProducts.slice(0, showingCount);
+  const remainingCount = totalProducts - showingCount;
+  const hasMore = remainingCount > 0;
+  const nextBatchCount = Math.min(SHOW_MORE_STEP, remainingCount);
 
-  // Apply and validate custom products per page
-  const applyPageSize = (rawValue: string) => {
+  // Apply and validate custom initial visible count (desktop/tablet)
+  const applyVisibleCount = (rawValue: string) => {
     const trimmed = rawValue.trim();
     const parsed = parseInt(trimmed, 10);
 
-    // If empty, non-numeric, zero, or negative, restore last valid pageSize
-    if (!trimmed || isNaN(parsed) || parsed < MIN_PAGE_SIZE) {
-      setPageSizeInput(String(pageSize));
+    if (!trimmed || isNaN(parsed) || parsed < MIN_VISIBLE_COUNT) {
+      setCountInput(String(initialCount));
       return;
     }
 
-    // Clamp values above MAX_PAGE_SIZE (100)
-    const clamped = Math.min(MAX_PAGE_SIZE, parsed);
-
-    setPageSize(clamped);
-    setPageSizeInput(String(clamped));
-
-    // Reset to page 1 whenever page size changes
-    if (clamped !== pageSize) {
-      setCurrentPage(1);
-    }
+    const clamped = Math.min(MAX_VISIBLE_COUNT, parsed);
+    setInitialCount(clamped);
+    setVisibleCount(clamped);
+    setCountInput(String(clamped));
   };
 
-  const handlePageSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    // Allow digits only or empty string while user is typing/backspacing
     if (val === '' || /^\d+$/.test(val)) {
-      setPageSizeInput(val);
+      setCountInput(val);
     }
   };
 
-  const handlePageSizeBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    applyPageSize(e.target.value);
+  const handleCountBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    applyVisibleCount(e.target.value);
   };
 
-  const handlePageSizeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleCountKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      applyPageSize((e.target as HTMLInputElement).value);
+      applyVisibleCount((e.target as HTMLInputElement).value);
       (e.target as HTMLInputElement).blur();
     }
   };
 
   // Category Selection Handler
   const handleSelectCategory = (categoryId: CategoryId | 'all') => {
-    setCurrentPage(1);
+    setVisibleCount(initialCount);
     const targetUrl = buildCategoryUrl(categoryId);
     router.push(targetUrl, { scroll: false });
   };
@@ -188,36 +160,31 @@ export function ProductCatalog() {
     const query = inputEl ? inputEl.value : searchInput;
     setSearchInput(query);
     setAppliedSearch(query);
-    setCurrentPage(1);
+    setVisibleCount(initialCount);
   };
 
   // Search Clear Handler
   const handleClearSearch = () => {
     setSearchInput('');
     setAppliedSearch('');
-    setCurrentPage(1);
+    setVisibleCount(initialCount);
   };
 
   // Reset All Filters Handler
   const handleResetAll = () => {
     setSearchInput('');
     setAppliedSearch('');
-    setCurrentPage(1);
+    setVisibleCount(initialCount);
     router.push('/products', { scroll: false });
   };
 
-  // Page Change Handler
-  const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= totalPages && page !== currentPage) {
-      setCurrentPage(page);
-      if (catalogTopRef.current) {
-        catalogTopRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
+  // Reveal 8 more products in place without scrolling
+  const handleShowMore = () => {
+    setVisibleCount((prev) => Math.min(totalProducts, prev + SHOW_MORE_STEP));
   };
 
   return (
-    <div id='products-catalog' ref={catalogTopRef} className='py-8 bg-page-bg scroll-mt-24'>
+    <div id='products-catalog' className='py-8 bg-page-bg scroll-mt-24'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         {/* Five Category Cards Row matching reference mockup */}
         <div
@@ -276,11 +243,11 @@ export function ProductCatalog() {
         </div>
 
         {/* Product Listing Toolbar: Left: Heading & Count | Centre: Search Products | Right: View & Sort */}
-        <div className='flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6 pb-4 border-b border-border-subtle'>
+        <div className='flex flex-col items-center md:items-center md:flex-row  gap-4 mb-6 pb-4 border-b border-border-subtle'>
           {/* Left: Heading and Result Count */}
-          <div className='flex flex-wrap items-baseline gap-x-2.5 gap-y-1 shrink-0'>
+          <div className='flex flex-wrap items-baseline md:items-center gap-x-2.5 gap-y-1 shrink-0'>
             <span className='font-body text-xs sm:text-sm text-slate-500 whitespace-nowrap'>
-              Showing {showingStart}–{showingEnd} of {totalProducts}{' '}
+              Showing {showingCount} of {totalProducts}{' '}
               {CATEGORY_TABS.find((tab) => tab.id === selectedCategory)?.label || 'Products'}
             </span>
           </div>
@@ -299,7 +266,7 @@ export function ProductCatalog() {
                 type='text'
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                placeholder='Search products (e.g. cleaner, tissue, bin, mop...)'
+                placeholder='Search products (e.g. cleaner, tissue, bin, mop, sanitizer etc)'
                 className='flex-1 h-full text-xs sm:text-sm text-slate-dark placeholder-slate-400 bg-white focus:bg-white active:bg-white autofill:bg-white autofill:shadow-[inset_0_0_0px_1000px_#ffffff] autofill:[-webkit-text-fill-color:#0F172A] [&:-webkit-autofill]:shadow-[inset_0_0_0px_1000px_#ffffff] [&:-webkit-autofill]:[-webkit-text-fill-color:#0F172A] [&:-webkit-autofill:focus]:shadow-[inset_0_0_0px_1000px_#ffffff] outline-none focus:outline-none focus:ring-0 border-none font-body px-1 sm:px-1.5 min-w-0 [color-scheme:light]'
               />
               {searchInput && (
@@ -324,10 +291,9 @@ export function ProductCatalog() {
             </form>
           </div>
 
-          {/* Right: Custom Page Size */}
-          <div className='flex flex-wrap items-center justify-between sm:justify-end gap-2.5 sm:gap-3 shrink-0 self-stretch sm:self-auto'>
-            {/* Custom Products Per Page Numeric Control */}
-            <div className='flex items-center gap-1.5 sm:gap-2 h-11 text-xs font-semibold text-slate-500 whitespace-nowrap'>
+          {/* Right: Custom Visible Count (hidden on mobile) */}
+          <div className='hidden md:flex items-center justify-end gap-2.5 sm:gap-3 shrink-0'>
+            <div className='flex items-center gap-2 h-11 text-xs font-semibold text-slate-500 whitespace-nowrap'>
               <label htmlFor='products-per-page-input' className='cursor-pointer text-slate-500'>
                 Show:
               </label>
@@ -335,18 +301,18 @@ export function ProductCatalog() {
                 <input
                   id='products-per-page-input'
                   type='number'
-                  min={1}
-                  max={100}
+                  min={MIN_VISIBLE_COUNT}
+                  max={MAX_VISIBLE_COUNT}
                   step={1}
-                  value={pageSizeInput}
-                  onChange={handlePageSizeChange}
-                  onBlur={handlePageSizeBlur}
-                  onKeyDown={handlePageSizeKeyDown}
+                  value={countInput}
+                  onChange={handleCountChange}
+                  onBlur={handleCountBlur}
+                  onKeyDown={handleCountKeyDown}
                   className='w-14 sm:w-16 h-11 text-center font-heading font-bold text-xs sm:text-sm text-slate-dark bg-white border border-border-subtle rounded-xl px-1.5 outline-none hover:border-slate-400 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all [color-scheme:light]'
-                  aria-label='Number of products per page'
+                  aria-label='Number of products to show'
                 />
               </div>
-              <span className='text-xs font-semibold text-slate-500'>per page</span>
+              <span className='text-xs font-semibold text-slate-500'>items</span>
             </div>
           </div>
         </div>
@@ -378,7 +344,7 @@ export function ProductCatalog() {
 
         {/* Product Grid / Empty State */}
         {totalProducts > 0 ? (
-          <div className='grid grid-cols-1 min-[480px]:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4 sm:gap-5 xl:gap-6 mb-12'>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 xl:gap-6 mb-12'>
             {currentProducts.map((product, index) => (
               <ProductCard key={product.id} product={product} priority={index < 4} />
             ))}
@@ -408,97 +374,20 @@ export function ProductCatalog() {
           </div>
         )}
 
-        {/* Pagination Controls */}
-        {totalPages > 1 && (
-          <nav aria-label='Products catalogue pagination' className='pt-4 pb-6 w-full'>
-            {/* Mobile View: Compact [Previous] Page X of Y [Next] */}
-            <div className='flex sm:hidden items-center justify-between w-full max-w-xs mx-auto'>
-              <button
-                type='button'
-                onClick={() => handlePageChange(safeCurrentPage - 1)}
-                disabled={safeCurrentPage === 1}
-                className='min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-lg border border-border-subtle bg-white text-slate-dark hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1.5 cursor-pointer font-heading font-semibold text-xs'
-                aria-label='Go to previous page'
-              >
-                <ChevronLeft className='w-4 h-4' />
-                <span>Previous</span>
-              </button>
-
-              <span className='text-xs font-semibold text-slate-600 px-2 text-center select-none'>
-                Page {safeCurrentPage} of {totalPages}
-              </span>
-
-              <button
-                type='button'
-                onClick={() => handlePageChange(safeCurrentPage + 1)}
-                disabled={safeCurrentPage === totalPages}
-                className='min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-lg border border-border-subtle bg-white text-slate-dark hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1.5 cursor-pointer font-heading font-semibold text-xs'
-                aria-label='Go to next page'
-              >
-                <span>Next</span>
-                <ChevronRight className='w-4 h-4' />
-              </button>
-            </div>
-
-            {/* Desktop / Tablet View: Windowed Buttons with Ellipses */}
-            <div className='hidden sm:flex items-center justify-center gap-1.5 sm:gap-2'>
-              {/* Previous Button */}
-              <button
-                type='button'
-                onClick={() => handlePageChange(safeCurrentPage - 1)}
-                disabled={safeCurrentPage === 1}
-                className='min-h-[40px] px-3 py-2 rounded-lg border border-border-subtle bg-white text-slate-dark hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 cursor-pointer font-heading font-semibold text-xs sm:text-sm'
-                aria-label='Go to previous page'
-              >
-                <ChevronLeft className='w-4 h-4' />
-                <span>Previous</span>
-              </button>
-
-              {/* Page Number & Ellipsis Items */}
-              {getPaginationItems(safeCurrentPage, totalPages).map((item) => {
-                if (typeof item === 'string') {
-                  return (
-                    <span
-                      key={item}
-                      className='min-h-[40px] min-w-[36px] px-1 flex items-center justify-center text-slate-400 font-bold select-none text-sm'
-                      aria-hidden='true'
-                    >
-                      ...
-                    </span>
-                  );
-                }
-
-                const isActive = safeCurrentPage === item;
-                return (
-                  <button
-                    key={item}
-                    type='button'
-                    onClick={() => handlePageChange(item)}
-                    aria-current={isActive ? 'page' : undefined}
-                    className={`min-h-[40px] min-w-[40px] px-3.5 py-2 rounded-lg font-heading font-bold text-xs sm:text-sm transition-all cursor-pointer ${
-                      isActive
-                        ? 'bg-brand-red text-white shadow-subtle'
-                        : 'bg-white border border-border-subtle text-slate-dark hover:bg-slate-50'
-                    }`}
-                  >
-                    {item}
-                  </button>
-                );
-              })}
-
-              {/* Next Button */}
-              <button
-                type='button'
-                onClick={() => handlePageChange(safeCurrentPage + 1)}
-                disabled={safeCurrentPage === totalPages}
-                className='min-h-[40px] px-3 py-2 rounded-lg border border-border-subtle bg-white text-slate-dark hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 cursor-pointer font-heading font-semibold text-xs sm:text-sm'
-                aria-label='Go to next page'
-              >
-                <span>Next</span>
-                <ChevronRight className='w-4 h-4' />
-              </button>
-            </div>
-          </nav>
+        {/* Show More Controls */}
+        {hasMore && (
+          <div className='py-2 flex flex-col items-center gap-3'>
+            <Button
+              variant='secondary'
+              size='md'
+              onClick={handleShowMore}
+              rightIcon={<ChevronDown className='w-4 h-4' />}
+              iconColor='brand'
+              className='w-full sm:w-auto px-6'
+            >
+              Show More Products ({nextBatchCount} more)
+            </Button>
+          </div>
         )}
       </div>
     </div>

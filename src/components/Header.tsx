@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { BrandLogo } from './BrandLogo';
@@ -8,10 +8,30 @@ import { Button } from '@/components/ui/Button';
 import { COMPANY_DATA } from '@/data/company';
 import { MapPin, Phone, Mail } from 'lucide-react';
 
+const SPY_SECTIONS = ['home', 'about', 'products', 'infrastructure', 'contact'] as const;
+type SectionId = (typeof SPY_SECTIONS)[number];
+
+interface NavItem {
+  id: SectionId;
+  label: string;
+  href: string;
+  isPageRoute?: boolean;
+}
+
+const NAV_ITEMS: NavItem[] = [
+  { id: 'home', label: 'Home', href: '/#home' },
+  { id: 'about', label: 'About Us', href: '/#about' },
+  { id: 'products', label: 'Products', href: '/products', isPageRoute: true },
+  { id: 'infrastructure', label: 'Infrastructure', href: '/#infrastructure' },
+  { id: 'contact', label: 'Contact', href: '/#contact' },
+];
+
 export function Header() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState<SectionId>('home');
+  const headerRef = useRef<HTMLElement>(null);
+  const lockScrollSpyUntilRef = useRef<number>(0);
 
   const isProductsPage = pathname === '/products';
 
@@ -21,31 +41,101 @@ export function Header() {
   useEffect(() => {
     if (isProductsPage) return;
 
-    const handleScroll = () => {
-      const sections = ['home', 'about', 'products', 'infrastructure', 'contact'];
-      const scrollPos = window.scrollY + 120;
+    let initRafId: number | null = null;
+    const initialHash = window.location.hash.replace('#', '') as SectionId;
+    if (SPY_SECTIONS.includes(initialHash)) {
+      // Avoid overwriting the hash while Next.js finishes initial hash scroll
+      lockScrollSpyUntilRef.current = Date.now() + 600;
+      initRafId = window.requestAnimationFrame(() => setActiveSection(initialHash));
+    }
 
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(section);
-            break;
+    let rafId: number | null = null;
+
+    const updateActiveSectionFromScroll = () => {
+      rafId = null;
+      if (Date.now() < lockScrollSpyUntilRef.current) return;
+
+      const headerHeight = headerRef.current?.offsetHeight ?? 130;
+      const threshold = headerHeight + 36;
+
+      // Highlight Contact when scrolled to the bottom of the page
+      const isAtBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 40;
+
+      let nextSection: SectionId = 'home';
+
+      if (isAtBottom) {
+        nextSection = 'contact';
+      } else {
+        for (const section of SPY_SECTIONS) {
+          const el = document.getElementById(section);
+          if (el && el.getBoundingClientRect().top <= threshold) {
+            nextSection = section;
           }
         }
       }
+
+      setActiveSection((prev) => (prev === nextSection ? prev : nextSection));
+
+      const targetPath = nextSection === 'home' ? '/' : `/#${nextSection}`;
+      const currentFull = `${window.location.pathname}${window.location.hash}`;
+      if (currentFull !== targetPath) {
+        window.history.replaceState(null, '', targetPath);
+      }
+    };
+
+    const handleScroll = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(updateActiveSectionFromScroll);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (initRafId !== null) window.cancelAnimationFrame(initRafId);
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
+    };
   }, [isProductsPage]);
+
+  const handleAnchorClick = (
+    e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
+    sectionId: SectionId,
+  ) => {
+    closeMenu();
+
+    // When on /products, allow Next.js Link/Button to navigate back to /#section
+    if (isProductsPage) return;
+
+    e.preventDefault();
+
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const behavior: ScrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
+
+    setActiveSection(sectionId);
+    lockScrollSpyUntilRef.current = Date.now() + (prefersReducedMotion ? 50 : 750);
+
+    const targetPath = sectionId === 'home' ? '/' : `/#${sectionId}`;
+    window.history.replaceState(null, '', targetPath);
+
+    if (sectionId === 'home') {
+      window.scrollTo({ top: 0, behavior });
+      return;
+    }
+
+    const el = document.getElementById(sectionId);
+    if (!el) return;
+
+    const headerHeight = headerRef.current?.offsetHeight ?? 130;
+    const targetTop = Math.max(0, el.getBoundingClientRect().top + window.scrollY - headerHeight);
+    window.scrollTo({ top: targetTop, behavior });
+  };
 
   const currentSection = isProductsPage ? 'products' : activeSection;
 
   return (
-    <header className='sticky top-0 z-50 w-full shadow-subtle'>
+    <header ref={headerRef} className='sticky top-0 z-50 w-full shadow-subtle'>
       {/* Top Utility Bar */}
       <div className='hidden md:block w-full bg-brand-charcoal text-white text-xs border-b border-slate-800'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[38px] flex items-center justify-between gap-4 flex-wrap'>
@@ -86,7 +176,7 @@ export function Header() {
             href='/'
             className='min-h-touch flex items-center shrink-0'
             aria-label='Cleaning Care Trading Co. home'
-            onClick={closeMenu}
+            onClick={(e) => handleAnchorClick(e, 'home')}
           >
             <BrandLogo variant='light' size='header' />
           </Link>
@@ -127,66 +217,28 @@ export function Header() {
             } lg:flex lg:flex-row lg:static lg:p-0 lg:shadow-none lg:border-none items-stretch lg:items-center gap-4 xl:gap-8 font-heading font-semibold text-sm`}
             aria-label='Main Navigation'
           >
-            <Link
-              className={`min-h-touch flex items-center px-2 transition-colors relative ${
-                currentSection === 'home'
-                  ? 'text-brand-red font-bold lg:after:absolute lg:after:bottom-0 lg:after:left-0 lg:after:right-0 lg:after:h-0.5 lg:after:bg-brand-red'
-                  : 'text-slate-dark hover:text-brand-red'
-              }`}
-              href='/#home'
-              onClick={closeMenu}
-            >
-              Home
-            </Link>
-            <Link
-              className={`min-h-touch flex items-center px-2 transition-colors relative ${
-                currentSection === 'about'
-                  ? 'text-brand-red font-bold lg:after:absolute lg:after:bottom-0 lg:after:left-0 lg:after:right-0 lg:after:h-0.5 lg:after:bg-brand-red'
-                  : 'text-slate-dark hover:text-brand-red'
-              }`}
-              href='/#about'
-              onClick={closeMenu}
-            >
-              About Us
-            </Link>
-            <Link
-              className={`min-h-touch flex items-center px-2 transition-colors relative ${
-                currentSection === 'products'
-                  ? 'text-brand-red font-bold lg:after:absolute lg:after:bottom-0 lg:after:left-0 lg:after:right-0 lg:after:h-0.5 lg:after:bg-brand-red'
-                  : 'text-slate-dark hover:text-brand-red'
-              }`}
-              href='/products'
-              onClick={closeMenu}
-            >
-              Products
-            </Link>
-            <Link
-              className={`min-h-touch flex items-center px-2 transition-colors relative ${
-                currentSection === 'infrastructure'
-                  ? 'text-brand-red font-bold lg:after:absolute lg:after:bottom-0 lg:after:left-0 lg:after:right-0 lg:after:h-0.5 lg:after:bg-brand-red'
-                  : 'text-slate-dark hover:text-brand-red'
-              }`}
-              href='/#infrastructure'
-              onClick={closeMenu}
-            >
-              Infrastructure
-            </Link>
-            <Link
-              className={`min-h-touch flex items-center px-2 transition-colors relative ${
-                currentSection === 'contact'
-                  ? 'text-brand-red font-bold lg:after:absolute lg:after:bottom-0 lg:after:left-0 lg:after:right-0 lg:after:h-0.5 lg:after:bg-brand-red'
-                  : 'text-slate-dark hover:text-brand-red'
-              }`}
-              href='/#contact'
-              onClick={closeMenu}
-            >
-              Contact
-            </Link>
+            {NAV_ITEMS.map((item) => {
+              const isActive = currentSection === item.id;
+              return (
+                <Link
+                  key={item.id}
+                  className={`min-h-touch flex items-center px-2 transition-colors relative ${
+                    isActive
+                      ? 'text-brand-red font-bold lg:after:absolute lg:after:bottom-0 lg:after:left-0 lg:after:right-0 lg:after:h-0.5 lg:after:bg-brand-red'
+                      : 'text-slate-dark hover:text-brand-red'
+                  }`}
+                  href={item.href}
+                  onClick={item.isPageRoute ? closeMenu : (e) => handleAnchorClick(e, item.id)}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
             <Button
               href='/#contact'
               variant='primary'
               size='md'
-              onClick={closeMenu}
+              onClick={(e) => handleAnchorClick(e, 'contact')}
               className='text-sm sm:text-sm mt-2 lg:mt-0 whitespace-nowrap'
             >
               Request Bulk Quote

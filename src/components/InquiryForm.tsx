@@ -2,20 +2,29 @@
 
 import React, { useState } from 'react';
 import { CATEGORIES } from '@/data/catalog';
-import {
-  buildWhatsAppFallbackUrl,
-  InquiryData,
-  WHATSAPP_BASE_URL,
-} from '@/lib/whatsapp';
+import { buildWhatsAppFallbackUrl, InquiryData, WHATSAPP_BASE_URL } from '@/lib/whatsapp';
 import { ClipboardList, CheckCircle2, ArrowRight, AlertCircle } from 'lucide-react';
 import { SpotlightCard } from '@/components/motion/SpotlightCard';
 import { Button } from '@/components/ui/Button';
+import { FormField } from '@/components/ui/FormField';
 import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
+
+type RequiredField = 'person' | 'phone' | 'email' | 'category';
+type FieldErrors = Partial<Record<RequiredField, string>>;
+
+function getInputClassName(hasError: boolean, extra = ''): string {
+  return `w-full px-3.5 py-2.5 bg-page-bg border rounded-lg text-sm text-slate-dark placeholder-slate-400 outline-none focus:bg-white focus:ring-1 min-h-touch transition-all ${
+    hasError
+      ? 'border-brand-red ring-1 ring-brand-red/30 focus:border-brand-red focus:ring-brand-red'
+      : 'border-border-subtle focus:border-brand-red focus:ring-brand-red'
+  } ${extra}`.trim();
+}
 
 export function InquiryForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [serviceError, setServiceError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<InquiryData>({
     company: '',
@@ -32,30 +41,66 @@ export function InquiryForm() {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errorMessage) setErrorMessage(null);
+    if (name in fieldErrors) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        delete next[name as RequiredField];
+        return next;
+      });
+    }
+    if (serviceError) setServiceError(null);
   };
 
-  const validateForm = () => {
-    if (!formData.person.trim()) return 'Please enter your name.';
-    if (!formData.phone.trim()) return 'Phone or WhatsApp number is required.';
-    if (!formData.email.trim()) return 'Email address is required.';
+  const validateForm = (): FieldErrors => {
+    const errors: FieldErrors = {};
+
+    if (!formData.person.trim()) {
+      errors.person = 'Please enter your full name.';
+    }
+
+    const phoneValue = formData.phone.trim();
+    const phoneDigits = phoneValue.replace(/\D/g, '');
+    if (!phoneValue) {
+      errors.phone = 'Phone or WhatsApp number is required.';
+    } else if (phoneDigits.length < 7) {
+      errors.phone = 'Please enter a valid phone or WhatsApp number.';
+    }
+
+    const emailValue = formData.email.trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email.trim())) return 'Please enter a valid email address.';
-    if (!formData.category) return 'Please select a product division or inquiry type.';
-    return null;
+    if (!emailValue) {
+      errors.email = 'Email address is required.';
+    } else if (!emailRegex.test(emailValue)) {
+      errors.email = 'Please enter a valid email address.';
+    }
+
+    if (!formData.category) {
+      errors.category = 'Please select a product division or inquiry type.';
+    }
+
+    return errors;
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const validationError = validateForm();
-    if (validationError) {
-      setErrorMessage(validationError);
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setServiceError(null);
+      const firstInvalidField = (['person', 'phone', 'email', 'category'] as const).find(
+        (key) => errors[key],
+      );
+      if (firstInvalidField) {
+        const inputEl = e.currentTarget.elements.namedItem(firstInvalidField) as HTMLElement | null;
+        inputEl?.focus();
+      }
       return;
     }
 
+    setFieldErrors({});
     setIsSubmitting(true);
-    setErrorMessage(null);
+    setServiceError(null);
 
     try {
       const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
@@ -120,7 +165,7 @@ export function InquiryForm() {
       // Zero-loss error: do NOT clear the user's typed inputs in formData!
       const errorMsg =
         err instanceof Error && err.message ? err.message : 'Network or transmission error.';
-      setErrorMessage(errorMsg);
+      setServiceError(errorMsg);
     } finally {
       setIsSubmitting(false);
     }
@@ -137,8 +182,11 @@ export function InquiryForm() {
       details: '',
     });
     setIsSuccess(false);
-    setErrorMessage(null);
+    setFieldErrors({});
+    setServiceError(null);
   };
+
+  const hasValidationErrors = Object.keys(fieldErrors).length > 0;
 
   return (
     <SpotlightCard className='h-full rounded-2xl flex flex-col' maxTilt={1.5} hoverScale={1.005}>
@@ -190,7 +238,8 @@ export function InquiryForm() {
                 size='md'
                 onClick={() => {
                   setIsSuccess(false);
-                  setErrorMessage(null);
+                  setFieldErrors({});
+                  setServiceError(null);
                 }}
                 className='w-full sm:w-auto px-4 text-xs sm:text-xs font-semibold text-slate-body hover:bg-slate-100'
               >
@@ -216,13 +265,7 @@ export function InquiryForm() {
             />
             {/* Row 1: Name & Phone / WhatsApp (Mandatory) */}
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-              <div>
-                <label
-                  htmlFor='form-person'
-                  className='block text-xs font-heading font-bold text-slate-dark tracking-wider uppercase mb-1.5'
-                >
-                  Name <span className='text-brand-red'>*</span>
-                </label>
+              <FormField id='form-person' label='Name' required error={fieldErrors.person}>
                 <input
                   type='text'
                   id='form-person'
@@ -231,18 +274,14 @@ export function InquiryForm() {
                   placeholder='Enter your full name'
                   value={formData.person}
                   onChange={handleChange}
-                  className='w-full px-3.5 py-2.5 bg-page-bg border border-border-subtle rounded-lg text-sm text-slate-dark placeholder-slate-400 outline-none focus:border-brand-red focus:bg-white focus:ring-1 focus:ring-brand-red min-h-touch transition-all'
+                  className={getInputClassName(Boolean(fieldErrors.person))}
                   aria-required='true'
+                  aria-invalid={Boolean(fieldErrors.person)}
+                  aria-describedby={fieldErrors.person ? 'form-person-error' : undefined}
                 />
-              </div>
+              </FormField>
 
-              <div>
-                <label
-                  htmlFor='form-phone'
-                  className='block text-xs font-heading font-bold text-slate-dark tracking-wider uppercase mb-1.5'
-                >
-                  Phone / WhatsApp <span className='text-brand-red'>*</span>
-                </label>
+              <FormField id='form-phone' label='Phone / WhatsApp' required error={fieldErrors.phone}>
                 <input
                   type='tel'
                   id='form-phone'
@@ -251,21 +290,17 @@ export function InquiryForm() {
                   placeholder='+966 5x xxx xxxx'
                   value={formData.phone}
                   onChange={handleChange}
-                  className='w-full px-3.5 py-2.5 bg-page-bg border border-border-subtle rounded-lg text-sm text-slate-dark placeholder-slate-400 outline-none focus:border-brand-red focus:bg-white focus:ring-1 focus:ring-brand-red min-h-touch transition-all'
+                  className={getInputClassName(Boolean(fieldErrors.phone))}
                   aria-required='true'
+                  aria-invalid={Boolean(fieldErrors.phone)}
+                  aria-describedby={fieldErrors.phone ? 'form-phone-error' : undefined}
                 />
-              </div>
+              </FormField>
             </div>
 
             {/* Row 2: Email & Company Name (Email Mandatory, Company Optional) */}
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-              <div>
-                <label
-                  htmlFor='form-email'
-                  className='block text-xs font-heading font-bold text-slate-dark tracking-wider uppercase mb-1.5'
-                >
-                  Email <span className='text-brand-red'>*</span>
-                </label>
+              <FormField id='form-email' label='Email' required error={fieldErrors.email}>
                 <input
                   type='email'
                   id='form-email'
@@ -274,19 +309,14 @@ export function InquiryForm() {
                   placeholder='name@example.com'
                   value={formData.email}
                   onChange={handleChange}
-                  className='w-full px-3.5 py-2.5 bg-page-bg border border-border-subtle rounded-lg text-sm text-slate-dark placeholder-slate-400 outline-none focus:border-brand-red focus:bg-white focus:ring-1 focus:ring-brand-red min-h-touch transition-all'
+                  className={getInputClassName(Boolean(fieldErrors.email))}
                   aria-required='true'
+                  aria-invalid={Boolean(fieldErrors.email)}
+                  aria-describedby={fieldErrors.email ? 'form-email-error' : undefined}
                 />
-              </div>
+              </FormField>
 
-              <div>
-                <label
-                  htmlFor='form-company'
-                  className='block text-xs font-heading font-bold text-slate-dark tracking-wider uppercase mb-1.5'
-                >
-                  Company Name{' '}
-                  <span className='text-slate-400 font-normal lowercase'>(optional)</span>
-                </label>
+              <FormField id='form-company' label='Company Name' optional>
                 <input
                   type='text'
                   id='form-company'
@@ -294,28 +324,29 @@ export function InquiryForm() {
                   placeholder='Company or organization name'
                   value={formData.company}
                   onChange={handleChange}
-                  className='w-full px-3.5 py-2.5 bg-page-bg border border-border-subtle rounded-lg text-sm text-slate-dark placeholder-slate-400 outline-none focus:border-brand-red focus:bg-white focus:ring-1 focus:ring-brand-red min-h-touch transition-all'
+                  className={getInputClassName(false)}
                 />
-              </div>
+              </FormField>
             </div>
 
             {/* Row 3: Product Division & Order Volume */}
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-              <div>
-                <label
-                  htmlFor='form-category'
-                  className='block text-xs font-heading font-bold text-slate-dark tracking-wider uppercase mb-1.5'
-                >
-                  Product Division <span className='text-brand-red'>*</span>
-                </label>
+              <FormField
+                id='form-category'
+                label='Product Division'
+                required
+                error={fieldErrors.category}
+              >
                 <select
                   id='form-category'
                   name='category'
                   required
                   value={formData.category}
                   onChange={handleChange}
-                  className='appearance-none w-full px-3.5 py-2.5 bg-page-bg border border-border-subtle rounded-lg text-sm text-slate-dark outline-none focus:border-brand-red focus:bg-white focus:ring-1 focus:ring-brand-red min-h-touch transition-all'
+                  className={getInputClassName(Boolean(fieldErrors.category), 'appearance-none')}
                   aria-required='true'
+                  aria-invalid={Boolean(fieldErrors.category)}
+                  aria-describedby={fieldErrors.category ? 'form-category-error' : undefined}
                 >
                   <option value=''>Select division or inquiry type</option>
                   {CATEGORIES.map((cat) => (
@@ -331,16 +362,9 @@ export function InquiryForm() {
                     General Inquiry / Product Consultation
                   </option>
                 </select>
-              </div>
+              </FormField>
 
-              <div>
-                <label
-                  htmlFor='form-volume'
-                  className='block text-xs font-heading font-bold text-slate-dark tracking-wider uppercase mb-1.5'
-                >
-                  Estimated Order Volume{' '}
-                  <span className='text-slate-400 font-normal lowercase'>(optional)</span>
-                </label>
+              <FormField id='form-volume' label='Estimated Order Volume' optional>
                 <input
                   type='text'
                   id='form-volume'
@@ -348,19 +372,17 @@ export function InquiryForm() {
                   placeholder='e.g. 50 drums, retail, or N/A'
                   value={formData.volume}
                   onChange={handleChange}
-                  className='w-full px-3.5 py-2.5 bg-page-bg border border-border-subtle rounded-lg text-sm text-slate-dark placeholder-slate-400 outline-none focus:border-brand-red focus:bg-white focus:ring-1 focus:ring-brand-red min-h-touch transition-all'
+                  className={getInputClassName(false)}
                 />
-              </div>
+              </FormField>
             </div>
 
             {/* Row 4: Message / Query */}
-            <div className='flex-1 flex flex-col min-h-[140px]'>
-              <label
-                htmlFor='form-details'
-                className='block text-xs font-heading font-bold text-slate-dark tracking-wider uppercase mb-1.5'
-              >
-                Your Message / Query
-              </label>
+            <FormField
+              id='form-details'
+              label='Your Message / Query'
+              className='flex-1 flex flex-col min-h-[140px]'
+            >
               <textarea
                 id='form-details'
                 name='details'
@@ -370,10 +392,23 @@ export function InquiryForm() {
                 onChange={handleChange}
                 className='w-full flex-1 min-h-[120px] px-3.5 py-2.5 bg-page-bg border border-border-subtle rounded-lg text-sm text-slate-dark placeholder-slate-400 outline-none focus:border-brand-red focus:bg-white focus:ring-1 focus:ring-brand-red transition-all resize-y'
               />
-            </div>
+            </FormField>
 
-            {/* Error Alert Box with 1-Click WhatsApp Fallback */}
-            {errorMessage && (
+            {/* Validation Alert Box (Missing / Invalid Required Fields) */}
+            {hasValidationErrors && (
+              <div
+                className='p-3.5 rounded-xl text-xs bg-red-50 text-red-900 border border-red-200 flex items-start gap-2.5'
+                role='alert'
+              >
+                <AlertCircle className='w-4 h-4 text-brand-red shrink-0 mt-0.5' aria-hidden='true' />
+                <p className='font-medium leading-relaxed'>
+                  Please fill in all required fields highlighted above before submitting your inquiry.
+                </p>
+              </div>
+            )}
+
+            {/* Service / Key Unavailability Alert Box with 1-Click WhatsApp Fallback */}
+            {serviceError && (
               <div
                 className='p-4 rounded-xl text-xs bg-amber-50 text-amber-950 border border-amber-200/90 shadow-xs space-y-3'
                 role='alert'
@@ -426,7 +461,7 @@ export function InquiryForm() {
                 rightIcon={<ArrowRight className='w-4 h-4' />}
                 className='px-6 py-3 text-sm sm:text-sm'
               >
-                Send Inquiry
+                Send On Mail
               </Button>
 
               {/* Direct WhatsApp Quote Button */}
@@ -437,7 +472,7 @@ export function InquiryForm() {
                 fullWidth
                 className='text-xs sm:text-xs font-semibold'
               >
-                Send via WhatsApp Directly
+                Send via WhatsApp
               </WhatsAppButton>
             </div>
           </form>
