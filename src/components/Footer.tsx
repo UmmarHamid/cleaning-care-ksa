@@ -1,8 +1,36 @@
+import React from 'react';
 import Link from 'next/link';
 import { BrandLogo } from './BrandLogo';
 import { COMPANY_DATA } from '@/data/company';
 import { SECTION_SPACING } from '@/lib/tokens';
 import { Phone, Mail, MapPin, CheckCircle2 } from 'lucide-react';
+
+function FooterContactItem({
+  icon,
+  label,
+  children,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className='flex items-start gap-3 min-w-0'>
+      <span
+        className='w-8 h-8 rounded-full bg-brand-red text-white flex items-center justify-center shrink-0 mt-0.5'
+        aria-hidden='true'
+      >
+        {icon}
+      </span>
+      <div className='flex flex-col gap-0.5 min-w-0'>
+        <span className='font-heading font-bold text-2xs text-slate-400 uppercase tracking-wider'>
+          {label}
+        </span>
+        {children}
+      </div>
+    </div>
+  );
+}
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -33,72 +61,35 @@ export function Footer() {
               Get in Touch
               <span className='block w-9 h-[3px] bg-brand-red mt-2 rounded-sm' aria-hidden='true' />
             </h3>
-            {/* 2x2 Contact Grid: 1fr_1.4fr on tablet for ample email width, 2 cols on mobile/desktop */}
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[1fr_1.4fr] lg:grid-cols-2 gap-4 sm:gap-6 md:gap-x-6 md:gap-y-6 lg:gap-6'>
-              {/* Phone / WA (Left Col, Top) */}
-              <div className='flex items-start gap-3 min-w-0'>
-                <span
-                  className='w-8 h-8 rounded-full bg-brand-red text-white flex items-center justify-center shrink-0 mt-0.5'
-                  aria-hidden='true'
+              <FooterContactItem icon={<Phone className='w-4 h-4' />} label='Phone'>
+                <a
+                  href={`tel:${COMPANY_DATA.phoneTel}`}
+                  className='text-xs sm:text-sm text-slate-200 hover:text-brand-gold transition-colors font-medium whitespace-nowrap break-normal'
                 >
-                  <Phone className='w-4 h-4' />
-                </span>
-                <div className='flex flex-col gap-0.5 min-w-0'>
-                  <span className='font-heading font-bold text-2xs text-slate-400 uppercase tracking-wider'>
-                    Phone
-                  </span>
-                  <a
-                    href={`tel:${COMPANY_DATA.phoneTel}`}
-                    className='text-xs sm:text-sm text-slate-200 hover:text-brand-gold transition-colors font-medium whitespace-nowrap break-normal'
-                  >
-                    {COMPANY_DATA.phone}
-                  </a>
-                </div>
-              </div>
+                  {COMPANY_DATA.phone}
+                </a>
+              </FooterContactItem>
 
-              {/* Email (Right Col, Top - single line, no mid-word breaks) */}
-              <div className='flex items-start gap-3 min-w-0'>
-                <span
-                  className='w-8 h-8 rounded-full bg-brand-red text-white flex items-center justify-center shrink-0 mt-0.5'
-                  aria-hidden='true'
+              <FooterContactItem icon={<Mail className='w-4 h-4' />} label='Email Us'>
+                <a
+                  href={`mailto:${COMPANY_DATA.emailSales}`}
+                  className='text-xs sm:text-sm text-slate-200 hover:text-brand-gold transition-colors font-medium whitespace-nowrap break-normal'
                 >
-                  <Mail className='w-4 h-4' />
-                </span>
-                <div className='flex flex-col gap-0.5 min-w-0'>
-                  <span className='font-heading font-bold text-2xs text-slate-400 uppercase tracking-wider'>
-                    Email Us
-                  </span>
-                  <a
-                    href={`mailto:${COMPANY_DATA.emailSales}`}
-                    className='text-xs sm:text-sm md:text-sm lg:text-sm text-slate-200 hover:text-brand-gold transition-colors font-medium whitespace-nowrap break-normal'
-                  >
-                    {COMPANY_DATA.emailSales}
-                  </a>
-                </div>
-              </div>
+                  {COMPANY_DATA.emailSales}
+                </a>
+              </FooterContactItem>
 
-              {/* Location (Left Col, Bottom) */}
-              <div className='flex items-start gap-3 min-w-0'>
-                <span
-                  className='w-8 h-8 rounded-full bg-brand-red text-white flex items-center justify-center shrink-0 mt-0.5'
-                  aria-hidden='true'
-                >
-                  <MapPin className='w-4 h-4' />
+              <FooterContactItem icon={<MapPin className='w-4 h-4' />} label='Location'>
+                <span className='text-xs sm:text-sm text-slate-200 font-medium'>
+                  {COMPANY_DATA.location}
                 </span>
-                <div className='flex flex-col gap-0.5 min-w-0'>
-                  <span className='font-heading font-bold text-2xs text-slate-400 uppercase tracking-wider'>
-                    Location
-                  </span>
-                  <span className='text-xs sm:text-sm text-slate-200 font-medium'>
-                    {COMPANY_DATA.location}
-                  </span>
-                </div>
-              </div>
+              </FooterContactItem>
             </div>
           </div>
         </div>
 
-        {/* Row 3 on Tablet: Thin Divider & Balanced Stats Grid (3 cols on tablet, 5 on desktop) */}
+        {/* Highlights Strip */}
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-x-12 sm:gap-y-6 md:gap-5 lg:gap-4 py-8 border-t border-slate-800 md:border-white/10 lg:border-slate-800 items-center'>
           {COMPANY_DATA.highlightsStrip.map((item, idx) => (
             <div key={idx} className='flex items-center gap-2 min-w-0'>
@@ -128,9 +119,11 @@ export function Footer() {
         </svg>
       </div>
 
-      {/* Row 4: Red Copyright Bar - centered on tablet, pb-16 to clear floating Next.js dev badge */}
+      {/* Red Copyright Bar */}
       <div className='bg-brand-red text-white py-4'>
-        <div className={`${SECTION_SPACING.container} flex items-center justify-center sm:justify-start md:justify-center lg:justify-start text-center text-xs text-white/95`}>
+        <div
+          className={`${SECTION_SPACING.container} flex items-center justify-center sm:justify-start md:justify-center lg:justify-start text-center text-xs text-white/95`}
+        >
           &copy; {currentYear} {COMPANY_DATA.name}. All Rights Reserved.
         </div>
       </div>

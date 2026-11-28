@@ -488,5 +488,3 @@ export const ARCHIVED_PRODUCTS: readonly ProductItem[] = [
     imageAlt: 'Colour-coded indoor waste and recycling stations',
   },
 ] as const;
-
-export const ALL_PRODUCTS = PRODUCTS;

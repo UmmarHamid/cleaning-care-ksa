@@ -6,7 +6,7 @@ import { Warehouse, Store, ArrowRight } from "lucide-react";
 import { SpotlightCard } from "@/components/motion/SpotlightCard";
 import { Button } from "@/components/ui/Button";
 
-export function InfraBanner() {
+export function InfrastructureBanner() {
   return (
     <section id='infrastructure-banner' className={`${SECTION_SPACING.y} bg-white relative overflow-hidden`}>
       {/* Background Architectural Grid & Ambient Brand Glow */}

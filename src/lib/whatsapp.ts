@@ -7,66 +7,6 @@ import { CONTACT_PHONE } from "@/data/company";
 export const WHATSAPP_NUMBER = CONTACT_PHONE.raw;
 export const WHATSAPP_BASE_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
 
-export const WHATSAPP_CONFIG = {
-  displayNumber: CONTACT_PHONE.display,
-  businessNumber: WHATSAPP_NUMBER,
-  baseUrl: WHATSAPP_BASE_URL,
-} as const;
-
-export interface ProductEnquiryParams {
-  productName: string;
-  quantity: number | string;
-  spec?: string;
-  company?: string;
-  name?: string;
-  notes?: string;
-  recipient?: string;
-}
-
-export function buildWhatsAppChatUrl(): string {
-  return WHATSAPP_BASE_URL;
-}
-
-export function buildProductEnquiryMessage(params: ProductEnquiryParams): string {
-  const lines: string[] = [
-    "Hello, I am interested in placing a bulk order.",
-    "",
-    `Product: ${params.productName}`,
-    `Quantity: ${params.quantity}`,
-  ];
-
-  if (params.spec) {
-    lines.push(`Specification: ${params.spec}`);
-  }
-
-  if (params.company) {
-    lines.push(`Company: ${params.company}`);
-  }
-
-  if (params.name) {
-    lines.push(`Contact Person: ${params.name}`);
-  }
-
-  if (params.notes) {
-    lines.push(`Notes: ${params.notes}`);
-  }
-
-  lines.push(
-    "",
-    "Please share available sizes, pricing, minimum order quantity and delivery details.",
-    "",
-    "Thank you.",
-  );
-
-  return lines.join("\n");
-}
-
-export function buildProductEnquiryWhatsAppUrl(params: ProductEnquiryParams): string {
-  const recipient = params.recipient || WHATSAPP_NUMBER;
-  const message = buildProductEnquiryMessage(params);
-  return `https://wa.me/${recipient}?text=${encodeURIComponent(message)}`;
-}
-
 export function buildProductBulkOrderUrl(productName: string): string {
   const message = [
     "Hello, I am interested in placing a bulk order for:",
@@ -117,5 +57,3 @@ export function buildWhatsAppFallbackUrl(data: InquiryData): string {
   ];
   return `${WHATSAPP_BASE_URL}?text=${encodeURIComponent(lines.join("\n"))}`;
 }
-
-export const buildWhatsAppInquiryUrl = buildWhatsAppFallbackUrl;

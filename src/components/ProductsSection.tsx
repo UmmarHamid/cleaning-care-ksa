@@ -15,6 +15,7 @@ import {
 import { SpotlightCard } from '@/components/motion/SpotlightCard';
 import { BorderBeam } from '@/components/motion/BorderBeam';
 import { Button } from '@/components/ui/Button';
+import { SectionHeader } from '@/components/ui/SectionHeader';
 import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 
 function CategoryIcon({ id }: { id: string }) {
@@ -34,31 +35,16 @@ export function ProductsSection() {
   return (
     <section id='products' className={`${SECTION_SPACING.y} bg-white`}>
       <div className={SECTION_SPACING.container}>
-        {/* Section Heading */}
-        <div
-          className={`text-center sm:text-left max-w-3xl mx-auto sm:mx-0 ${SECTION_SPACING.headerMb}`}
-        >
-          <div className='flex items-center justify-center sm:justify-start gap-3 sm:gap-4 mb-3'>
-            <span
-              className='h-0.5 w-10 sm:w-14 sm:hidden bg-brand-red rounded-full'
-              aria-hidden='true'
-            />
-            <h2 className='font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-dark tracking-tight leading-tight'>
-              Product Division
-            </h2>
-            <span className='h-0.5 w-10 sm:w-14 bg-brand-red rounded-full' aria-hidden='true' />
-          </div>
-          <p className='font-body text-slate-body text-sm sm:text-base leading-relaxed'>
-            Explore our complete range of cleaning, hygiene, plastic and safety products, trusted by
-            businesses across Saudi Arabia.
-          </p>
-        </div>
+        <SectionHeader
+          title='Product Division'
+          description='Explore our complete range of cleaning, hygiene, plastic and safety products, trusted by businesses across Saudi Arabia.'
+        />
 
         {/* Categories Grid */}
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
           {CATEGORIES.map((cat) => (
             <SpotlightCard key={cat.id} className='h-full rounded-2xl'>
-              <article className='group flex flex-col h-full rounded-2xl border border-border-subtle bg-white overflow-hidden shadow-subtle hover:shadow-md hover:-translate-y-1 hover:border-[#D32027]/40 transition-all duration-300 ease-out motion-reduce:transform-none'>
+              <article className='group flex flex-col h-full rounded-2xl border border-border-subtle bg-white overflow-hidden shadow-subtle hover:shadow-md hover:-translate-y-1 hover:border-brand-red/40 transition-all duration-300 ease-out motion-reduce:transform-none'>
                 <Link
                   className='w-full h-52 bg-studio-gray p-4 flex items-center justify-center overflow-hidden'
                   href={buildCategoryUrl(cat.id)}

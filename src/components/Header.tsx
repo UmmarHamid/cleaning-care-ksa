@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { BrandLogo } from './BrandLogo';
 import { Button } from '@/components/ui/Button';
 import { COMPANY_DATA } from '@/data/company';
+import { SECTION_SPACING } from '@/lib/tokens';
 import { MapPin, Phone, Mail } from 'lucide-react';
 
 const SPY_SECTIONS = ['home', 'about', 'products', 'infrastructure', 'contact'] as const;
@@ -138,7 +139,7 @@ export function Header() {
     <header ref={headerRef} className='sticky top-0 z-50 w-full shadow-subtle'>
       {/* Top Utility Bar */}
       <div className='hidden md:block w-full bg-brand-charcoal text-white text-xs border-b border-slate-800'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[38px] flex items-center justify-between gap-4 flex-wrap'>
+        <div className={`${SECTION_SPACING.container} min-h-[38px] flex items-center justify-between gap-4 flex-wrap`}>
           <div className='flex items-center gap-4 sm:gap-6 flex-wrap'>
             <a
               href={COMPANY_DATA.googleMapsUrl}
@@ -171,7 +172,7 @@ export function Header() {
 
       {/* Main Navigation Bar */}
       <div className='w-full bg-white/95 backdrop-blur-md border-b border-border-subtle relative'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[84px] sm:min-h-[92px] flex items-center justify-between gap-6'>
+        <div className={`${SECTION_SPACING.container} min-h-[84px] sm:min-h-[92px] flex items-center justify-between gap-6`}>
           <Link
             href='/'
             className='min-h-touch flex items-center shrink-0'
