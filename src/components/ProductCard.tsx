@@ -1,9 +1,9 @@
-import React from "react";
-import Image from "next/image";
-import { ProductItem } from "@/data/catalog";
-import { SpotlightCard } from "@/components/motion/SpotlightCard";
-import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
-import { buildProductBulkOrderUrl } from "@/lib/whatsapp";
+import React from 'react';
+import Image from 'next/image';
+import { ProductItem } from '@/data/catalog';
+import { SpotlightCard } from '@/components/motion/SpotlightCard';
+import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
+import { buildProductBulkOrderUrl } from '@/lib/whatsapp';
 
 interface ProductCardProps {
   product: ProductItem;
@@ -54,7 +54,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               className='text-xs sm:text-xs px-2.5 py-2 sm:py-2.5 whitespace-nowrap group-hover:shadow-md'
               aria-label={`Order ${product.name} in Bulk on WhatsApp`}
             >
-              Order in Bulk on WhatsApp
+              Order on WhatsApp
             </WhatsAppButton>
           </div>
         </div>

@@ -1,19 +1,19 @@
 import React from 'react';
-import { COMPANY_DATA } from '@/data/company';
+import { COMPANY_DATA, SITE_URL } from '@/data/company';
 import { CATEGORIES } from '@/data/catalog';
+import { WHATSAPP_BASE_URL } from '@/lib/whatsapp';
 
 export function JsonLd() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': ['WholesaleStore', 'LocalBusiness'],
-    '@id': 'https://cleaningcaretrading.com/#organization',
+    '@id': `${SITE_URL}/#organization`,
     name: COMPANY_DATA.name,
     legalName: COMPANY_DATA.legalName,
     alternateName: COMPANY_DATA.arabicName,
-    url: 'https://cleaningcaretrading.com',
-    logo: 'https://cleaningcaretrading.com/assets/logo.svg',
-    image:
-      'https://cleaningcaretrading.com/assets/images/hero-section-banner.webp',
+    url: SITE_URL,
+    logo: `${SITE_URL}/assets/logo.svg`,
+    image: `${SITE_URL}/assets/images/hero-section-banner.webp`,
     description: COMPANY_DATA.shortDescription,
     telephone: COMPANY_DATA.phoneTel,
     email: COMPANY_DATA.emailSales,
@@ -65,7 +65,7 @@ export function JsonLd() {
     },
     sameAs: [
       COMPANY_DATA.googleMapsUrl,
-      `https://wa.me/${COMPANY_DATA.phoneRaw}`,
+      WHATSAPP_BASE_URL,
     ],
   };
 

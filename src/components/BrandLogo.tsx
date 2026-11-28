@@ -39,11 +39,9 @@ export function BrandLogo({
   const resolvedWidth =
     width ?? (height ? Math.round(height * ASPECT_RATIO) : (preset?.width ?? 84));
 
-  const sizeClass = size !== 'custom' ? `brand-logo-${size}` : '';
-
   return (
     <span
-      className={`brand-logo-wrap ${sizeClass} ${className}`.trim()}
+      className={`inline-flex items-center shrink-0 ${className}`.trim()}
       style={{
         height: `${resolvedHeight}px`,
         width: `${resolvedWidth}px`,
@@ -57,7 +55,7 @@ export function BrandLogo({
         width={resolvedWidth}
         height={resolvedHeight}
         priority={priority}
-        className='brand-logo-img w-auto h-full max-h-full max-w-full object-contain block transition-transform duration-200'
+        className='w-auto h-full max-h-full max-w-full object-contain block transition-transform duration-200'
       />
     </span>
   );

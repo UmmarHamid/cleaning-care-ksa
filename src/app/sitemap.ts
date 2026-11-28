@@ -1,9 +1,10 @@
 import { MetadataRoute } from "next";
+import { SITE_URL } from "@/data/company";
 
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://cleaningcaretrading.com";
+  const baseUrl = SITE_URL;
   const now = new Date();
 
   return [

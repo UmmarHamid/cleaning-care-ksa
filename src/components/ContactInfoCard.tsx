@@ -3,7 +3,6 @@ import { COMPANY_DATA } from '@/data/company';
 import { buildWhatsAppQuoteUrl } from '@/lib/whatsapp';
 import { Phone, Mail, MapPin, FileText, ExternalLink } from 'lucide-react';
 import { SpotlightCard } from '@/components/motion/SpotlightCard';
-import { Button } from '@/components/ui/Button';
 import { WhatsAppIcon } from './WhatsAppIcon';
 
 interface ContactDetailItemProps {

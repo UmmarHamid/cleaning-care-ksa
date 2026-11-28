@@ -4,7 +4,7 @@ import { Hero } from "@/components/Hero";
 import { StatsBar } from "@/components/StatsBar";
 import { AboutSection } from "@/components/AboutSection";
 import { ProductsSection } from "@/components/ProductsSection";
-import { InfraBanner } from "@/components/InfraBanner";
+import { InfrastructureBanner } from "@/components/InfrastructureBanner";
 import { WhyChooseSection } from "@/components/WhyChooseSection";
 import { IndustriesSection } from "@/components/IndustriesSection";
 import { InfrastructureBento } from "@/components/InfrastructureBento";
@@ -22,7 +22,7 @@ export default function Home() {
         <StatsBar />
         <AboutSection />
         <ProductsSection />
-        <InfraBanner />
+        <InfrastructureBanner />
         <WhyChooseSection />
         <IndustriesSection />
         <InfrastructureBento />
