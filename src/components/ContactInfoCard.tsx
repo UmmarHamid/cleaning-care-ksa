@@ -3,6 +3,7 @@ import { COMPANY_DATA } from '@/data/company';
 import { buildWhatsAppQuoteUrl } from '@/lib/whatsapp';
 import { Phone, Mail, MapPin, FileText, ExternalLink } from 'lucide-react';
 import { SpotlightCard } from '@/components/motion/SpotlightCard';
+import { Button } from '@/components/ui/Button';
 import { WhatsAppIcon } from './WhatsAppIcon';
 
 interface ContactDetailItemProps {
@@ -11,11 +12,7 @@ interface ContactDetailItemProps {
   children: React.ReactNode;
 }
 
-export function ContactDetailItem({
-  icon,
-  label,
-  children,
-}: ContactDetailItemProps) {
+export function ContactDetailItem({ icon, label, children }: ContactDetailItemProps) {
   return (
     <div className='flex items-start gap-3.5 pb-4 border-b border-border-subtle'>
       <span
@@ -38,11 +35,7 @@ export function ContactInfoCard() {
   const whatsappUrl = buildWhatsAppQuoteUrl();
 
   return (
-    <SpotlightCard
-      className='h-full rounded-2xl flex flex-col'
-      maxTilt={1.5}
-      hoverScale={1.005}
-    >
+    <SpotlightCard className='h-full rounded-2xl flex flex-col' maxTilt={1.5} hoverScale={1.005}>
       <article className='rounded-2xl border border-border-subtle overflow-hidden shadow-card bg-white flex flex-col h-full flex-1'>
         {/* Card Header */}
         <div className='flex items-start gap-4 p-6 sm:p-8 bg-gradient-to-br from-brand-red to-brand-red-dark text-white'>
@@ -53,9 +46,8 @@ export function ContactInfoCard() {
               Cleaning Care Trading Co.
             </h3>
             <p className='font-body text-white/90 text-md leading-relaxed'>
-              Our team is ready to support your business with product
-              information, quotations and reliable supply solutions across the
-              Kingdom.
+              Our team is ready to support your business with product information, quotations and
+              reliable supply solutions across the Kingdom.
             </p>
           </div>
         </div>
@@ -65,10 +57,7 @@ export function ContactInfoCard() {
           {/* Contact Details List */}
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             {/* Direct Phone Call */}
-            <ContactDetailItem
-              icon={<Phone className='w-5 h-5' />}
-              label='PHONE NUMBER'
-            >
+            <ContactDetailItem icon={<Phone className='w-5 h-5' />} label='PHONE NUMBER'>
               <a
                 href={`tel:${COMPANY_DATA.phoneTel}`}
                 className='text-sm font-semibold text-slate-dark hover:text-brand-red min-h-touch flex items-center transition-colors'
@@ -79,10 +68,7 @@ export function ContactInfoCard() {
             </ContactDetailItem>
 
             {/* WhatsApp */}
-            <ContactDetailItem
-              icon={<WhatsAppIcon className='w-5 h-5' />}
-              label='WHATSAPP'
-            >
+            <ContactDetailItem icon={<WhatsAppIcon className='w-5 h-5' />} label='WHATSAPP'>
               <a
                 href={whatsappUrl}
                 target='_blank'
@@ -95,13 +81,10 @@ export function ContactInfoCard() {
             </ContactDetailItem>
 
             {/* Email Us */}
-            <ContactDetailItem
-              icon={<Mail className='w-5 h-5' />}
-              label='EMAIL US'
-            >
+            <ContactDetailItem icon={<Mail className='w-5 h-5' />} label='EMAIL US'>
               <a
                 href={`mailto:${COMPANY_DATA.emailSales}`}
-                className='text-sm font-semibold text-slate-dark hover:text-brand-red min-h-touch flex items-center transition-colors'
+                className='text-xs font-semibold text-slate-dark hover:text-brand-red min-h-touch flex items-center transition-colors'
               >
                 {COMPANY_DATA.emailSales}
               </a>
@@ -118,10 +101,7 @@ export function ContactInfoCard() {
             </ContactDetailItem>
 
             {/* Location */}
-            <ContactDetailItem
-              icon={<MapPin className='w-5 h-5' />}
-              label='OUR LOCATION'
-            >
+            <ContactDetailItem icon={<MapPin className='w-5 h-5' />} label='OUR LOCATION'>
               <a
                 href={COMPANY_DATA.googleMapsUrl}
                 target='_blank'
@@ -152,15 +132,6 @@ export function ContactInfoCard() {
                 title='Cleaning Care Trading Co. location in Riyadh'
               />
             </div>
-            <a
-              href={COMPANY_DATA.googleMapsUrl}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='inline-flex items-center justify-between w-full px-4 py-2.5 rounded-lg border border-border-subtle bg-page-bg hover:bg-slate-100 text-xs font-semibold text-slate-dark min-h-touch transition-colors'
-            >
-              <span>View on Google Maps</span>
-              <ExternalLink className='w-3.5 h-3.5' aria-hidden='true' />
-            </a>
           </div>
         </div>
       </article>

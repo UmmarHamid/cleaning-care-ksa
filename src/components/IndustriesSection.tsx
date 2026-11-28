@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { COMPANY_DATA } from "@/data/company";
+import { SECTION_SPACING } from "@/lib/tokens";
 import { Sparkles, Building2, UtensilsCrossed, Plus, GraduationCap, Wrench } from "lucide-react";
 import { SpotlightCard } from "@/components/motion/SpotlightCard";
 
@@ -8,9 +9,9 @@ export function IndustriesSection() {
   const { industries } = COMPANY_DATA;
 
   return (
-    <section id='industries' className='py-16 bg-white'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='text-center sm:text-left max-w-3xl mx-auto sm:mx-0 mb-12'>
+    <section id='industries' className={`${SECTION_SPACING.y} bg-white`}>
+      <div className={SECTION_SPACING.container}>
+        <div className={`text-center sm:text-left max-w-3xl mx-auto sm:mx-0 ${SECTION_SPACING.headerMb}`}>
           <div className='flex items-center justify-center sm:justify-start gap-3 sm:gap-4 mb-3'>
             <span className='h-0.5 w-10 sm:w-14 sm:hidden bg-brand-red rounded-full' aria-hidden='true' />
             <h2 className='font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-dark tracking-tight'>

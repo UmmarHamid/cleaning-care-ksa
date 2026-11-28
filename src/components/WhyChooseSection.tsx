@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { COMPANY_DATA } from "@/data/company";
+import { SECTION_SPACING } from "@/lib/tokens";
 import { Factory, Truck, Tag, CreditCard, Layers, ShieldCheck } from "lucide-react";
 import { SpotlightCard } from "@/components/motion/SpotlightCard";
 
@@ -8,8 +9,8 @@ export function WhyChooseSection() {
   const { strengths } = COMPANY_DATA;
 
   return (
-    <section className='py-12 sm:py-16 bg-white'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+    <section className={`${SECTION_SPACING.y} bg-white`}>
+      <div className={SECTION_SPACING.container}>
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch'>
           <div className='lg:col-span-7 flex flex-col justify-center min-w-0 w-full text-center sm:text-left'>
             <div className='flex items-center justify-center sm:justify-start gap-3.5 mb-2.5'>

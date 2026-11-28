@@ -2,10 +2,22 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { CATEGORIES } from "@/data/catalog";
+import { SECTION_SPACING } from "@/lib/tokens";
+import { buildCategoryUrl } from "@/lib/categories";
 import { buildWhatsAppQuoteUrl } from "@/lib/whatsapp";
-import { ArrowRight, SprayCan, Package, Trash2, TrafficCone, Truck } from "lucide-react";
+import {
+  ArrowRight,
+  BrushCleaning,
+  Package,
+  SprayCan,
+  Toilet,
+  TrafficCone,
+  Truck,
+} from "lucide-react";
 import { SpotlightCard } from "@/components/motion/SpotlightCard";
 import { BorderBeam } from "@/components/motion/BorderBeam";
+import { Button } from "@/components/ui/Button";
+import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 
 function CategoryIcon({ id }: { id: string }) {
   if (id === "cleaning-materials") {
@@ -14,18 +26,18 @@ function CategoryIcon({ id }: { id: string }) {
   if (id === "hygiene-disposables") {
     return <Package className='w-6 h-6 text-brand-red shrink-0' aria-hidden='true' />;
   }
-  if (id === "plastic-drums") {
-    return <Trash2 className='w-6 h-6 text-brand-red shrink-0' aria-hidden='true' />;
+  if (id === "cleaning-equipment-tools") {
+    return <Truck className='w-6 h-6 text-brand-red shrink-0' aria-hidden='true' />;
   }
   return <TrafficCone className='w-6 h-6 text-brand-red shrink-0' aria-hidden='true' />;
 }
 
 export function ProductsSection() {
   return (
-    <section id='products' className='py-16 bg-white'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+    <section id='products' className={`${SECTION_SPACING.y} bg-white`}>
+      <div className={SECTION_SPACING.container}>
         {/* Section Heading */}
-        <div className='text-center sm:text-left max-w-3xl mx-auto sm:mx-0 mb-12'>
+        <div className={`text-center sm:text-left max-w-3xl mx-auto sm:mx-0 ${SECTION_SPACING.headerMb}`}>
           <div className='flex items-center justify-center sm:justify-start gap-3 sm:gap-4 mb-3'>
             <span
               className='h-0.5 w-10 sm:w-14 sm:hidden bg-brand-red rounded-full'
@@ -49,7 +61,7 @@ export function ProductsSection() {
               <article className='group flex flex-col h-full rounded-2xl border border-border-subtle bg-white overflow-hidden shadow-subtle hover:shadow-md hover:-translate-y-1 hover:border-[#D32027]/40 transition-all duration-300 ease-out motion-reduce:transform-none'>
                 <Link
                   className='w-full h-52 bg-studio-gray p-4 flex items-center justify-center overflow-hidden'
-                  href='/products'
+                  href={buildCategoryUrl(cat.id)}
                 >
                   <Image
                     src={cat.image}
@@ -72,7 +84,7 @@ export function ProductsSection() {
                   </p>
                   <div className='mt-auto pt-2 flex items-center justify-between'>
                     <Link
-                      href='/products'
+                      href={buildCategoryUrl(cat.id)}
                       className='inline-flex items-center gap-1.5 text-brand-red hover:text-brand-red-dark font-heading font-bold text-sm min-h-touch transition-all group-hover:translate-x-0.5 motion-reduce:transform-none'
                     >
                       <span>View Products</span>
@@ -112,21 +124,23 @@ export function ProductsSection() {
               </p>
             </div>
             <div className='flex items-center justify-center sm:justify-start gap-3 flex-wrap relative z-10 w-full sm:w-auto'>
-              <Link
+              <Button
                 href='/products'
-                className='w-full md:w-fit inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-subtle min-h-touch transition-all'
+                variant='primary'
+                size='md'
+                rightIcon={<span>→</span>}
+                className='w-full md:w-fit'
               >
-                <span>Explore Full Interactive Catalog</span>
-                <span aria-hidden='true'>→</span>
-              </Link>
-              <a
+                Explore Full Interactive Catalog
+              </Button>
+              <WhatsAppButton
                 href={buildWhatsAppQuoteUrl()}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='w-full md:w-fit inline-flex items-center justify-center gap-2 bg-success hover:bg-success-dark text-white font-heading font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-subtle min-h-touch transition-all'
+                variant='secondary'
+                size='md'
+                className='w-full md:w-fit'
               >
-                <span>Inquire on WhatsApp</span>
-              </a>
+                Inquire on WhatsApp
+              </WhatsAppButton>
             </div>
           </div>
         </SpotlightCard>

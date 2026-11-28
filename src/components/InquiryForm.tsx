@@ -10,12 +10,12 @@ import {
 import {
   ClipboardList,
   CheckCircle2,
-  Loader2,
   ArrowRight,
   AlertCircle,
 } from 'lucide-react';
 import { SpotlightCard } from '@/components/motion/SpotlightCard';
-import { WhatsAppIcon } from './WhatsAppIcon';
+import { Button } from '@/components/ui/Button';
+import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 
 export function InquiryForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -204,26 +204,26 @@ export function InquiryForm() {
             </p>
 
             <div className='pt-2 flex flex-col sm:flex-row items-center justify-center gap-3'>
-              <a
+              <WhatsAppButton
                 href={`https://wa.me/${COMPANY_DATA.phoneRaw}`}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-success hover:bg-success-dark text-white font-semibold text-xs min-h-touch transition-colors'
+                variant='secondary'
+                size='md'
+                rightIcon={<ArrowRight className='w-3.5 h-3.5' />}
+                className='w-full sm:w-auto text-xs sm:text-xs font-semibold'
               >
-                <WhatsAppIcon className='w-4 h-4' />
-                <span>Also Chat on WhatsApp (+966 56 282 1089)</span>
-                <ArrowRight className='w-3.5 h-3.5' aria-hidden='true' />
-              </a>
-              <button
-                type='button'
+                Also Chat on WhatsApp (+966 56 282 1089)
+              </WhatsAppButton>
+              <Button
+                variant='secondary'
+                size='md'
                 onClick={() => {
                   setIsSuccess(false);
                   setErrorMessage(null);
                 }}
-                className='w-full sm:w-auto px-4 py-2.5 rounded-lg border border-border-subtle text-slate-body hover:bg-slate-100 font-semibold text-xs min-h-touch transition-colors cursor-pointer'
+                className='w-full sm:w-auto px-4 text-xs sm:text-xs font-semibold text-slate-body hover:bg-slate-100'
               >
                 Submit Another Inquiry
-              </button>
+              </Button>
             </div>
           </div>
         ) : (
@@ -429,49 +429,47 @@ export function InquiryForm() {
                   </div>
                 </div>
 
-                <a
+                <WhatsAppButton
                   href={buildWhatsAppFallbackUrl(formData)}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-success hover:bg-success-dark text-white font-heading font-bold text-xs sm:text-sm rounded-lg min-h-touch transition-all shadow-subtle group'
+                  variant='secondary'
+                  size='md'
+                  fullWidth
+                  rightIcon={
+                    <ArrowRight className='w-4 h-4 group-hover:translate-x-1 transition-transform' />
+                  }
+                  className='py-3 group'
                 >
-                  <WhatsAppIcon className='w-4 h-4' />
-                  <span>Send This Quote via WhatsApp Now</span>
-                  <ArrowRight className='w-4 h-4 group-hover:translate-x-1 transition-transform' aria-hidden='true' />
-                </a>
+                  Send This Quote via WhatsApp Now
+                </WhatsAppButton>
               </div>
             )}
 
             {/* Action Submit Buttons */}
             <div className='flex flex-col gap-2.5 pt-2'>
-              <button
+              <Button
                 type='submit'
-                className='w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-sm rounded-lg shadow-subtle min-h-touch transition-all cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed'
+                variant='primary'
+                size='md'
+                fullWidth
+                isLoading={isSubmitting}
+                loadingText='Submitting Quotation Request...'
                 disabled={isSubmitting}
+                rightIcon={<ArrowRight className='w-4 h-4' />}
+                className='px-6 py-3 text-sm sm:text-sm'
               >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className='w-4 h-4 animate-spin' />
-                    <span>Submitting Quotation Request...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Send Inquiry</span>
-                    <ArrowRight className='w-4 h-4' aria-hidden='true' />
-                  </>
-                )}
-              </button>
+                Send Inquiry
+              </Button>
 
               {/* Direct WhatsApp Quote Button */}
-              <a
+              <WhatsAppButton
                 href={buildWhatsAppFallbackUrl(formData)}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-success-light hover:bg-success text-success-dark hover:text-white border border-success/30 font-heading font-semibold text-xs rounded-lg min-h-touch transition-all'
+                variant='secondary'
+                size='md'
+                fullWidth
+                className='text-xs sm:text-xs font-semibold'
               >
-                <WhatsAppIcon className='w-4 h-4' />
-                <span>Send via WhatsApp Directly</span>
-              </a>
+                Send via WhatsApp Directly
+              </WhatsAppButton>
             </div>
           </form>
         )}

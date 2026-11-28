@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { COMPANY_DATA } from "@/data/company";
+import { SECTION_SPACING } from "@/lib/tokens";
 import { Check, Warehouse, Store } from "lucide-react";
 import { RevealOnScroll } from "@/components/motion/RevealOnScroll";
 import { SpotlightCard } from "@/components/motion/SpotlightCard";
@@ -9,13 +10,13 @@ export function InfrastructureBento() {
   const { infrastructureFeatures, facilities } = COMPANY_DATA;
 
   return (
-    <section id='infrastructure' className='py-16 bg-white relative overflow-hidden'>
+    <section id='infrastructure' className={`${SECTION_SPACING.y} bg-white relative overflow-hidden`}>
       {/* Background Architectural Grid & Ambient Brand Glow */}
       <div className='absolute inset-0 bg-industrial-grid pointer-events-none z-0' aria-hidden='true' />
       <div className='absolute inset-0 bg-brand-glow pointer-events-none z-0' aria-hidden='true' />
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10'>
+      <div className={`${SECTION_SPACING.container} relative z-10`}>
         {/* Section Heading */}
-        <div className='text-center sm:text-left max-w-3xl mx-auto sm:mx-0 mb-12'>
+        <div className={`text-center sm:text-left max-w-3xl mx-auto sm:mx-0 ${SECTION_SPACING.headerMb}`}>
           <div className='flex items-center justify-center sm:justify-start gap-3 sm:gap-4 mb-3'>
             <span className='h-0.5 w-10 sm:w-14 sm:hidden bg-brand-red rounded-full' aria-hidden='true' />
             <span className='text-brand-red font-heading font-extrabold text-xs sm:text-sm tracking-wider uppercase'>

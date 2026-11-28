@@ -1,372 +1,506 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
-import Image from 'next/image';
-import { DIVISIONS, PRODUCTS, CategoryId } from '@/data/catalog';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { PRODUCTS, CategoryId } from '@/data/catalog';
 import { ProductCard } from '@/components/ProductCard';
-import { buildWhatsAppQuoteUrl } from '@/lib/whatsapp';
+import { Button } from '@/components/ui/Button';
+import { buildCategoryUrl, getCategoryFromSlug, isValidCategorySlug } from '@/lib/categories';
 import {
   Search,
   X,
-  CheckCircle2,
-  ArrowRight,
-  MessageCircle,
-  FileSpreadsheet,
+  LayoutGrid,
+  SprayCan,
+  Package,
+  Wrench,
+  TrafficCone,
+  ChevronLeft,
+  ChevronRight,
+  RotateCcw,
 } from 'lucide-react';
 
-interface ProductCatalogProps {
-  initialCategory?: CategoryId | 'all';
-  showHeader?: boolean;
+const DEFAULT_PAGE_SIZE = 8;
+const MIN_PAGE_SIZE = 1;
+const MAX_PAGE_SIZE = 100;
+
+interface CategoryTabItem {
+  id: CategoryId | 'all';
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
 }
 
-export function ProductCatalog({
-  initialCategory = 'all',
-  showHeader = true,
-}: ProductCatalogProps) {
-  const [selectedCategory, setSelectedCategory] = useState<CategoryId | 'all'>(
-    initialCategory,
-  );
-  const [searchQuery, setSearchQuery] = useState<string>('');
+const CATEGORY_TABS: CategoryTabItem[] = [
+  { id: 'all', label: 'All Products', icon: LayoutGrid },
+  { id: 'cleaning-materials', label: 'Cleaning Materials', icon: SprayCan },
+  { id: 'hygiene-disposables', label: 'Hygiene & Disposable Products', icon: Package },
+  { id: 'cleaning-equipment-tools', label: 'Cleaning Equipment & Tools', icon: Wrench },
+  { id: 'safety-products', label: 'Safety Products', icon: TrafficCone },
+];
 
-  // Active division details if a single division is chosen
-  const activeDivision = useMemo(() => {
-    if (selectedCategory === 'all') return null;
-    return DIVISIONS.find((d) => d.id === selectedCategory) || null;
-  }, [selectedCategory]);
+type PaginationItem = number | 'ellipsis-start' | 'ellipsis-end';
 
-  // Filter products based on active category and instant search query
+function getPaginationItems(current: number, total: number): PaginationItem[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  if (current <= 4) {
+    return [1, 2, 3, 4, 5, 'ellipsis-end', total];
+  }
+
+  if (current >= total - 3) {
+    return [1, 'ellipsis-start', total - 4, total - 3, total - 2, total - 1, total];
+  }
+
+  return [1, 'ellipsis-start', current - 1, current, current + 1, 'ellipsis-end', total];
+}
+
+export function ProductCatalog() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const rawCategoryParam = searchParams.get('category');
+  const selectedCategory = useMemo(() => getCategoryFromSlug(rawCategoryParam), [rawCategoryParam]);
+
+  const [searchInput, setSearchInput] = useState<string>('');
+  const [appliedSearch, setAppliedSearch] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
+  const [pageSizeInput, setPageSizeInput] = useState<string>(String(DEFAULT_PAGE_SIZE));
+
+  const [prevCategory, setPrevCategory] = useState<CategoryId | 'all'>(selectedCategory);
+  const catalogTopRef = useRef<HTMLDivElement>(null);
+
+  // Synchronize invalid or empty category query parameter in URL (fallback to All Products)
+  useEffect(() => {
+    if (rawCategoryParam !== null && !isValidCategorySlug(rawCategoryParam)) {
+      router.replace(pathname, { scroll: false });
+    }
+  }, [rawCategoryParam, pathname, router]);
+
+  // Reset pagination to page 1 whenever category changes (via URL, back/forward, or click)
+  if (prevCategory !== selectedCategory) {
+    setPrevCategory(selectedCategory);
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+    }
+  }
+
+  // Compute live product counts per category from displayed products
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {
+      all: PRODUCTS.length,
+    };
+    for (const product of PRODUCTS) {
+      counts[product.category] = (counts[product.category] || 0) + 1;
+    }
+    return counts;
+  }, []);
+
+  // Filter products by selected category and search query
   const filteredProducts = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
+    const query = appliedSearch.trim().toLowerCase();
 
     return PRODUCTS.filter((product) => {
-      const matchesCategory =
-        selectedCategory === 'all' || product.category === selectedCategory;
-      if (!matchesCategory) return false;
+      // 1. Category Filter
+      if (selectedCategory !== 'all' && product.category !== selectedCategory) {
+        return false;
+      }
 
+      // 2. Search Query Filter
       if (!query) return true;
 
       const matchesName = product.name.toLowerCase().includes(query);
-      const matchesDesc = product.shortDescription.toLowerCase().includes(query);
-      const matchesPackaging =
-        product.packagingNote?.toLowerCase().includes(query) ?? false;
+      const matchesDesc = product.description.toLowerCase().includes(query);
+      const matchesPackaging = product.packagingNote?.toLowerCase().includes(query) ?? false;
       const matchesSpecs = product.specifications.some((spec) =>
         spec.toLowerCase().includes(query),
       );
 
       return matchesName || matchesDesc || matchesPackaging || matchesSpecs;
     });
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, appliedSearch]);
 
-  // Compute SKU count for each division
-  const divisionCounts = useMemo(() => {
-    const counts: Record<string, number> = {
-      all: PRODUCTS.length,
-    };
-    for (const div of DIVISIONS) {
-      counts[div.id] = div.subCategories.length;
+  // Pagination Calculations based on active pageSize
+  const totalProducts = filteredProducts.length;
+  const totalPages = Math.ceil(totalProducts / pageSize) || 1;
+  const safeCurrentPage = currentPage > totalPages ? 1 : currentPage;
+  const startIndex = (safeCurrentPage - 1) * pageSize;
+  const currentProducts = filteredProducts.slice(startIndex, startIndex + pageSize);
+  const showingStart = totalProducts === 0 ? 0 : startIndex + 1;
+  const showingEnd = Math.min(startIndex + pageSize, totalProducts);
+
+  // Apply and validate custom products per page
+  const applyPageSize = (rawValue: string) => {
+    const trimmed = rawValue.trim();
+    const parsed = parseInt(trimmed, 10);
+
+    // If empty, non-numeric, zero, or negative, restore last valid pageSize
+    if (!trimmed || isNaN(parsed) || parsed < MIN_PAGE_SIZE) {
+      setPageSizeInput(String(pageSize));
+      return;
     }
-    return counts;
-  }, []);
 
-  const handleClearFilters = () => {
-    setSelectedCategory('all');
-    setSearchQuery('');
+    // Clamp values above MAX_PAGE_SIZE (100)
+    const clamped = Math.min(MAX_PAGE_SIZE, parsed);
+
+    setPageSize(clamped);
+    setPageSizeInput(String(clamped));
+
+    // Reset to page 1 whenever page size changes
+    if (clamped !== pageSize) {
+      setCurrentPage(1);
+    }
+  };
+
+  const handlePageSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    // Allow digits only or empty string while user is typing/backspacing
+    if (val === '' || /^\d+$/.test(val)) {
+      setPageSizeInput(val);
+    }
+  };
+
+  const handlePageSizeBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    applyPageSize(e.target.value);
+  };
+
+  const handlePageSizeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      applyPageSize((e.target as HTMLInputElement).value);
+      (e.target as HTMLInputElement).blur();
+    }
+  };
+
+  // Category Selection Handler
+  const handleSelectCategory = (categoryId: CategoryId | 'all') => {
+    setCurrentPage(1);
+    const targetUrl = buildCategoryUrl(categoryId);
+    router.push(targetUrl, { scroll: false });
+  };
+
+  // Search Submit Handler
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const inputEl = e.currentTarget.querySelector('input') as HTMLInputElement | null;
+    const query = inputEl ? inputEl.value : searchInput;
+    setSearchInput(query);
+    setAppliedSearch(query);
+    setCurrentPage(1);
+  };
+
+  // Search Clear Handler
+  const handleClearSearch = () => {
+    setSearchInput('');
+    setAppliedSearch('');
+    setCurrentPage(1);
+  };
+
+  // Reset All Filters Handler
+  const handleResetAll = () => {
+    setSearchInput('');
+    setAppliedSearch('');
+    setCurrentPage(1);
+    router.push('/products', { scroll: false });
+  };
+
+  // Page Change Handler
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      setCurrentPage(page);
+      if (catalogTopRef.current) {
+        catalogTopRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
   };
 
   return (
-    <section id='products-catalog' className='py-12 sm:py-16 bg-page-bg'>
+    <div id='products-catalog' ref={catalogTopRef} className='py-8 bg-page-bg scroll-mt-24'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        {/* Section Heading (if enabled) */}
-        {showHeader && (
-          <div className='text-center sm:text-left max-w-3xl mx-auto sm:mx-0 mb-10'>
-            <div className='flex items-center justify-center sm:justify-start gap-3 mb-3'>
-              <span className='h-0.5 w-12 sm:hidden bg-brand-red rounded-full' aria-hidden='true' />
-              <span className='text-brand-red font-heading font-extrabold text-xs sm:text-sm tracking-wider uppercase'>
-                PROCUREMENT CATALOG
-              </span>
-              <span className='h-0.5 w-12 bg-brand-red rounded-full' aria-hidden='true' />
-            </div>
-            <h2 className='font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-dark tracking-tight leading-tight mb-3'>
-              Wholesale B2B Product Catalog
-            </h2>
-            <p className='font-body text-slate-body text-sm sm:text-base leading-relaxed'>
-              Browse all 4 core divisions and sub-categories. Immediate bulk warehouse supply across Saudi Arabia.
-            </p>
-          </div>
-        )}
+        {/* Five Category Cards Row matching reference mockup */}
+        <div
+          role='tablist'
+          aria-label='Product categories'
+          className='grid grid-cols-2 min-[540px]:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-8'
+        >
+          {CATEGORY_TABS.map((tab) => {
+            const isSelected = selectedCategory === tab.id;
+            const count = categoryCounts[tab.id] ?? 0;
+            const Icon = tab.icon;
 
-        {/* Search & Filter Toolbar Container */}
-        <div className='bg-white border border-border-subtle rounded-2xl p-4 sm:p-6 mb-8 shadow-card'>
-          {/* Search Row */}
-          <div className='relative w-full mb-3.5'>
-            <span className='absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none flex items-center'>
-              <Search className='w-4.5 h-4.5' aria-hidden='true' />
-            </span>
-            <input
-              type='text'
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder='Instant search by name, capacity, or gauge (e.g. 1100G, 240L, 75cm, 100G, 5L Jerrycan, Maxi roll)...'
-              className='w-full pl-11 pr-10 h-11 text-sm text-slate-dark bg-page-bg border border-border-subtle rounded-lg outline-none font-body focus:border-brand-red focus:bg-white focus:ring-1 focus:ring-brand-red transition-all'
-              aria-label='Search wholesale products'
-            />
-            {searchQuery && (
+            return (
               <button
-                type='button'
-                onClick={() => setSearchQuery('')}
-                className='absolute right-2.5 top-1/2 -translate-y-1/2 border-none bg-transparent text-slate-400 hover:text-slate-600 cursor-pointer p-1.5 flex items-center justify-center'
-                aria-label='Clear search'
-              >
-                <X className='w-4 h-4' />
-              </button>
-            )}
-          </div>
-
-          {/* Quick Search Chips */}
-          <div className='flex flex-wrap items-center gap-2 mb-4 text-xs text-muted-gray'>
-            <span className='font-semibold'>Popular Specifications:</span>
-            {[
-              '1100G',
-              '240L',
-              '75cm',
-              '100G',
-              '5L Jerrycan',
-              'Maxi Roll',
-              'Degreaser',
-              'Safety Cones',
-              'Nitrile',
-            ].map((term) => {
-              const isTermActive = searchQuery.toLowerCase() === term.toLowerCase();
-              return (
-                <button
-                  key={term}
-                  type='button'
-                  onClick={() => setSearchQuery(term)}
-                  className={`min-h-[38px] px-3.5 py-1.5 rounded-md text-xs font-semibold cursor-pointer transition-all inline-flex items-center ${
-                    isTermActive
-                      ? 'bg-brand-red text-white shadow-xs'
-                      : 'bg-page-bg hover:bg-slate-100 text-slate-body border border-border-subtle'
-                  }`}
-                >
-                  {term}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Division Filter Tabs (Horizontal scroll on mobile) */}
-          <div className='flex items-center gap-2 overflow-x-auto pb-1'>
-            {/* All Divisions Tab */}
-            <button
-              type='button'
-              onClick={() => setSelectedCategory('all')}
-              className={`shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs sm:text-sm font-semibold cursor-pointer min-h-touch transition-all ${
-                selectedCategory === 'all'
-                  ? 'bg-brand-red text-white shadow-subtle'
-                  : 'bg-page-bg hover:bg-slate-100 text-slate-body border border-border-subtle'
-              }`}
-            >
-              <span>All Divisions</span>
-              <span
-                className={`text-2xs px-2 py-0.5 rounded-full font-bold ${
-                  selectedCategory === 'all'
-                    ? 'bg-white/25 text-white'
-                    : 'bg-slate-200 text-slate-600'
+                key={tab.id}
+                role='tab'
+                aria-selected={isSelected}
+                tabIndex={isSelected ? 0 : -1}
+                onClick={() => handleSelectCategory(tab.id)}
+                className={`group relative flex items-center gap-3 p-2 rounded-xl border text-left transition-all duration-200 cursor-pointer   h-full ${
+                  isSelected
+                    ? 'bg-brand-red text-white border-brand-red shadow-md'
+                    : 'bg-white text-slate-dark border-border-subtle hover:border-brand-red/40 hover:bg-slate-50/80 shadow-xs'
                 }`}
               >
-                {divisionCounts.all}
-              </span>
-            </button>
-
-            {/* Individual Division Tabs */}
-            {DIVISIONS.map((div) => {
-              const isActive = selectedCategory === div.id;
-              return (
-                <button
-                  key={div.id}
-                  type='button'
-                  onClick={() => setSelectedCategory(div.id)}
-                  className={`shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs sm:text-sm font-semibold cursor-pointer min-h-touch transition-all ${
-                    isActive
-                      ? 'bg-brand-red text-white shadow-subtle'
-                      : 'bg-page-bg hover:bg-slate-100 text-slate-body border border-border-subtle'
+                <div
+                  className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                    isSelected
+                      ? 'bg-white/20 text-white'
+                      : 'bg-brand-red/10 text-brand-red group-hover:bg-brand-red group-hover:text-white'
                   }`}
                 >
-                  <span>{div.title}</span>
+                  <Icon className='w-5 h-5' />
+                </div>
+                <div className='flex-1 min-w-0 flex flex-col justify-center'>
                   <span
-                    className={`text-2xs px-2 py-0.5 rounded-full font-bold ${
-                      isActive
-                        ? 'bg-white/25 text-white'
-                        : 'bg-slate-200 text-slate-600'
+                    className={`font-heading font-bold text-xs leading-snug  ${
+                      isSelected
+                        ? 'text-white'
+                        : 'text-slate-dark group-hover:text-brand-red transition-colors'
                     }`}
                   >
-                    {divisionCounts[div.id]}
+                    {tab.label}
                   </span>
+                  <span
+                    className={`text-2xs font-semibold mt-0.5 ${
+                      isSelected ? 'text-white/85' : 'text-muted-gray'
+                    }`}
+                  >
+                    ({count})
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Product Listing Toolbar: Left: Heading & Count | Centre: Search Products | Right: View & Sort */}
+        <div className='flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6 pb-4 border-b border-border-subtle'>
+          {/* Left: Heading and Result Count */}
+          <div className='flex flex-wrap items-baseline gap-x-2.5 gap-y-1 shrink-0'>
+            <span className='font-body text-xs sm:text-sm text-slate-500 whitespace-nowrap'>
+              Showing {showingStart}–{showingEnd} of {totalProducts}{' '}
+              {CATEGORY_TABS.find((tab) => tab.id === selectedCategory)?.label || 'Products'}
+            </span>
+          </div>
+
+          {/* Centre: Product Search Field */}
+          <div className='w-full md:mx-4'>
+            <form
+              onSubmit={handleSearchSubmit}
+              className='relative flex items-center bg-white border border-border-subtle rounded-full shadow-subtle focus-within:border-brand-red focus-within:ring-2 focus-within:ring-brand-red/15 transition-all p-1 pl-3.5 sm:pl-4 overflow-hidden h-11'
+            >
+              <label htmlFor='product-catalog-search' className='sr-only'>
+                Search products by name, gauge, capacity, or keyword
+              </label>
+              <input
+                id='product-catalog-search'
+                type='text'
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                placeholder='Search products (e.g. cleaner, tissue, bin, mop...)'
+                className='flex-1 h-full text-xs sm:text-sm text-slate-dark placeholder-slate-400 bg-white focus:bg-white active:bg-white autofill:bg-white autofill:shadow-[inset_0_0_0px_1000px_#ffffff] autofill:[-webkit-text-fill-color:#0F172A] [&:-webkit-autofill]:shadow-[inset_0_0_0px_1000px_#ffffff] [&:-webkit-autofill]:[-webkit-text-fill-color:#0F172A] [&:-webkit-autofill:focus]:shadow-[inset_0_0_0px_1000px_#ffffff] outline-none focus:outline-none focus:ring-0 border-none font-body px-1 sm:px-1.5 min-w-0 [color-scheme:light]'
+              />
+              {searchInput && (
+                <button
+                  type='button'
+                  onClick={handleClearSearch}
+                  className='p-1.5 sm:p-2 text-slate-400 hover:text-slate-600 focus:text-slate-600 focus:outline-none transition-colors cursor-pointer mr-1 shrink-0'
+                  aria-label='Clear search'
+                >
+                  <X className='w-4 h-4' />
                 </button>
-              );
-            })}
+              )}
+              <Button
+                type='submit'
+                variant='primary'
+                size='sm'
+                rounded='full'
+                className='h-9 px-5 sm:px-6 text-xs sm:text-sm shrink-0'
+              >
+                Search
+              </Button>
+            </form>
+          </div>
+
+          {/* Right: Custom Page Size */}
+          <div className='flex flex-wrap items-center justify-between sm:justify-end gap-2.5 sm:gap-3 shrink-0 self-stretch sm:self-auto'>
+            {/* Custom Products Per Page Numeric Control */}
+            <div className='flex items-center gap-1.5 sm:gap-2 h-11 text-xs font-semibold text-slate-500 whitespace-nowrap'>
+              <label htmlFor='products-per-page-input' className='cursor-pointer text-slate-500'>
+                Show:
+              </label>
+              <div className='relative h-11 flex items-center'>
+                <input
+                  id='products-per-page-input'
+                  type='number'
+                  min={1}
+                  max={100}
+                  step={1}
+                  value={pageSizeInput}
+                  onChange={handlePageSizeChange}
+                  onBlur={handlePageSizeBlur}
+                  onKeyDown={handlePageSizeKeyDown}
+                  className='w-14 sm:w-16 h-11 text-center font-heading font-bold text-xs sm:text-sm text-slate-dark bg-white border border-border-subtle rounded-xl px-1.5 outline-none hover:border-slate-400 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all [color-scheme:light]'
+                  aria-label='Number of products per page'
+                />
+              </div>
+              <span className='text-xs font-semibold text-slate-500'>per page</span>
+            </div>
           </div>
         </div>
 
-        {/* Active Division Feature Banner (if a single division is chosen) */}
-        {activeDivision && (
-          <div className='mb-8 rounded-2xl bg-gradient-to-br from-brand-charcoal to-slate-dark text-white p-6 sm:p-8 border border-slate-700 shadow-card flex flex-col lg:flex-row items-center justify-between gap-6'>
-            <div className='flex flex-col sm:flex-row items-center sm:items-start gap-6 max-w-3xl'>
-              <div className='w-28 h-28 sm:w-32 sm:h-32 rounded-xl bg-white/10 p-2 shrink-0 flex items-center justify-center overflow-hidden'>
-                <Image
-                  src={activeDivision.image}
-                  alt={activeDivision.imageAlt}
-                  width={140}
-                  height={140}
-                  className='object-contain w-full h-full'
-                  unoptimized
-                />
-              </div>
-              <div className='text-center sm:text-left'>
-                <span className='inline-block text-2xs font-bold uppercase tracking-wider text-brand-gold bg-brand-gold/15 px-2.5 py-1 rounded mb-2'>
-                  {activeDivision.subtitle}
-                </span>
-                <h3 className='font-heading font-extrabold text-xl sm:text-2xl text-white mb-2'>
-                  {activeDivision.title}
-                </h3>
-                <p className='text-xs sm:text-sm text-slate-300 leading-relaxed mb-4'>
-                  {activeDivision.shortDescription}
-                </p>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 text-2xs sm:text-xs text-slate-200'>
-                  {activeDivision.wholesaleHighlights.map((hl, i) => (
-                    <div key={i} className='flex items-center gap-1.5'>
-                      <CheckCircle2 className='w-3.5 h-3.5 text-brand-gold shrink-0' />
-                      <span>{hl}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className='shrink-0 w-full lg:w-auto flex flex-col sm:flex-row lg:flex-col gap-2.5'>
-              <a
-                href={buildWhatsAppQuoteUrl(
-                  `Wholesale Tender Inquiry: ${activeDivision.title}`,
-                )}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-xs sm:text-sm rounded-lg shadow-subtle min-h-touch transition-all'
+        {/* Active Search Filter Badge if search applied */}
+        {appliedSearch && (
+          <div className='flex items-center gap-2 mb-6'>
+            <span className='text-xs text-slate-500'>Filtered by keyword:</span>
+            <span className='inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-red/10 text-brand-red font-medium text-xs border border-brand-red/20'>
+              &ldquo;{appliedSearch}&rdquo;
+              <button
+                type='button'
+                onClick={handleClearSearch}
+                className='p-0.5 hover:text-brand-red-dark transition-colors cursor-pointer'
+                aria-label='Remove keyword filter'
               >
-                <MessageCircle className='w-4 h-4' />
-                <span>Request Division Tender</span>
-              </a>
-            </div>
+                <X className='w-3 h-3' />
+              </button>
+            </span>
+            <button
+              type='button'
+              onClick={handleResetAll}
+              className='text-xs text-slate-400 hover:text-slate-600 transition-colors underline cursor-pointer ml-2'
+            >
+              Reset all
+            </button>
           </div>
         )}
 
-        {/* Results Metadata Bar */}
-        <div className='flex flex-wrap items-center justify-between gap-3 mb-6'>
-          <p className='text-sm text-slate-600 font-medium'>
-            Showing{' '}
-            <strong className='text-slate-dark font-bold'>
-              {filteredProducts.length}
-            </strong>{' '}
-            {filteredProducts.length === 1 ? 'sub-category' : 'sub-categories'}
-            {selectedCategory !== 'all' && (
-              <span>
-                {' '}
-                in{' '}
-                <span className='text-brand-red font-semibold'>
-                  {DIVISIONS.find((c) => c.id === selectedCategory)?.title}
-                </span>
-              </span>
-            )}
-            {searchQuery && (
-              <span>
-                {' '}
-                matching &ldquo;
-                <strong className='text-slate-dark'>{searchQuery}</strong>
-                &rdquo;
-              </span>
-            )}
-          </p>
-
-          {(selectedCategory !== 'all' || searchQuery) && (
-            <button
-              type='button'
-              onClick={handleClearFilters}
-              className='border-none bg-transparent text-brand-red hover:text-brand-red-dark text-xs font-semibold cursor-pointer inline-flex items-center gap-1.5 p-1'
-            >
-              <span>✕ Reset Filters</span>
-            </button>
-          )}
-        </div>
-
-        {/* Sub-Categories Grid */}
-        {filteredProducts.length > 0 ? (
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
-            {filteredProducts.map((product, index) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                priority={index < 4}
-              />
+        {/* Product Grid / Empty State */}
+        {totalProducts > 0 ? (
+          <div className='grid grid-cols-1 min-[480px]:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4 sm:gap-5 xl:gap-6 mb-12'>
+            {currentProducts.map((product, index) => (
+              <ProductCard key={product.id} product={product} priority={index < 4} />
             ))}
           </div>
         ) : (
           /* Empty Search State */
-          <div className='bg-white border border-border-subtle rounded-2xl p-10 sm:p-12 text-center max-w-lg mx-auto my-10 shadow-card'>
-            <h3 className='m-0 mb-2 font-heading text-lg font-bold text-slate-dark'>
-              No matching specifications found
-            </h3>
-            <p className='m-0 mb-5 text-sm text-muted-gray leading-normal'>
-              No wholesale lines matched &ldquo;{searchQuery}&rdquo;. Try another specification term or browse all 4 product divisions.
-            </p>
-            <div className='flex justify-center gap-2.5 flex-wrap'>
-              <button
-                type='button'
-                onClick={handleClearFilters}
-                className='inline-flex items-center justify-center bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold rounded-lg shadow-subtle min-h-touch px-5 py-2 text-xs sm:text-sm transition-colors'
-              >
-                View All Divisions
-              </button>
-              <a
-                href={buildWhatsAppQuoteUrl(
-                  searchQuery ? `Custom Tender Inquiry: ${searchQuery}` : undefined,
-                )}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='inline-flex items-center justify-center gap-2 bg-success hover:bg-success-dark text-white font-heading font-bold rounded-lg shadow-subtle min-h-touch px-5 py-2 text-xs sm:text-sm transition-colors'
-              >
-                <MessageCircle className='w-4 h-4' />
-                <span>Inquire on WhatsApp</span>
-              </a>
+          <div className='bg-white border border-border-subtle rounded-2xl p-10 sm:p-14 text-center max-w-md mx-auto my-12 shadow-card'>
+            <div className='w-12 h-12 rounded-full bg-brand-red/10 text-brand-red flex items-center justify-center mx-auto mb-4'>
+              <Search className='w-6 h-6' />
             </div>
+            <h3 className='font-heading font-bold text-lg text-slate-dark mb-2'>
+              No products found
+            </h3>
+            <p className='text-xs sm:text-sm text-muted-gray mb-6 leading-relaxed'>
+              No products matched &ldquo;{appliedSearch}&rdquo; in the selected category. Try
+              searching for general terms like &ldquo;cleaner&rdquo;, &ldquo;bag&rdquo;, or
+              &ldquo;drum&rdquo;.
+            </p>
+            <Button
+              variant='primary'
+              size='md'
+              onClick={handleResetAll}
+              leftIcon={<RotateCcw className='w-4 h-4' />}
+            >
+              Reset Search &amp; Show All Products
+            </Button>
           </div>
         )}
 
-        {/* Wholesale Tender & Custom RFP Banner */}
-        <div className='mt-12 bg-gradient-to-br from-brand-charcoal to-slate-dark rounded-2xl p-7 sm:p-8 text-white flex flex-wrap items-center justify-between gap-6 border border-slate-700 shadow-card'>
-          <div className='max-w-2xl mx-auto sm:mx-0 text-center sm:text-left flex flex-col items-center sm:items-start'>
-            <span className='inline-flex items-center gap-1.5 bg-brand-gold/20 text-brand-gold text-2xs font-bold uppercase tracking-wider px-2.5 py-1 rounded mb-2'>
-              <FileSpreadsheet className='w-3.5 h-3.5' />
-              <span>Institutional &amp; Government Tenders</span>
-            </span>
-            <h3 className='font-heading text-xl sm:text-2xl font-extrabold text-white tracking-tight mb-2'>
-              Need Custom Quantities, Special Sizes, or Unlisted SKUs?
-            </h3>
-            <p className='text-sm text-slate-300 leading-relaxed'>
-              Our procurement desk supplies construction camps, hospital tenders, facility managers, and hotel chains across Riyadh with volume contract rates and direct warehouse delivery.
-            </p>
-          </div>
-          <div className='w-full sm:w-auto flex items-center justify-center sm:justify-start gap-3 flex-wrap'>
-            <a
-              href={buildWhatsAppQuoteUrl('Custom B2B Tender / Volume Order')}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-xs sm:text-sm rounded-lg shadow-subtle min-h-touch transition-all whitespace-nowrap'
-            >
-              <span>Contact Procurement Desk</span>
-              <ArrowRight className='w-4 h-4' aria-hidden='true' />
-            </a>
-          </div>
-        </div>
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <nav aria-label='Products catalogue pagination' className='pt-4 pb-6 w-full'>
+            {/* Mobile View: Compact [Previous] Page X of Y [Next] */}
+            <div className='flex sm:hidden items-center justify-between w-full max-w-xs mx-auto'>
+              <button
+                type='button'
+                onClick={() => handlePageChange(safeCurrentPage - 1)}
+                disabled={safeCurrentPage === 1}
+                className='min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-lg border border-border-subtle bg-white text-slate-dark hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1.5 cursor-pointer font-heading font-semibold text-xs'
+                aria-label='Go to previous page'
+              >
+                <ChevronLeft className='w-4 h-4' />
+                <span>Previous</span>
+              </button>
+
+              <span className='text-xs font-semibold text-slate-600 px-2 text-center select-none'>
+                Page {safeCurrentPage} of {totalPages}
+              </span>
+
+              <button
+                type='button'
+                onClick={() => handlePageChange(safeCurrentPage + 1)}
+                disabled={safeCurrentPage === totalPages}
+                className='min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-lg border border-border-subtle bg-white text-slate-dark hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1.5 cursor-pointer font-heading font-semibold text-xs'
+                aria-label='Go to next page'
+              >
+                <span>Next</span>
+                <ChevronRight className='w-4 h-4' />
+              </button>
+            </div>
+
+            {/* Desktop / Tablet View: Windowed Buttons with Ellipses */}
+            <div className='hidden sm:flex items-center justify-center gap-1.5 sm:gap-2'>
+              {/* Previous Button */}
+              <button
+                type='button'
+                onClick={() => handlePageChange(safeCurrentPage - 1)}
+                disabled={safeCurrentPage === 1}
+                className='min-h-[40px] px-3 py-2 rounded-lg border border-border-subtle bg-white text-slate-dark hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 cursor-pointer font-heading font-semibold text-xs sm:text-sm'
+                aria-label='Go to previous page'
+              >
+                <ChevronLeft className='w-4 h-4' />
+                <span>Previous</span>
+              </button>
+
+              {/* Page Number & Ellipsis Items */}
+              {getPaginationItems(safeCurrentPage, totalPages).map((item) => {
+                if (typeof item === 'string') {
+                  return (
+                    <span
+                      key={item}
+                      className='min-h-[40px] min-w-[36px] px-1 flex items-center justify-center text-slate-400 font-bold select-none text-sm'
+                      aria-hidden='true'
+                    >
+                      ...
+                    </span>
+                  );
+                }
+
+                const isActive = safeCurrentPage === item;
+                return (
+                  <button
+                    key={item}
+                    type='button'
+                    onClick={() => handlePageChange(item)}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`min-h-[40px] min-w-[40px] px-3.5 py-2 rounded-lg font-heading font-bold text-xs sm:text-sm transition-all cursor-pointer ${
+                      isActive
+                        ? 'bg-brand-red text-white shadow-subtle'
+                        : 'bg-white border border-border-subtle text-slate-dark hover:bg-slate-50'
+                    }`}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
+
+              {/* Next Button */}
+              <button
+                type='button'
+                onClick={() => handlePageChange(safeCurrentPage + 1)}
+                disabled={safeCurrentPage === totalPages}
+                className='min-h-[40px] px-3 py-2 rounded-lg border border-border-subtle bg-white text-slate-dark hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1 cursor-pointer font-heading font-semibold text-xs sm:text-sm'
+                aria-label='Go to next page'
+              >
+                <span>Next</span>
+                <ChevronRight className='w-4 h-4' />
+              </button>
+            </div>
+          </nav>
+        )}
       </div>
-    </section>
+    </div>
   );
 }
