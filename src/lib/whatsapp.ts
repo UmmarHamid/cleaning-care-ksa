@@ -30,20 +30,26 @@ export interface InquiryData {
 }
 
 /**
- * Constructs a fallback WhatsApp inquiry message string and URL.
+ * Constructs a dynamic URL-encoded WhatsApp fallback message targeting the Riyadh sales desk.
+ * Formats: name, company, phone, email, category, volume, message.
  */
-export function buildWhatsAppInquiryUrl(data: InquiryData): string {
+export function buildWhatsAppFallbackUrl(data: InquiryData): string {
   const base = `https://wa.me/${COMPANY_DATA.phoneRaw}`;
   const lines = [
-    "Hello Cleaning Care Trading Co., I would like to request an official B2B quotation.",
+    "Hello Cleaning Care Trading Co., I would like to request an official quotation / inquiry.",
     "",
-    `• Company: ${data.company || "Not specified"}`,
-    `• Contact Person: ${data.person || "Not specified"}`,
-    `• Phone: ${data.phone || "Not specified"}`,
-    `• Email: ${data.email || "Not specified"}`,
+    `• Name: ${data.person?.trim() || "Not specified"}`,
+    ...(data.company?.trim() ? [`• Company: ${data.company.trim()}`] : []),
+    `• Phone: ${data.phone?.trim() || "Not specified"}`,
+    `• Email: ${data.email?.trim() || "Not specified"}`,
     `• Product Division: ${data.category || "General Inquiry"}`,
-    `• Estimated Volume: ${data.volume || "Not specified"}`,
-    `• Requirements: ${data.details || "Standard wholesale catalog pricing"}`,
+    ...(data.volume?.trim() ? [`• Estimated Volume: ${data.volume.trim()}`] : []),
+    `• Message / Query: ${data.details?.trim() || "Wholesale catalog pricing & product inquiry"}`,
   ];
   return `${base}?text=${encodeURIComponent(lines.join("\n"))}`;
 }
+
+/**
+ * Alias for buildWhatsAppFallbackUrl for backwards compatibility.
+ */
+export const buildWhatsAppInquiryUrl = buildWhatsAppFallbackUrl;

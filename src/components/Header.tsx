@@ -15,7 +15,13 @@ export function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'about', 'products', 'infrastructure', 'contact'];
+      const sections = [
+        'home',
+        'about',
+        'products',
+        'infrastructure',
+        'contact',
+      ];
       const scrollPos = window.scrollY + 120;
 
       for (const section of sections) {
@@ -39,49 +45,43 @@ export function Header() {
     <header className='sticky top-0 z-50 w-full shadow-subtle'>
       {/* Top Utility Bar */}
       <div className='w-full bg-brand-charcoal text-white text-xs border-b border-slate-800'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-9 flex items-center justify-between gap-2 overflow-hidden'>
-          {/* Mobile View (< sm): Strictly Location and Phone ONLY */}
-          <div className='flex sm:hidden items-center justify-between w-full text-[11px] font-medium'>
-            <span className='flex items-center gap-1.5 text-slate-300 truncate'>
-              <MapPin className='w-3 h-3 text-brand-gold shrink-0' aria-hidden='true' />
-              <span className='truncate'>{COMPANY_DATA.location}</span>
-            </span>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[38px] flex items-center justify-between gap-4 flex-wrap'>
+          <div className='flex items-center gap-4 sm:gap-6 flex-wrap'>
+            <a
+              href={COMPANY_DATA.googleMapsUrl}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='flex items-center gap-1.5 text-slate-300 hover:text-white hover:underline transition-colors min-h-touch sm:min-h-0'
+              title='Open location in Google Maps'
+            >
+              <MapPin
+                className='w-3.5 h-3.5 text-brand-gold shrink-0'
+                aria-hidden='true'
+              />{' '}
+              {COMPANY_DATA.location}
+            </a>
             <a
               href={`tel:${COMPANY_DATA.phoneTel}`}
               className='flex items-center gap-1.5 text-slate-200 hover:text-white shrink-0 font-semibold'
             >
-              <Phone className='w-3 h-3 text-brand-gold shrink-0' aria-hidden='true' />
-              <span>{COMPANY_DATA.phone}</span>
+              <Phone
+                className='w-3.5 h-3.5 text-brand-gold shrink-0'
+                aria-hidden='true'
+              />
+              {COMPANY_DATA.phone}
             </a>
           </div>
 
-          {/* Tablet & Desktop View (sm+): All Utility Bar content on a single line */}
-          <div className='hidden sm:flex items-center justify-between w-full text-[11px] md:text-xs'>
-            <div className='flex items-center gap-2.5 sm:gap-3.5 md:gap-5 whitespace-nowrap'>
-              <span className='flex items-center gap-1.5 text-slate-300'>
-                <MapPin className='w-3.5 h-3.5 text-brand-gold shrink-0' aria-hidden='true' />
-                <span>{COMPANY_DATA.location}</span>
-              </span>
-              <a
-                href={`tel:${COMPANY_DATA.phoneTel}`}
-                className='flex items-center gap-1.5 text-slate-300 hover:text-white hover:underline'
-              >
-                <Phone className='w-3.5 h-3.5 text-brand-gold shrink-0' aria-hidden='true' />
-                <span>{COMPANY_DATA.phone}</span>
-              </a>
-              <a
-                href={`mailto:${COMPANY_DATA.emailSales}`}
-                className='flex items-center gap-1.5 text-slate-300 hover:text-white hover:underline'
-              >
-                <Mail className='w-3.5 h-3.5 text-brand-gold shrink-0' aria-hidden='true' />
-                <span>{COMPANY_DATA.emailSales}</span>
-              </a>
-            </div>
-
-            <div className='flex items-center gap-3 shrink-0 whitespace-nowrap text-slate-400'>
-              <span>VAT: {COMPANY_DATA.vatNumber}</span>
-            </div>
-          </div>
+          <a
+            href={`mailto:${COMPANY_DATA.emailSales}`}
+            className='hidden md:flex items-center gap-1.5 text-slate-300 hover:text-white hover:underline'
+          >
+            <Mail
+              className='w-3.5 h-3.5 text-brand-gold shrink-0'
+              aria-hidden='true'
+            />{' '}
+            {COMPANY_DATA.emailSales}
+          </a>
         </div>
       </div>
 
