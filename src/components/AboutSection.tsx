@@ -1,16 +1,17 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { COMPANY_DATA } from "@/data/company";
+import { SECTION_SPACING } from "@/lib/tokens";
 import { ArrowRight } from "lucide-react";
 import { SpotlightCard } from "@/components/motion/SpotlightCard";
+import { Button } from "@/components/ui/Button";
 
 export function AboutSection() {
   const { about } = COMPANY_DATA;
 
   return (
-    <section id='about' className='py-16'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+    <section id='about' className={SECTION_SPACING.y}>
+      <div className={SECTION_SPACING.container}>
         <div className='bg-white rounded-2xl md:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-card border border-border-subtle'>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center'>
             <SpotlightCard
@@ -39,13 +40,15 @@ export function AboutSection() {
               <p className='font-body text-slate-body text-sm sm:text-base leading-relaxed mb-6 w-full max-w-none lg:max-w-xl'>
                 {about.description}
               </p>
-              <Link
-                className='inline-flex items-center justify-center w-full gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-sm sm:text-base px-6 py-3 rounded-lg min-h-touch transition-colors shadow-subtle'
+              <Button
                 href='#infrastructure'
+                variant='primary'
+                size='lg'
+                fullWidth
+                rightIcon={<ArrowRight size={20} />}
               >
-                <span>Learn More About Us</span>
-                <ArrowRight size={20} />
-              </Link>
+                Learn More About Us
+              </Button>
             </div>
           </div>
         </div>

@@ -1,13 +1,6 @@
 import Image from 'next/image';
 
-export type BrandLogoSize =
-  | 'header'
-  | 'footer'
-  | 'sm'
-  | 'md'
-  | 'lg'
-  | 'xl'
-  | 'custom';
+export type BrandLogoSize = 'header' | 'footer' | 'sm' | 'md' | 'lg' | 'xl' | 'custom';
 
 export interface BrandLogoProps {
   variant?: 'light' | 'dark';
@@ -21,12 +14,9 @@ export interface BrandLogoProps {
 // Aspect ratio of the original vector logo is 2033 / 1833 ≈ 1.1091 (width / height)
 const ASPECT_RATIO = 2033 / 1833;
 
-const SIZE_PRESETS: Record<
-  Exclude<BrandLogoSize, 'custom'>,
-  { height: number; width: number }
-> = {
-  header: { height: 96, width: 106 },
-  footer: { height: 96, width: 106 },
+const SIZE_PRESETS: Record<Exclude<BrandLogoSize, 'custom'>, { height: number; width: number }> = {
+  header: { height: 76, width: 90 },
+  footer: { height: 80, width: 90 },
   sm: { height: 44, width: 49 },
   md: { height: 68, width: 75 },
   lg: { height: 96, width: 106 },
@@ -47,8 +37,7 @@ export function BrandLogo({
   const preset = size !== 'custom' ? SIZE_PRESETS[size] : null;
   const resolvedHeight = height ?? preset?.height ?? 76;
   const resolvedWidth =
-    width ??
-    (height ? Math.round(height * ASPECT_RATIO) : (preset?.width ?? 84));
+    width ?? (height ? Math.round(height * ASPECT_RATIO) : (preset?.width ?? 84));
 
   const sizeClass = size !== 'custom' ? `brand-logo-${size}` : '';
 

@@ -3,19 +3,11 @@
 import React, { useState } from 'react';
 import { CATEGORIES } from '@/data/catalog';
 import { COMPANY_DATA } from '@/data/company';
-import {
-  buildWhatsAppFallbackUrl,
-  InquiryData,
-} from '@/lib/whatsapp';
-import {
-  ClipboardList,
-  CheckCircle2,
-  Loader2,
-  ArrowRight,
-  AlertCircle,
-} from 'lucide-react';
+import { buildWhatsAppFallbackUrl, InquiryData } from '@/lib/whatsapp';
+import { ClipboardList, CheckCircle2, ArrowRight, AlertCircle } from 'lucide-react';
 import { SpotlightCard } from '@/components/motion/SpotlightCard';
-import { WhatsAppIcon } from './WhatsAppIcon';
+import { Button } from '@/components/ui/Button';
+import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 
 export function InquiryForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,9 +25,7 @@ export function InquiryForm() {
   });
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -47,10 +37,8 @@ export function InquiryForm() {
     if (!formData.phone.trim()) return 'Phone or WhatsApp number is required.';
     if (!formData.email.trim()) return 'Email address is required.';
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email.trim()))
-      return 'Please enter a valid email address.';
-    if (!formData.category)
-      return 'Please select a product division or inquiry type.';
+    if (!emailRegex.test(formData.email.trim())) return 'Please enter a valid email address.';
+    if (!formData.category) return 'Please select a product division or inquiry type.';
     return null;
   };
 
@@ -70,16 +58,12 @@ export function InquiryForm() {
       const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
 
       if (!accessKey) {
-        throw new Error(
-          'Direct email dispatch is currently unconfigured or unavailable.'
-        );
+        throw new Error('Direct email dispatch is currently unconfigured or unavailable.');
       }
 
       // Check honeypot if triggered by automated spam bots
       const formEl = e.currentTarget;
-      const botcheckInput = formEl.elements.namedItem(
-        'botcheck'
-      ) as HTMLInputElement | null;
+      const botcheckInput = formEl.elements.namedItem('botcheck') as HTMLInputElement | null;
       if (botcheckInput && botcheckInput.checked) {
         // Silently mark as success to drop spam bots
         resetForm();
@@ -87,12 +71,11 @@ export function InquiryForm() {
         return;
       }
 
-      const subjectEntity =
-        formData.company.trim() || formData.person.trim();
+      const subjectEntity = formData.company.trim() || formData.person.trim();
 
       const payload = {
         access_key: accessKey,
-        subject: `B2B Quote / Inquiry — ${subjectEntity}`,
+        subject: `Cleaning Care Trading Co | Inquiry — ${subjectEntity}`,
         from_name: 'Cleaning Care Website',
         replyto: formData.email.trim(),
         botcheck: '',
@@ -102,9 +85,7 @@ export function InquiryForm() {
         email: formData.email.trim(),
         category: formData.category,
         volume: formData.volume?.trim() || 'Not specified',
-        message:
-          formData.details?.trim() ||
-          'Wholesale catalog pricing & product inquiry',
+        message: formData.details?.trim() || 'Wholesale catalog pricing & product inquiry',
       };
 
       const response = await fetch('https://api.web3forms.com/submit', {
@@ -118,18 +99,14 @@ export function InquiryForm() {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
-        throw new Error(
-          errorData?.message ||
-            `Server responded with status ${response.status}`
-        );
+        throw new Error(errorData?.message || `Server responded with status ${response.status}`);
       }
 
       const result = await response.json();
 
       if (!result.success) {
         throw new Error(
-          result.message ||
-            'Email dispatch service could not complete your request.'
+          result.message || 'Email dispatch service could not complete your request.',
         );
       }
 
@@ -139,9 +116,7 @@ export function InquiryForm() {
     } catch (err: unknown) {
       // Zero-loss error: do NOT clear the user's typed inputs in formData!
       const errorMsg =
-        err instanceof Error && err.message
-          ? err.message
-          : 'Network or transmission error.';
+        err instanceof Error && err.message ? err.message : 'Network or transmission error.';
       setErrorMessage(errorMsg);
     } finally {
       setIsSubmitting(false);
@@ -163,11 +138,7 @@ export function InquiryForm() {
   };
 
   return (
-    <SpotlightCard
-      className='h-full rounded-2xl flex flex-col'
-      maxTilt={1.5}
-      hoverScale={1.005}
-    >
+    <SpotlightCard className='h-full rounded-2xl flex flex-col' maxTilt={1.5} hoverScale={1.005}>
       <article className='rounded-2xl border border-border-subtle overflow-hidden shadow-card bg-white p-6 sm:p-8 flex flex-col h-full flex-1'>
         {/* Form Card Header */}
         <div className='flex items-start gap-3.5 pb-6 mb-6 border-b border-border-subtle'>
@@ -182,9 +153,8 @@ export function InquiryForm() {
               Inquiry &amp; Quote Form
             </h3>
             <p className='font-body text-xs sm:text-sm text-slate-body leading-relaxed'>
-              Submit your product questions, wholesale quote requests, or
-              procurement specifications. Our team in Riyadh will provide an
-              itemized response.
+              Submit your product questions, wholesale quote requests, or procurement
+              specifications. Our team in Riyadh will provide an itemized response.
             </p>
           </div>
         </div>
@@ -198,32 +168,31 @@ export function InquiryForm() {
               Inquiry Received!
             </h4>
             <p className='text-sm text-slate-body max-w-md mx-auto leading-relaxed'>
-              Thank you for contacting Cleaning Care Trading Co. Our team in
-              Riyadh has received your message and will respond within 2-4
-              business hours.
+              Thank you for contacting Cleaning Care Trading Co. Our team in Riyadh has received
+              your message and will respond within 2-4 business hours.
             </p>
 
             <div className='pt-2 flex flex-col sm:flex-row items-center justify-center gap-3'>
-              <a
+              <WhatsAppButton
                 href={`https://wa.me/${COMPANY_DATA.phoneRaw}`}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-success hover:bg-success-dark text-white font-semibold text-xs min-h-touch transition-colors'
+                variant='secondary'
+                size='md'
+                rightIcon={<ArrowRight className='w-3.5 h-3.5' />}
+                className='w-full sm:w-auto text-xs sm:text-xs font-semibold'
               >
-                <WhatsAppIcon className='w-4 h-4' />
-                <span>Also Chat on WhatsApp (+966 56 282 1089)</span>
-                <ArrowRight className='w-3.5 h-3.5' aria-hidden='true' />
-              </a>
-              <button
-                type='button'
+                Chat on WhatsApp
+              </WhatsAppButton>
+              <Button
+                variant='secondary'
+                size='md'
                 onClick={() => {
                   setIsSuccess(false);
                   setErrorMessage(null);
                 }}
-                className='w-full sm:w-auto px-4 py-2.5 rounded-lg border border-border-subtle text-slate-body hover:bg-slate-100 font-semibold text-xs min-h-touch transition-colors cursor-pointer'
+                className='w-full sm:w-auto px-4 text-xs sm:text-xs font-semibold text-slate-body hover:bg-slate-100'
               >
                 Submit Another Inquiry
-              </button>
+              </Button>
             </div>
           </div>
         ) : (
@@ -313,9 +282,7 @@ export function InquiryForm() {
                   className='block text-xs font-heading font-bold text-slate-dark tracking-wider uppercase mb-1.5'
                 >
                   Company Name{' '}
-                  <span className='text-slate-400 font-normal lowercase'>
-                    (optional)
-                  </span>
+                  <span className='text-slate-400 font-normal lowercase'>(optional)</span>
                 </label>
                 <input
                   type='text'
@@ -353,9 +320,7 @@ export function InquiryForm() {
                       {cat.title}
                     </option>
                   ))}
-                  <option value='Multiple Product Lines'>
-                    Multiple Product Lines
-                  </option>
+                  <option value='Multiple Product Lines'>Multiple Product Lines</option>
                   <option value='Institutional Tender / Custom Order'>
                     Institutional Tender / Custom Order
                   </option>
@@ -371,9 +336,7 @@ export function InquiryForm() {
                   className='block text-xs font-heading font-bold text-slate-dark tracking-wider uppercase mb-1.5'
                 >
                   Estimated Order Volume{' '}
-                  <span className='text-slate-400 font-normal lowercase'>
-                    (optional)
-                  </span>
+                  <span className='text-slate-400 font-normal lowercase'>(optional)</span>
                 </label>
                 <input
                   type='text'
@@ -424,54 +387,55 @@ export function InquiryForm() {
                       Direct Email Submission Temporarily Unavailable
                     </p>
                     <p className='text-slate-600 text-xs leading-relaxed'>
-                      Our automated dispatch server is currently undergoing maintenance or unavailable. Your entered quotation details have been safely preserved below. Click the button below to send your exact inquiry directly to our sales desk via WhatsApp without retyping:
+                      Our automated dispatch server is currently undergoing maintenance or
+                      unavailable. Your entered quotation details have been safely preserved below.
+                      Click the button below to send your exact inquiry directly to our sales desk
+                      via WhatsApp without retyping:
                     </p>
                   </div>
                 </div>
 
-                <a
+                <WhatsAppButton
                   href={buildWhatsAppFallbackUrl(formData)}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-success hover:bg-success-dark text-white font-heading font-bold text-xs sm:text-sm rounded-lg min-h-touch transition-all shadow-subtle group'
+                  variant='secondary'
+                  size='md'
+                  fullWidth
+                  rightIcon={
+                    <ArrowRight className='w-4 h-4 group-hover:translate-x-1 transition-transform' />
+                  }
+                  className='py-3 group'
                 >
-                  <WhatsAppIcon className='w-4 h-4' />
-                  <span>Send This Quote via WhatsApp Now</span>
-                  <ArrowRight className='w-4 h-4 group-hover:translate-x-1 transition-transform' aria-hidden='true' />
-                </a>
+                  Send This Quote via WhatsApp Now
+                </WhatsAppButton>
               </div>
             )}
 
             {/* Action Submit Buttons */}
             <div className='flex flex-col gap-2.5 pt-2'>
-              <button
+              <Button
                 type='submit'
-                className='w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-sm rounded-lg shadow-subtle min-h-touch transition-all cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed'
+                variant='primary'
+                size='md'
+                fullWidth
+                isLoading={isSubmitting}
+                loadingText='Submitting Quotation Request...'
                 disabled={isSubmitting}
+                rightIcon={<ArrowRight className='w-4 h-4' />}
+                className='px-6 py-3 text-sm sm:text-sm'
               >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className='w-4 h-4 animate-spin' />
-                    <span>Submitting Quotation Request...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Send Inquiry</span>
-                    <ArrowRight className='w-4 h-4' aria-hidden='true' />
-                  </>
-                )}
-              </button>
+                Send Inquiry
+              </Button>
 
               {/* Direct WhatsApp Quote Button */}
-              <a
+              <WhatsAppButton
                 href={buildWhatsAppFallbackUrl(formData)}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-success-light hover:bg-success text-success-dark hover:text-white border border-success/30 font-heading font-semibold text-xs rounded-lg min-h-touch transition-all'
+                variant='secondary'
+                size='md'
+                fullWidth
+                className='text-xs sm:text-xs font-semibold'
               >
-                <WhatsAppIcon className='w-4 h-4' />
-                <span>Send via WhatsApp Directly</span>
-              </a>
+                Send via WhatsApp Directly
+              </WhatsAppButton>
             </div>
           </form>
         )}

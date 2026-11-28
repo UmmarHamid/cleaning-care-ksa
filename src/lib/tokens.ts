@@ -43,6 +43,12 @@ export const TYPOGRAPHY = {
 
 export const TOUCH_TARGET_MIN = '44px';
 
+export const SECTION_SPACING = {
+  y: 'py-10 md:py-14 lg:py-16',
+  container: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8',
+  headerMb: 'mb-8 md:mb-10 lg:mb-12',
+} as const;
+
 export const SHADOWS = {
   card: '0 10px 28px rgba(15, 23, 42, 0.09)',
   cardHover: '0 10px 20px -3px rgba(15, 23, 42, 0.08), 0 4px 8px -2px rgba(15, 23, 42, 0.03)',

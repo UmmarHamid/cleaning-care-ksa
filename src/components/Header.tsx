@@ -2,26 +2,27 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { BrandLogo } from './BrandLogo';
+import { Button } from '@/components/ui/Button';
 import { COMPANY_DATA } from '@/data/company';
 import { MapPin, Phone, Mail } from 'lucide-react';
 
 export function Header() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+
+  const isProductsPage = pathname === '/products';
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
   const closeMenu = () => setIsOpen(false);
 
   useEffect(() => {
+    if (isProductsPage) return;
+
     const handleScroll = () => {
-      const sections = [
-        'home',
-        'about',
-        'products',
-        'infrastructure',
-        'contact',
-      ];
+      const sections = ['home', 'about', 'products', 'infrastructure', 'contact'];
       const scrollPos = window.scrollY + 120;
 
       for (const section of sections) {
@@ -39,7 +40,9 @@ export function Header() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isProductsPage]);
+
+  const currentSection = isProductsPage ? 'products' : activeSection;
 
   return (
     <header className='sticky top-0 z-50 w-full shadow-subtle'>
@@ -54,20 +57,14 @@ export function Header() {
               className='flex items-center gap-1.5 text-slate-300 hover:text-white hover:underline transition-colors min-h-touch sm:min-h-0'
               title='Open location in Google Maps'
             >
-              <MapPin
-                className='w-3.5 h-3.5 text-brand-gold shrink-0'
-                aria-hidden='true'
-              />{' '}
+              <MapPin className='w-3.5 h-3.5 text-brand-gold shrink-0' aria-hidden='true' />{' '}
               {COMPANY_DATA.location}
             </a>
             <a
               href={`tel:${COMPANY_DATA.phoneTel}`}
               className='flex items-center gap-1.5 text-slate-200 hover:text-white shrink-0 font-semibold'
             >
-              <Phone
-                className='w-3.5 h-3.5 text-brand-gold shrink-0'
-                aria-hidden='true'
-              />
+              <Phone className='w-3.5 h-3.5 text-brand-gold shrink-0' aria-hidden='true' />
               {COMPANY_DATA.phone}
             </a>
           </div>
@@ -76,10 +73,7 @@ export function Header() {
             href={`mailto:${COMPANY_DATA.emailSales}`}
             className='hidden md:flex items-center gap-1.5 text-slate-300 hover:text-white hover:underline'
           >
-            <Mail
-              className='w-3.5 h-3.5 text-brand-gold shrink-0'
-              aria-hidden='true'
-            />{' '}
+            <Mail className='w-3.5 h-3.5 text-brand-gold shrink-0' aria-hidden='true' />{' '}
             {COMPANY_DATA.emailSales}
           </a>
         </div>
@@ -135,7 +129,7 @@ export function Header() {
           >
             <Link
               className={`min-h-touch flex items-center px-2 transition-colors relative ${
-                activeSection === 'home'
+                currentSection === 'home'
                   ? 'text-brand-red font-bold lg:after:absolute lg:after:bottom-0 lg:after:left-0 lg:after:right-0 lg:after:h-0.5 lg:after:bg-brand-red'
                   : 'text-slate-dark hover:text-brand-red'
               }`}
@@ -146,7 +140,7 @@ export function Header() {
             </Link>
             <Link
               className={`min-h-touch flex items-center px-2 transition-colors relative ${
-                activeSection === 'about'
+                currentSection === 'about'
                   ? 'text-brand-red font-bold lg:after:absolute lg:after:bottom-0 lg:after:left-0 lg:after:right-0 lg:after:h-0.5 lg:after:bg-brand-red'
                   : 'text-slate-dark hover:text-brand-red'
               }`}
@@ -157,7 +151,7 @@ export function Header() {
             </Link>
             <Link
               className={`min-h-touch flex items-center px-2 transition-colors relative ${
-                activeSection === 'products'
+                currentSection === 'products'
                   ? 'text-brand-red font-bold lg:after:absolute lg:after:bottom-0 lg:after:left-0 lg:after:right-0 lg:after:h-0.5 lg:after:bg-brand-red'
                   : 'text-slate-dark hover:text-brand-red'
               }`}
@@ -168,7 +162,7 @@ export function Header() {
             </Link>
             <Link
               className={`min-h-touch flex items-center px-2 transition-colors relative ${
-                activeSection === 'infrastructure'
+                currentSection === 'infrastructure'
                   ? 'text-brand-red font-bold lg:after:absolute lg:after:bottom-0 lg:after:left-0 lg:after:right-0 lg:after:h-0.5 lg:after:bg-brand-red'
                   : 'text-slate-dark hover:text-brand-red'
               }`}
@@ -179,7 +173,7 @@ export function Header() {
             </Link>
             <Link
               className={`min-h-touch flex items-center px-2 transition-colors relative ${
-                activeSection === 'contact'
+                currentSection === 'contact'
                   ? 'text-brand-red font-bold lg:after:absolute lg:after:bottom-0 lg:after:left-0 lg:after:right-0 lg:after:h-0.5 lg:after:bg-brand-red'
                   : 'text-slate-dark hover:text-brand-red'
               }`}
@@ -188,13 +182,15 @@ export function Header() {
             >
               Contact
             </Link>
-            <Link
-              className='inline-flex items-center justify-center bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-sm px-5 py-2.5 rounded-lg shadow-subtle min-h-touch transition-colors mt-2 lg:mt-0 whitespace-nowrap'
+            <Button
               href='/#contact'
+              variant='primary'
+              size='md'
               onClick={closeMenu}
+              className='text-sm sm:text-sm mt-2 lg:mt-0 whitespace-nowrap'
             >
               Request Bulk Quote
-            </Link>
+            </Button>
           </nav>
         </div>
       </div>

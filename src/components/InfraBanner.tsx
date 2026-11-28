@@ -1,20 +1,21 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { COMPANY_DATA } from "@/data/company";
+import { SECTION_SPACING } from "@/lib/tokens";
 import { Warehouse, Store, ArrowRight } from "lucide-react";
 import { SpotlightCard } from "@/components/motion/SpotlightCard";
+import { Button } from "@/components/ui/Button";
 
 export function InfraBanner() {
   return (
-    <section id='infrastructure-banner' className='py-8 sm:py-12 bg-white relative overflow-hidden'>
+    <section id='infrastructure-banner' className={`${SECTION_SPACING.y} bg-white relative overflow-hidden`}>
       {/* Background Architectural Grid & Ambient Brand Glow */}
       <div
         className='absolute inset-0 bg-industrial-grid pointer-events-none z-0'
         aria-hidden='true'
       />
       <div className='absolute inset-0 bg-brand-glow pointer-events-none z-0' aria-hidden='true' />
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10'>
+      <div className={`${SECTION_SPACING.container} relative z-10`}>
         <div className='relative grid grid-cols-1 lg:grid-cols-12 bg-gradient-to-br from-brand-red-dark to-brand-red rounded-2xl overflow-hidden shadow-card items-stretch'>
           {/* Left Content Panel */}
           <div className='lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-center z-10 text-white text-center sm:text-left items-center sm:items-start'>
@@ -26,23 +27,24 @@ export function InfraBanner() {
               and reliable service across the Kingdom.
             </p>
             <div className='w-full sm:w-fit'>
-              <Link
+              <Button
                 href='#infrastructure'
-                className='w-full sm:w-fit inline-flex justify-center items-center gap-2 bg-white hover:bg-page-bg text-brand-red hover:text-brand-red-dark font-heading font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-subtle min-h-touch transition-all hover:-translate-y-0.5 group'
+                variant='inverted'
+                size='md'
+                rightIcon={
+                  <ArrowRight className='w-4 h-4 group-hover:translate-x-1 transition-transform' />
+                }
+                className='w-full sm:w-fit hover:-translate-y-0.5 group'
               >
-                <span>Explore Our Infrastructure</span>
-                <ArrowRight
-                  className='w-4 h-4 group-hover:translate-x-1 transition-transform'
-                  aria-hidden='true'
-                />
-              </Link>
+                Explore Our Infrastructure
+              </Button>
             </div>
           </div>
 
           {/* Right Visual Image */}
           <div className='col-start-1 row-start-2 lg:col-start-6 lg:row-start-1 lg:col-span-7 relative w-full h-full min-h-[260px] sm:min-h-[320px] lg:min-h-0 overflow-hidden [clip-path:none] lg:[clip-path:polygon(7%_0,100%_0,100%_100%,0%_100%)]'>
             <Image
-              src='/assets/images/our-infrastructure-warehouse-interior.png'
+              src='/assets/images/our-infrastructure-warehouse-interior.webp'
               alt='Clean, organized Cleaning Care logistics warehouse in Riyadh with tall pallet racks'
               fill
               className='object-cover object-center'

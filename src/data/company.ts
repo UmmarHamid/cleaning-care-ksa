@@ -136,7 +136,7 @@ export const COMPANY_DATA: CompanyData = {
     title: 'A Trusted B2B Partner for a Cleaner, Safer KSA',
     description:
       'Cleaning Care Trading Co. is a Riyadh-based B2B distributor specializing in cleaning materials, hygiene disposables, plastic drums & waste containers, and cleaning equipment & safety products, serving businesses across the Kingdom of Saudi Arabia.',
-    image: '/assets/images/about-section-warehouse-exterior.png',
+    image: '/assets/images/about-section-warehouse-exterior.webp',
     imageAlt: 'Cleaning Care warehouse and distribution facility exterior',
   },
 
@@ -171,7 +171,7 @@ export const COMPANY_DATA: CompanyData = {
     {
       id: 'contractors',
       title: 'Cleaning Companies\n& Contractors',
-      image: '/assets/images/who-we-serve-industry-1.jpg',
+      image: '/assets/images/who-we-serve-industry-1.webp',
       alt: 'Commercial janitorial cleaning chemicals and supplies',
       description:
         'Bulk chemicals, janitorial trolleys, and floor care machines for commercial cleaning contractors.',
@@ -179,7 +179,7 @@ export const COMPANY_DATA: CompanyData = {
     {
       id: 'offices',
       title: 'Corporate Offices',
-      image: '/assets/images/who-we-serve-industry-2.jpg',
+      image: '/assets/images/who-we-serve-industry-2.webp',
       alt: 'Corporate restroom hygiene dispensers, hand soaps and paper disposables',
       description:
         'Restroom hygiene dispensers, hand soaps, sanitizers, and waste sorting systems.',
@@ -187,7 +187,7 @@ export const COMPANY_DATA: CompanyData = {
     {
       id: 'horeca',
       title: 'Hotels & Restaurants\n(HORECA)',
-      image: '/assets/images/who-we-serve-industry-3.jpg',
+      image: '/assets/images/who-we-serve-industry-3.webp',
       alt: 'Commercial floor care equipment and safety supplies for hospitality',
       description:
         'Kitchen degreasers, food-grade tableware, cling film, and sanitary disposables.',
@@ -195,7 +195,7 @@ export const COMPANY_DATA: CompanyData = {
     {
       id: 'healthcare',
       title: 'Hospitals & Clinics',
-      image: '/assets/images/who-we-serve-industry-4.jpg',
+      image: '/assets/images/who-we-serve-industry-4.webp',
       alt: 'Healthcare facility logistics and medical supply distribution',
       description:
         'Hospital-grade disinfectants, color-coded medical waste bins, and certified PPE gloves.',
@@ -203,7 +203,7 @@ export const COMPANY_DATA: CompanyData = {
     {
       id: 'education',
       title: 'Schools & Universities',
-      image: '/assets/images/who-we-serve-industry-5.jpg',
+      image: '/assets/images/who-we-serve-industry-5.webp',
       alt: 'Educational institutional bulk cleaning supply warehousing',
       description:
         'High-traffic floor cleaning compounds, hand washing supplies, and indoor pedal bins.',
@@ -211,7 +211,7 @@ export const COMPANY_DATA: CompanyData = {
     {
       id: 'facility-mgmt',
       title: 'Facility Management &\nMaintenance Companies',
-      image: '/assets/images/who-we-serve-industry-6.png',
+      image: '/assets/images/who-we-serve-industry-6.webp',
       alt: 'Heavy-duty industrial plastic drums and waste containers',
       description:
         'Heavy-duty outdoor waste containers (120G–1100G), pallets, and crowd safety barricades.',
@@ -232,7 +232,7 @@ export const COMPANY_DATA: CompanyData = {
       title: 'Fully Equipped Warehouses in Riyadh',
       description:
         'Strategically located warehouses with bulk storage, organized racking and efficient distribution across Riyadh.',
-      image: '/assets/images/about-section-warehouse-exterior.png',
+      image: '/assets/images/about-section-warehouse-exterior.webp',
       imageAlt: 'Cleaning Care fully equipped warehouse facility exterior',
       theme: 'red',
       features: [
@@ -246,7 +246,7 @@ export const COMPANY_DATA: CompanyData = {
       title: 'Retail Stores in Riyadh',
       description:
         'Well-stocked retail outlets serving walk-in customers, contractors and small businesses with a wide range of cleaning and hygiene supplies.',
-      image: '/assets/images/retail-market.png',
+      image: '/assets/images/retail-market.webp',
       imageAlt: 'Cleaning Care retail store in Riyadh',
       theme: 'white',
       features: [

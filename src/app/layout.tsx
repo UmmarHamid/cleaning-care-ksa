@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/assets/images/hero-section-banner.png',
+        url: '/assets/images/hero-section-banner.webp',
         width: 1200,
         height: 630,
         alt: 'Cleaning Care Trading Co. High-Bay Distribution Warehouse in Riyadh',
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
       'Cleaning Care Trading Co. | Industrial Hygiene & Wholesale Cleaning Supplies Riyadh',
     description:
       'Official B2B supplier of commercial cleaning chemicals, waste drums (10G–1100G), hygiene paper, and safety equipment in Riyadh.',
-    images: ['/assets/images/hero-section-banner.png'],
+    images: ['/assets/images/hero-section-banner.webp'],
   },
   robots: {
     index: true,

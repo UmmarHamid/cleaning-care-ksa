@@ -1,9 +1,12 @@
 import React from "react";
-import Link from "next/link";
 import { COMPANY_DATA } from "@/data/company";
+import { SECTION_SPACING } from "@/lib/tokens";
 import { buildWhatsAppQuoteUrl } from "@/lib/whatsapp";
-import { ArrowRight, MessageCircleMore } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { BorderBeam } from "@/components/motion/BorderBeam";
+import { Button } from "@/components/ui/Button";
+import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 
 export function Hero() {
   const whatsappUrl = buildWhatsAppQuoteUrl();
@@ -34,7 +37,7 @@ export function Hero() {
 
       {/* Background Warehouse Photography with Angular Geometric Accents */}
       <div
-        className="absolute inset-0 bg-[url('/assets/images/hero-section-banner.png')] bg-right bg-cover no-repeat opacity-30 lg:opacity-100 lg:[clip-path:polygon(calc(50%+60px)_0,100%_0,100%_100%,calc(50%-60px)_100%)] z-0"
+        className="absolute inset-0 bg-[url('/assets/images/hero-section-banner.webp')] bg-right bg-cover no-repeat opacity-30 lg:opacity-100 lg:[clip-path:polygon(calc(50%+60px)_0,100%_0,100%_100%,calc(50%-60px)_100%)] z-0"
         role='img'
         aria-label='Commercial high-bay warehouse in Riyadh with cleaning materials and drums'
       />
@@ -46,7 +49,7 @@ export function Hero() {
       />
 
       {/* Content */}
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 pt-12 pb-24 lg:pt-16 lg:pb-28'>
+      <div className={`${SECTION_SPACING.container} w-full relative z-10 pt-10 pb-20 md:pt-14 md:pb-24 lg:pt-16 lg:pb-28`}>
         <div className='max-w-xl text-white text-center sm:text-left flex flex-col items-center sm:items-start mx-auto sm:mx-0'>
           {/* Eyebrow Badge */}
           <span className='inline-flex items-center rounded-full px-4 py-1.5 bg-brand-gold text-slate-dark font-heading font-bold text-xs sm:text-sm tracking-tight'>
@@ -69,33 +72,36 @@ export function Hero() {
 
           {/* Dual Action CTAs */}
           <div className='flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto'>
-            <Link
-              className='relative overflow-hidden inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-heading font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-subtle min-h-touch transition-all group w-full sm:w-auto'
+            <Button
               href='/products'
+              variant='primary'
+              size='lg'
+              rightIcon={
+                <ArrowRight className='w-4 h-4 group-hover:translate-x-1 transition-transform' />
+              }
+              overlay={
+                <BorderBeam
+                  duration={3.5}
+                  size={80}
+                  borderWidth={1.5}
+                  colorFrom='#FFFFFF'
+                  colorTo='#F2B705'
+                />
+              }
+              className='group w-full sm:w-auto'
             >
-              <BorderBeam
-                duration={3.5}
-                size={80}
-                borderWidth={1.5}
-                colorFrom='#FFFFFF'
-                colorTo='#F2B705'
-              />
-              <span className='relative z-10'>Explore Product Catalog</span>
-              <ArrowRight
-                className='w-4 h-4 group-hover:translate-x-1 transition-transform relative z-10'
-                aria-hidden='true'
-              />
-            </Link>
+              Explore Product Catalog
+            </Button>
 
-            <a
-              className='inline-flex items-center justify-center gap-2 bg-transparent hover:bg-white/10 text-white font-heading font-bold text-sm sm:text-base px-6 py-3 rounded-lg border border-white/30 hover:border-white/60 min-h-touch transition-all w-full sm:w-auto'
+            <WhatsAppButton
               href={whatsappUrl}
-              target='_blank'
-              rel='noopener noreferrer'
+              variant='ghost-dark'
+              size='lg'
+              icon={<WhatsAppIcon className='w-4.5 h-4.5' />}
+              className='w-full sm:w-auto'
             >
-              <MessageCircleMore className='w-4.5 h-4.5 text-success' aria-hidden='true' />
-              <span>WhatsApp Sales Desk</span>
-            </a>
+              WhatsApp Sales Desk
+            </WhatsAppButton>
           </div>
         </div>
       </div>
