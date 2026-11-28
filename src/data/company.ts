@@ -80,6 +80,8 @@ export interface CompanyData {
   highlightsStrip: HighlightItem[];
 }
 
+export const SITE_URL = 'https://cleaningcaretradingco.com' as const;
+
 export const CONTACT_PHONE = {
   display: '+966 56 282 1089',
   raw: '966562821089',
@@ -102,8 +104,8 @@ export const COMPANY_DATA: CompanyData = {
   phone: CONTACT_PHONE.display,
   phoneRaw: CONTACT_PHONE.raw,
   phoneTel: CONTACT_PHONE.tel,
-  emailSales: 'sales@cleaningcaretrading.com',
-  emailInfo: 'info@cleaningcaretrading.com',
+  emailSales: 'sales@cleaningcaretradingco.com',
+  emailInfo: 'info@cleaningcaretradingco.com',
   emailLegacy: 'cleaningcaretradingest@gmail.com',
   googleMapsUrl:
     'https://www.google.com/maps/search/?api=1&query=Riyadh%2C+Saudi+Arabia',

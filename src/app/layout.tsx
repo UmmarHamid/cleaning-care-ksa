@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import { COMPANY_DATA } from '@/data/company';
+import { COMPANY_DATA, SITE_URL } from '@/data/company';
 import { BRAND_COLORS } from '@/lib/tokens';
 import { JsonLd } from '@/components/JsonLd';
 
@@ -11,7 +11,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://cleaningcaretrading.com'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default:
       'Cleaning Care Trading Co. | Industrial Hygiene & Wholesale Cleaning Supplies Riyadh',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
       'Cleaning Care Trading Co. | Industrial Hygiene & Wholesale Cleaning Supplies Riyadh',
     description:
       'Official B2B supplier of commercial cleaning chemicals, waste drums (10G–1100G), hygiene paper, and safety equipment in Riyadh.',
-    url: 'https://cleaningcaretrading.com',
+    url: SITE_URL,
     siteName: 'Cleaning Care Trading Co.',
     locale: 'en_SA',
     type: 'website',

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { BrandLogo } from './BrandLogo';
 import { COMPANY_DATA } from '@/data/company';
 import { SECTION_SPACING } from '@/lib/tokens';
-import { Phone, Mail, MapPin, FileText, CheckCircle2 } from 'lucide-react';
+import { Phone, Mail, MapPin, CheckCircle2 } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();

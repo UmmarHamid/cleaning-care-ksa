@@ -1,16 +1,14 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CATEGORIES } from '@/data/catalog';
+import { CATEGORIES, PRODUCTS } from '@/data/catalog';
 import { SECTION_SPACING } from '@/lib/tokens';
 import { buildCategoryUrl } from '@/lib/categories';
 import { buildWhatsAppQuoteUrl } from '@/lib/whatsapp';
 import {
   ArrowRight,
-  BrushCleaning,
   Package,
   SprayCan,
-  Toilet,
   TrafficCone,
   Truck,
 } from 'lucide-react';
@@ -118,11 +116,11 @@ export function ProductsSection() {
                 <span>Bulk Wholesale </span>
               </div>
               <h4 className='font-heading text-base sm:text-lg font-bold text-slate-dark mb-1'>
-                Looking for individual item specifications and instant capacity search?
+                Looking for specific wholesale products across our {CATEGORIES.length} divisions?
               </h4>
               <p className='font-body text-xs sm:text-sm text-muted-gray'>
-                Browse all 29+ wholesale items with live search, spec selectors, and pre-filled
-                WhatsApp quotes.
+                Browse all {PRODUCTS.length} product families with category filters, live search,
+                and direct WhatsApp quotes.
               </p>
             </div>
             <div className='flex items-center justify-center sm:justify-start gap-3 flex-wrap relative z-10 w-full sm:w-auto'>
