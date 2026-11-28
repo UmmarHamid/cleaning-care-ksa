@@ -13,7 +13,7 @@ export function ContactSection() {
         aria-hidden='true'
       >
         <Image
-          src='/assets/images/about-section-warehouse-exterior.png'
+          src='/assets/images/about-section-warehouse-exterior.webp'
           alt='Cleaning Care warehouse exterior in Riyadh'
           fill
           className='object-cover'

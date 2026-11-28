@@ -44,7 +44,7 @@ export function InfraBanner() {
           {/* Right Visual Image */}
           <div className='col-start-1 row-start-2 lg:col-start-6 lg:row-start-1 lg:col-span-7 relative w-full h-full min-h-[260px] sm:min-h-[320px] lg:min-h-0 overflow-hidden [clip-path:none] lg:[clip-path:polygon(7%_0,100%_0,100%_100%,0%_100%)]'>
             <Image
-              src='/assets/images/our-infrastructure-warehouse-interior.png'
+              src='/assets/images/our-infrastructure-warehouse-interior.webp'
               alt='Clean, organized Cleaning Care logistics warehouse in Riyadh with tall pallet racks'
               fill
               className='object-cover object-center'

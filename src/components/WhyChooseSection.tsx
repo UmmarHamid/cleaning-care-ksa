@@ -164,7 +164,7 @@ export function WhyChooseSection() {
           >
             <div className='relative w-full h-full min-h-[260px] sm:min-h-[360px] lg:min-h-[460px] rounded-2xl overflow-hidden'>
               <Image
-                src='/assets/images/why-choose-us-warehouse-team.jpg'
+                src='/assets/images/why-choose-us-warehouse-team.webp'
                 alt='Cleaning Care warehouse specialist in safety vest managing operations'
                 fill
                 className='object-cover object-[center_30%]'

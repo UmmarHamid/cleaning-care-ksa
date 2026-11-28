@@ -75,7 +75,7 @@ export function InfrastructureBento() {
           >
             <SpotlightCard className='relative rounded-2xl overflow-hidden w-full aspect-[4/3] sm:aspect-[16/9] lg:aspect-auto min-h-[260px] sm:min-h-[340px] lg:min-h-[440px] h-full shadow-card'>
               <Image
-                src='/assets/images/our-infrastructure-warehouse-interior.png'
+                src='/assets/images/our-infrastructure-warehouse-interior.webp'
                 alt='Organized warehouse interior with inventory and high pallet racking in Riyadh'
                 fill
                 className='object-cover object-center'

@@ -37,7 +37,7 @@ export function Hero() {
 
       {/* Background Warehouse Photography with Angular Geometric Accents */}
       <div
-        className="absolute inset-0 bg-[url('/assets/images/hero-section-banner.png')] bg-right bg-cover no-repeat opacity-30 lg:opacity-100 lg:[clip-path:polygon(calc(50%+60px)_0,100%_0,100%_100%,calc(50%-60px)_100%)] z-0"
+        className="absolute inset-0 bg-[url('/assets/images/hero-section-banner.webp')] bg-right bg-cover no-repeat opacity-30 lg:opacity-100 lg:[clip-path:polygon(calc(50%+60px)_0,100%_0,100%_100%,calc(50%-60px)_100%)] z-0"
         role='img'
         aria-label='Commercial high-bay warehouse in Riyadh with cleaning materials and drums'
       />

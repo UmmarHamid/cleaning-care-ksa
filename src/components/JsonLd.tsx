@@ -13,7 +13,7 @@ export function JsonLd() {
     url: 'https://cleaningcaretrading.com',
     logo: 'https://cleaningcaretrading.com/assets/logo.svg',
     image:
-      'https://cleaningcaretrading.com/assets/images/hero-section-banner.png',
+      'https://cleaningcaretrading.com/assets/images/hero-section-banner.webp',
     description: COMPANY_DATA.shortDescription,
     telephone: COMPANY_DATA.phoneTel,
     email: COMPANY_DATA.emailSales,
