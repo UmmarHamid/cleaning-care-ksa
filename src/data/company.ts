@@ -80,6 +80,12 @@ export interface CompanyData {
   highlightsStrip: HighlightItem[];
 }
 
+export const CONTACT_PHONE = {
+  display: '+966 56 282 1089',
+  raw: '966562821089',
+  tel: '+966562821089',
+} as const;
+
 export const COMPANY_DATA: CompanyData = {
   name: 'Cleaning Care Trading Co.',
   legalName: 'Cleaning Care Trading Co.',
@@ -93,9 +99,9 @@ export const COMPANY_DATA: CompanyData = {
   country: 'Kingdom of Saudi Arabia',
   serviceArea: 'Kingdom of Saudi Arabia (KSA)',
   vatNumber: '314071638700003',
-  phone: '+966 56 282 1089',
-  phoneRaw: '966562821089',
-  phoneTel: '+966562821089',
+  phone: CONTACT_PHONE.display,
+  phoneRaw: CONTACT_PHONE.raw,
+  phoneTel: CONTACT_PHONE.tel,
   emailSales: 'sales@cleaningcaretrading.com',
   emailInfo: 'info@cleaningcaretrading.com',
   emailLegacy: 'cleaningcaretradingest@gmail.com',

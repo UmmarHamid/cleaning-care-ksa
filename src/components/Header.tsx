@@ -47,7 +47,7 @@ export function Header() {
   return (
     <header className='sticky top-0 z-50 w-full shadow-subtle'>
       {/* Top Utility Bar */}
-      <div className='w-full bg-brand-charcoal text-white text-xs border-b border-slate-800'>
+      <div className='hidden md:block w-full bg-brand-charcoal text-white text-xs border-b border-slate-800'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[38px] flex items-center justify-between gap-4 flex-wrap'>
           <div className='flex items-center gap-4 sm:gap-6 flex-wrap'>
             <a

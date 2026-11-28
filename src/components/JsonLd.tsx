@@ -1,6 +1,7 @@
 import React from 'react';
 import { COMPANY_DATA } from '@/data/company';
 import { CATEGORIES } from '@/data/catalog';
+import { WHATSAPP_BASE_URL } from '@/lib/whatsapp';
 
 export function JsonLd() {
   const schema = {
@@ -65,7 +66,7 @@ export function JsonLd() {
     },
     sameAs: [
       COMPANY_DATA.googleMapsUrl,
-      `https://wa.me/${COMPANY_DATA.phoneRaw}`,
+      WHATSAPP_BASE_URL,
     ],
   };
 

@@ -1,10 +1,10 @@
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { CATEGORIES } from "@/data/catalog";
-import { SECTION_SPACING } from "@/lib/tokens";
-import { buildCategoryUrl } from "@/lib/categories";
-import { buildWhatsAppQuoteUrl } from "@/lib/whatsapp";
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { CATEGORIES } from '@/data/catalog';
+import { SECTION_SPACING } from '@/lib/tokens';
+import { buildCategoryUrl } from '@/lib/categories';
+import { buildWhatsAppQuoteUrl } from '@/lib/whatsapp';
 import {
   ArrowRight,
   BrushCleaning,
@@ -13,20 +13,20 @@ import {
   Toilet,
   TrafficCone,
   Truck,
-} from "lucide-react";
-import { SpotlightCard } from "@/components/motion/SpotlightCard";
-import { BorderBeam } from "@/components/motion/BorderBeam";
-import { Button } from "@/components/ui/Button";
-import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
+} from 'lucide-react';
+import { SpotlightCard } from '@/components/motion/SpotlightCard';
+import { BorderBeam } from '@/components/motion/BorderBeam';
+import { Button } from '@/components/ui/Button';
+import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 
 function CategoryIcon({ id }: { id: string }) {
-  if (id === "cleaning-materials") {
+  if (id === 'cleaning-materials') {
     return <SprayCan className='w-6 h-6 text-brand-red shrink-0' aria-hidden='true' />;
   }
-  if (id === "hygiene-disposables") {
+  if (id === 'hygiene-disposables') {
     return <Package className='w-6 h-6 text-brand-red shrink-0' aria-hidden='true' />;
   }
-  if (id === "cleaning-equipment-tools") {
+  if (id === 'cleaning-equipment-tools') {
     return <Truck className='w-6 h-6 text-brand-red shrink-0' aria-hidden='true' />;
   }
   return <TrafficCone className='w-6 h-6 text-brand-red shrink-0' aria-hidden='true' />;
@@ -37,14 +37,16 @@ export function ProductsSection() {
     <section id='products' className={`${SECTION_SPACING.y} bg-white`}>
       <div className={SECTION_SPACING.container}>
         {/* Section Heading */}
-        <div className={`text-center sm:text-left max-w-3xl mx-auto sm:mx-0 ${SECTION_SPACING.headerMb}`}>
+        <div
+          className={`text-center sm:text-left max-w-3xl mx-auto sm:mx-0 ${SECTION_SPACING.headerMb}`}
+        >
           <div className='flex items-center justify-center sm:justify-start gap-3 sm:gap-4 mb-3'>
             <span
               className='h-0.5 w-10 sm:w-14 sm:hidden bg-brand-red rounded-full'
               aria-hidden='true'
             />
             <h2 className='font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-dark tracking-tight leading-tight'>
-              Our Product Division
+              Product Division
             </h2>
             <span className='h-0.5 w-10 sm:w-14 bg-brand-red rounded-full' aria-hidden='true' />
           </div>
@@ -113,10 +115,10 @@ export function ProductsSection() {
             <div className='max-w-xl relative z-10 text-center sm:text-left flex flex-col items-center sm:items-start mx-auto sm:mx-0'>
               <div className='inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-gold/15 text-slate-dark border border-brand-gold/30 text-2xs font-extrabold uppercase tracking-wider mb-2.5'>
                 <Truck className='w-3.5 h-3.5 text-brand-red' />
-                <span>Bulk Wholesale &amp; Same-Day Riyadh Dispatch</span>
+                <span>Bulk Wholesale </span>
               </div>
               <h4 className='font-heading text-base sm:text-lg font-bold text-slate-dark mb-1'>
-                Looking for individual item specifications (10G–1100G) and instant capacity search?
+                Looking for individual item specifications and instant capacity search?
               </h4>
               <p className='font-body text-xs sm:text-sm text-muted-gray'>
                 Browse all 29+ wholesale items with live search, spec selectors, and pre-filled
@@ -131,7 +133,7 @@ export function ProductsSection() {
                 rightIcon={<span>→</span>}
                 className='w-full md:w-fit'
               >
-                Explore Full Interactive Catalog
+                Explore Full Catalog
               </Button>
               <WhatsAppButton
                 href={buildWhatsAppQuoteUrl()}

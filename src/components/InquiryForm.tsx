@@ -2,8 +2,11 @@
 
 import React, { useState } from 'react';
 import { CATEGORIES } from '@/data/catalog';
-import { COMPANY_DATA } from '@/data/company';
-import { buildWhatsAppFallbackUrl, InquiryData } from '@/lib/whatsapp';
+import {
+  buildWhatsAppFallbackUrl,
+  InquiryData,
+  WHATSAPP_BASE_URL,
+} from '@/lib/whatsapp';
 import { ClipboardList, CheckCircle2, ArrowRight, AlertCircle } from 'lucide-react';
 import { SpotlightCard } from '@/components/motion/SpotlightCard';
 import { Button } from '@/components/ui/Button';
@@ -174,7 +177,7 @@ export function InquiryForm() {
 
             <div className='pt-2 flex flex-col sm:flex-row items-center justify-center gap-3'>
               <WhatsAppButton
-                href={`https://wa.me/${COMPANY_DATA.phoneRaw}`}
+                href={WHATSAPP_BASE_URL}
                 variant='secondary'
                 size='md'
                 rightIcon={<ArrowRight className='w-3.5 h-3.5' />}
